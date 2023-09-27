@@ -16,5 +16,4 @@ l'applicaiton permet aux utilisateurs de
 - le proprietaire confirme quand la location commence et finis
 - voir les locations pour ces objets
 - voir les locations pour d'autres objets
-- Gestion des paramètres d'un compte utilisateur :
-   * Changer les valeurs d'un compte utilisateur (Nom, Prénom, date de naissance, mail, mot de passe)
+- Vérifier et changer les paramètres d'un compte utilisateur (Nom, Prénom, adresse, mail, mot de passe)
