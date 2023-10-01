@@ -1,4 +1,3 @@
-
 # Cahier de charges - Groupe 9
 * Dominik Saul
 * Glodi Domingos
@@ -10,15 +9,15 @@ Les objets peuvent etre des differents types comme voiture, vélo, moto, livres,
 
 ## Spécification
 l'applicaiton permet aux utilisateurs de
-- créer et modifier les annonces pour ses objects (Localité, description, prix, disponibilités)
+- créer et modifier les annonces pour ses objets (Localisation, description, prix, disponibilités)
 - chercher / filtrer les annonces des autres utilisateurs
-- possibilité de voir les disponibilités des objets (quand il y a déjà des locations)
+- possibilité de voir les disponibilités des objets
 - faire une demande de réservation (de quel date à quel date, méthode de payement)
-- le proprietaire d'un object confirme la reservation et la location
-- le proprietaire confirme quand la location commence et finis
-- voir les locations pour ces objets
-- voir les locations pour d'autres objets
+- le proprietaire d'un objet confirme la reservation et la location
+- Le loueur et le propriétaire confirme la prise en main et le retour de l'objet
 - Vérifier et changer les paramètres d'un compte utilisateur (Nom, Prénom, adresse, mail, mot de passe)
 
 ## Technologies / Langues
-- Nous allons utiliser PostgeSQL et PHP pour notre projet
+- Base de données : PostgreSQL
+- Langage de programmation : PHP
+- Serveur web : Apache HTTP Server
