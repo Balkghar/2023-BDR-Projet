@@ -21,20 +21,21 @@ l'application permet aux utilisateurs de
 - Users
   - Firstname
   - Lastname
-  - Street
-  - Number
-  - NPA
-  - City
-  - Mail
-  - Mot de passe
   - Registration date
+  - Mail
+  - Password
+  - Phone number
+  - Street
+  - StreetNumber
+  - ZIP
+  - City
 
 - Annonces / Objects
   - Creation Date
   - Title / Name
   - Status 
   - Descriptions
-  - NPA
+  - ZIP
   - City
   - Informations Price
 
@@ -52,6 +53,8 @@ l'application permet aux utilisateurs de
     - Location canceled
     - Reservation canceled
     - Location finished
+
+Eventuellement Table supp. pour adresses et villes
 
 ## Technologies / Langues
 - Base de données : PostgreSQL
