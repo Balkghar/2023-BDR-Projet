@@ -12,7 +12,7 @@ l'application permet aux utilisateurs de
 - créer et modifier les annonces pour ses objets (Localisation, Description, Prix, Disponibilités)
 - chercher / filtrer les annonces des autres utilisateurs
 - possibilité de voir les disponibilités des objets
-- faire une demande de réservation (de quel date à quel date, méthode de paiement)
+- faire une demande de réservation (de quelle date à quelle date, méthode de paiement)
 - le proprietaire d'un objet confirme la reservation et la location
 - Le loueur et le propriétaire confirme la prise en main et le retour de l'objet
 - Vérifier et changer les paramètres d'un compte utilisateur (Nom, Prénom, adresse, mail, mot de passe)
