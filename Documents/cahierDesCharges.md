@@ -8,11 +8,11 @@ Nous allons créer un site web pour mettre en contact des utilisateurs voulant l
 Les objets peuvent etre des differents types comme voiture, vélo, moto, livres, dvd, bateaux, outils. Les locations sont graduites ou payantes. On peut payer via plusieurs méthodes de payments tel quel carte de crédit, Twint et etc....
 
 ## Spécification
-l'applicaiton permet aux utilisateurs de
-- créer et modifier les annonces pour ses objets (Localisation, description, prix, disponibilités)
+l'application permet aux utilisateurs de
+- créer et modifier les annonces pour ses objets (Localisation, Description, Prix, Disponibilités)
 - chercher / filtrer les annonces des autres utilisateurs
 - possibilité de voir les disponibilités des objets
-- faire une demande de réservation (de quel date à quel date, méthode de payement)
+- faire une demande de réservation (de quel date à quel date, méthode de paiement)
 - le proprietaire d'un objet confirme la reservation et la location
 - Le loueur et le propriétaire confirme la prise en main et le retour de l'objet
 - Vérifier et changer les paramètres d'un compte utilisateur (Nom, Prénom, adresse, mail, mot de passe)
