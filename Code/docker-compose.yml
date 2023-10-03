@@ -1,0 +1,51 @@
+version: '3.8'
+
+services:
+  postgres:
+    image: postgres
+    restart: always
+    environment:
+      - POSTGRES_DB=$POSTGRES_DB
+      - POSTGRES_USER=$POSTGRES_USER
+      - POSTGRES_PASSWORD=$POSTGRES_PASSWORD
+    ports:
+      - 5432:5432
+    volumes:
+      - ./postgres/:/docker-entrypoint-initdb.d/
+
+  php:
+    image: php
+    restart: always
+    ports:
+      - ""
+    depends_on:
+      - postgres
+    environment:
+      - APP_ENV=${APP_ENV}
+      - APP_SECRET=${APP_SECRET}
+      - DATABASE_URL=${DATABASE_URL}
+    volumes:
+      - ./php/php.ini:/usr/local/etc/php/conf.d/php.ini
+      - ./php/xdebug.ini:/usr/local/etc/php/conf.d/xdebug.ini
+      - ./src:/var/www/html
+
+  nginx:
+    image: nginx
+    restart: always
+    depends_on:
+      - php
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - ./nginx/default.conf:/etc/nginx/conf.d/default.conf
+      - ./src:/var/www/html
+
+volumes:
+
+  postgres_volume:
+    driver: local # Define the driver and options under the volume name
+    driver_opts:
+      type: none
+      device: /data/postgres_volume
+      o: bind
