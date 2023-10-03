@@ -37,7 +37,6 @@ l'application permet aux utilisateurs de
   - NPA
   - City
   - Informations Price
-  - Dates aviable
 
 - Locations
   - Start date
