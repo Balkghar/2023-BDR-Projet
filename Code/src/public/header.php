@@ -1,6 +1,6 @@
 <?php 
     session_start();
-    require('../../postgresql.php');
+    require('../src/postgresql.php');
     $obj = new Postgresql();
 ?>
 <!DOCTYPE html>
