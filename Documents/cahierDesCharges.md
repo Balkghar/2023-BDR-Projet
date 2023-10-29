@@ -54,6 +54,9 @@ l'application permet aux utilisateurs de
     - Reservation canceled
     - Location finished
 
+- Categories
+  - Name
+
 Eventuellement Table supp. pour adresses et villes
 
 ## Technologies / Langues
