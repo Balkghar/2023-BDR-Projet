@@ -16,3 +16,8 @@ Stop:
 Stop the container with the followin command:
 
 `docker compose down`
+
+
+### old
+Command to create SSL certificate:
+sudo openssl req -x509 -nodes -days 365 -newkey rsa:2048 -keyout Code/nginx/ssl/server.key -out Code/nginx/ssl/server.crt

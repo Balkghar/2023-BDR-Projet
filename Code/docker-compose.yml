@@ -26,18 +26,10 @@ services:
     container_name: php
     depends_on:
       - postgres
-    environment:
-      - XDEBUG_CONFIG=client_port=9000
-      #environment:
-      #- APP_SECRET=${APP_SECRET}
-      #- DATABASE_URL=${DATABASE_URL}
-      #ports:
-      #- ""
     volumes:
       - ./src:/var/www
       - ./logs:/var/logs
       #- ./php-fpm/php.ini:/usr/local/etc/php/conf.d/php.ini
-      #- ./php-fpm/xdebug.ini:/usr/local/etc/php/conf.d/xdebug.ini
 
   nginx:
     image: nginx
@@ -48,6 +40,7 @@ services:
       - php-fpm
     ports:
       - "80:80"
+      - "443:443"
     volumes:
       - ./src:/var/www
       - ./logs/nginx:/var/log/nginx

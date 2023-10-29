@@ -1,14 +1,15 @@
 FROM php:8.2-fpm
 
 RUN apt-get update
-RUN apt-get install -y libfreetype-dev libjpeg62-turbo-dev libpng-dev
-RUN docker-php-ext-configure gd --with-freetype --with-jpeg
-RUN docker-php-ext-install -j$(nproc) gd
 # RUN apt-get install -y apt-utils
 RUN apt-get install -y libpq-dev
-# RUN apt-get install -y libpq-dev libzip-dev
-RUN pecl install xdebug
-RUN docker-php-ext-enable xdebug
+RUN apt-get install -y libzip-dev
+RUN apt-get install -y libpng-dev
+# RUN apt-get install -y libfreetype-dev libjpeg62-turbo-dev libpng-dev
+# RUN docker-php-ext-configure gd --with-freetype --with-jpeg
+RUN docker-php-ext-install -j$(nproc) gd
+# RUN pecl install xdebug
+# RUN docker-php-ext-enable xdebug
 # RUN docker-php-ext-configure pgsql -with-pgsql=/usr/local/pgsql
 # RUN docker-php-ext-install -j$(nproc) zip
 RUN docker-php-ext-install -j$(nproc) pdo
