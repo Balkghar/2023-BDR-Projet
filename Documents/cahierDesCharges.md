@@ -46,12 +46,12 @@ l'application permet aux utilisateurs de
   - Payment Method (Cash, Twint)
   - Payment Date
   - Status 
-    - Reservation asked
+    - Reservation requested
     - Reservation confirmed
+    - Reservation canceled
     - Location ongoing
     - Item returned
     - Location canceled
-    - Reservation canceled
     - Location finished
 
 - Categories
@@ -64,3 +64,11 @@ Eventuellement Table supp. pour adresses et villes
 - Langage de programmation : PHP
 - Serveur web : Nginx Server
 - Technologie : Docker
+
+
+
+# Modelisation
+## Contraintes d'integrité
+* 
+
+## Questions ouvertes
