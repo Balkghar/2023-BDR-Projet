@@ -1,8 +1,3 @@
-<?php 
-    session_start();
-    require('../src/postgresql.php');
-    $obj = new Postgresql();
-?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
