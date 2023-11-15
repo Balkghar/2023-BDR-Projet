@@ -12,4 +12,10 @@ class Postgresql
   {
     $this->dbconn = pg_connect("host={$this->host} port={$this->port} dbname={$this->dbname} user={$this->user} password={$this->password} ");
   }
+  function getAllAd()
+  {
+    $query = "SELECT all FROM ad";
+
+    return pg_exec($this->dbconn, $query);
+  }
 }
