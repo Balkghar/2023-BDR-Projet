@@ -1,4 +1,8 @@
-<?php 
-     include('header.php');
-?>
-<?php include('footer.php');?>
+<?php
+include('header.php');
+
+$db = new Postgresql();
+
+$ad = $db->getAllAdvertisements();
+
+include('footer.php');
