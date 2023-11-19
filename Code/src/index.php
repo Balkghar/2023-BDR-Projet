@@ -1,6 +1,10 @@
 <?php
 
 require('src/model.php');
+require('src/ad.php');
+
+$db = new Postgresql();
+$ads = $db->getAllAds();
 
 require('templates/homepage.php');
 

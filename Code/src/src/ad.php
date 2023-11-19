@@ -1,4 +1,5 @@
 <?php
+//TODO : discuss with Glodi and Dom how we interact with the data, via array or via class, data is easier but I think it'll be more powerfull if we use class instead
 class Advertisements
 {
    protected $id;
