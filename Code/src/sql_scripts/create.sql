@@ -109,7 +109,7 @@ CREATE TABLE IS NOT EXISTS Advertisement (
     nameCategory integer NOT NULL,
     creationDate timestamp NOT NULL,
     title varchar(80) NOT NULL,
-    -- TODO: add description, priceInfo, stat
+    -- TODO: add description, priceInfo, status
 
     CONSTRAINT PK_Advertisement PRIMARY KEY (id)
     CONSTRAINT FK_Advertisement_idAddress FOREIGN KEY (idAddress)
