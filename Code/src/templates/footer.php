@@ -1,5 +1,5 @@
 <footer class="container-fluid text-center">
-  <p>PHPFOREVER © <?=date('Y')?></p>
+  <p>Prêt de chez toi © <?=date('Y')?></p>
 </footer>
 </body>
 </html>
