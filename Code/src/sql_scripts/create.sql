@@ -126,7 +126,7 @@ CREATE TABLE Advertisement
     id            serial,
     idAddress     integer       NOT NULL,
     idUser        integer       NOT NULL,
-    nameCategory  varchar(80)       NOT NULL,
+    nameCategory  varchar(80)   NOT NULL,
     creationDate  timestamp     NOT NULL DEFAULT CURRENT_TIMESTAMP,
     title         varchar(80)   NOT NULL,
     description   text          NOT NULL,
@@ -199,3 +199,4 @@ CREATE TABLE Rating
     CONSTRAINT CK_rentalRating CHECK (rentalRating > 0 AND rentalRating < 6),
     CONSTRAINT CK_objectRating CHECK (objectRating > 0 AND objectRating < 6)
 );
+
