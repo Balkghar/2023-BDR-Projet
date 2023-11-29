@@ -90,3 +90,35 @@ VALUES (1, 'Michael', 'Dupont', 'michael@dupont.ch', '1234', '+41791234567', 'AC
        (6, 'Paul', 'Lepaul', 'paul@lepaul.ch', '1234', '+41796789012', 'ACTIVE'),
        (7, 'Alice', 'Lecoin', 'alice@lecoin.ch', '1234', '+41797890123', 'ACTIVE'),
        (8, 'Gertrude', 'Bidule', 'gertrude@bidule.ch', '1234', '+417978901234', 'ACTIVE');
+
+INSERT INTO Advertisement (idAddress, idUser, nameCategory, title, description, price, priceInterval, status)
+VALUES (1, 1, 'Outils', 'Perceuse', 'Perceuse Bosch', 30, 'WEEK', 'ACTIVE'),
+       (2, 2, 'Voitures', 'Voiture Mercedes', 'Voiture de luxe', 100, 'DAY', 'ACTIVE'),
+       (3, 3, 'Vélos', 'Vélo de course', 'Vélo de course', 20, 'DAY', 'ACTIVE'),
+       (4, 4, 'Ordinateurs', 'Ordinateur portable', 'Ordinateur portable', 30, 'MONTH', 'ACTIVE'),
+       (5, 5, 'Cuisine', 'Casserole', 'Casserole en inox', 25, 'WEEK', 'ACTIVE'),
+       (6, 6, 'Jardin', 'Tondeuse', 'Tondeuse à gazon', 15, 'DAY', 'ACTIVE'),
+       (7, 7, 'Jeux', 'Jeu de société', 'Jeu de société', 5, 'DAY', 'ACTIVE'),
+       (1, 1, 'Sport', 'Raquette de tennis', 'Raquette de tennis', 5, 'DAY', 'ACTIVE'),
+       (1, 1, 'Musique', 'Guitare', 'Guitare', 10, 'DAY', 'ACTIVE'),
+       (1, 2, 'Livres', 'Livre de cuisine', 'Livre de cuisine', 5, 'DAY', 'ACTIVE'),
+       (2, 2, 'Films', 'DVD', 'DVD', 5, 'DAY', 'ACTIVE'),
+       (2, 4, 'Homme', 'Chemise', 'Chemise', 25, 'WEEK', 'ACTIVE'),
+       (3, 5, 'Femme', 'Robe', 'Robe', 25, 'WEEK', 'ACTIVE'),
+       (4, 6, 'Enfant', 'Jouet', 'Jouet', 5, 'DAY', 'ACTIVE'),
+       (5, 7, 'Autres', 'Autre', 'Autre', 5, 'DAY', 'ACTIVE');
+
+INSERT INTO Rental (idUser, idAdvertisement, startDate, endDate, paymentDate, comment, statusRental, paymentMethod)
+VALUES (1, 4, '2020-01-01 00:00:00', '2020-01-02 00:00:00', '2020-01-01 00:00:00', 'Comm1', 'RESERVATION_ASKED',
+        'TWINT'),
+       (2, 5, '2020-02-01 00:00:00', '2020-02-12 00:00:00', '2020-01-01 00:00:00', 'Comm2', 'RESERVATION_CONFIRMED',
+        'CASH'),
+       (3, 6, '2020-03-01 00:00:00', '2020-03-05 00:00:00', '2020-01-01 00:00:00', 'Comme3', 'RESERVATION_CANCELED',
+        'TWINT'),
+       (4, 7, '2020-04-01 00:00:00', '2020-04-02 00:00:00', '2020-01-01 00:00:00', 'Comm4', 'LOCATION_ONGOING',
+        'CASH'),
+       (5, 8, '2020-05-01 00:00:00', '2020-05-02 00:00:00', '2020-01-01 00:00:00', 'Comm5', 'ITEM_RETURNED', 'TWINT'),
+       (6, 9, '2020-06-01 00:00:00', '2020-06-02 00:00:00', '2020-01-01 00:00:00', 'Comm6', 'LOCATION_CANCELED',
+        'CASH'),
+       (7, 10, '2020-07-01 00:00:00', '2020-07-02 00:00:00', '2020-01-01 00:00:00', 'Comm7', 'LOCATION_FINISHED',
+        'TWINT');
