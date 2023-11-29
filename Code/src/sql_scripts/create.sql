@@ -1,17 +1,17 @@
-DROP TYPE IF EXISTS Status;
+DROP TYPE IF EXISTS Status CASCADE;
 CREATE TYPE Status AS ENUM (
     'ACTIVE',
     'INACTIVE',
     'DELETED'
     );
 
-DROP TYPE IF EXISTS PaymentMethod;
+DROP TYPE IF EXISTS PaymentMethod CASCADE;
 CREATE TYPE PaymentMethod AS ENUM (
     'TWINT',
     'CASH'
     );
 
-DROP TYPE IF EXISTS StatusRental;
+DROP TYPE IF EXISTS StatusRental CASCADE;
 CREATE TYPE StatusRental AS ENUM (
     'RESERVATION_ASKED',
     'RESERVATION_CONFIRMED',
@@ -22,14 +22,14 @@ CREATE TYPE StatusRental AS ENUM (
     'LOCATION_FINISHED'
     );
 
-DROP TYPE IF EXISTS PriceInterval;
+DROP TYPE IF EXISTS PriceInterval CASCADE;
 CREATE TYPE PriceInterval AS ENUM (
     'DAY',
     'WEEK',
     'MONTH'
     );
 
-DROP TYPE IF EXISTS Canton;
+DROP TYPE IF EXISTS Canton CASCADE;
 CREATE TYPE Canton AS ENUM (
     'AG',
     'AI',
@@ -67,7 +67,7 @@ CREATE TABLE City
     canton Canton      NOT NULL,
 
     CONSTRAINT PK_City PRIMARY KEY (zip),
-    CONSTRAINT CK_ZIP CHECK (zip >= 1000 && zip <= 9999)
+    CONSTRAINT CK_ZIP CHECK (zip >= 1000 AND zip <= 9999)
 );
 
 DROP TABLE IF EXISTS Address CASCADE;
@@ -126,7 +126,7 @@ CREATE TABLE Advertisement
     id            serial,
     idAddress     integer       NOT NULL,
     idUser        integer       NOT NULL,
-    nameCategory  integer       NOT NULL,
+    nameCategory  varchar(80)       NOT NULL,
     creationDate  timestamp     NOT NULL DEFAULT CURRENT_TIMESTAMP,
     title         varchar(80)   NOT NULL,
     description   text          NOT NULL,
@@ -196,6 +196,6 @@ CREATE TABLE Rating
         REFERENCES Rental (id)
         ON UPDATE RESTRICT
         ON DELETE RESTRICT,
-    CONSTRAINT CK_rentalRating CHECK (rentalRating > 0 && rentalRating < 6),
-    CONSTRAINT CK_objectRating CHECK (objectRating > 0 && objectRating < 6)
+    CONSTRAINT CK_rentalRating CHECK (rentalRating > 0 AND rentalRating < 6),
+    CONSTRAINT CK_objectRating CHECK (objectRating > 0 AND objectRating < 6)
 );
