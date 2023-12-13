@@ -175,7 +175,8 @@ CREATE TABLE Rental
         ON DELETE RESTRICT,
     CONSTRAINT CK_creationDate CHECK (creationDate >= CURRENT_TIMESTAMP),
     CONSTRAINT CK_startDate CHECK (startDate >= CURRENT_TIMESTAMP),
-    CONSTRAINT CK_endDate CHECK (endDate > startDate)
+    CONSTRAINT CK_endDate CHECK (endDate > startDate),
+    CONSTRAINT CK_payEndDate CHECK (paymentDate > startDate)
 );
 
 DROP TABLE IF EXISTS Rating CASCADE;
