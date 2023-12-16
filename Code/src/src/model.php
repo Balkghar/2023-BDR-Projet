@@ -73,4 +73,16 @@ class Postgresql
     // Execute the query with pg_query_params
     pg_query_params($this->dbconn, $query, array($id, $firstname, $lastname, $mail, $password, $phoneNumber));
   }
+  function connectUser($mail, $password)
+  {
+    $sql = 'SELECT password, id FROM "User" WHERE mail = \'' . $mail . '\'; ';
+    $result = $this->query($sql);
+    return $password == pg_fetch_all($result)[0]['password'];
+  }
+  function getUserIdByMail($mail)
+  {
+    $sql = 'SELECT id FROM "User" WHERE mail = \'' . $mail . '\'; ';
+    $result = $this->query($sql);
+    return pg_fetch_all($result)[0]['id'];
+  }
 }

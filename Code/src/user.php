@@ -1,4 +1,6 @@
 <?php
+
+session_start();
 require('src/model.php');
 
 if (isset($_GET['id']) && $_GET['id'] > 0) {

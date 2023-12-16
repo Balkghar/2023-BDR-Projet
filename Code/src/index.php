@@ -1,5 +1,6 @@
 <?php
 
+session_start();
 require('src/model.php');
 
 $db = new Postgresql();
