@@ -9,6 +9,6 @@ if (isset($_GET['id']) && $_GET['id'] > 0) {
 }
 $db = new Postgresql();
 
-$ad = $db->getAd($identifier);
+$user = $db->getUser($identifier);
 
-require('templates/ad.php');
+require('templates/user.php');

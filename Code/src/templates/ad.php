@@ -1,6 +1,6 @@
 <?php require('header.php') ?>
-<h3><?php echo ($ad->getTitle()) ?></h3>
-<h5>Date de création :<?php echo ($ad->getCreationDate()) ?></h5>
-<h5>Prix : <?php echo ($ad->getPriceInfo()) ?></h5>
-<p><?php echo ($ad->getDescription()) ?></p>
+<h1><?php echo ($ad['title']) ?></h1>
+<h2>Date de création : <?php echo ($ad['creationdate']) ?></h2>
+<h2>Prix : <?php echo ($ad['price']) ?></h2>
+<p><?php echo ($ad['description']) ?></p>
 <?php require('footer.php') ?>

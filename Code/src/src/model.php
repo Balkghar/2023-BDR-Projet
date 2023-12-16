@@ -8,21 +8,69 @@ class Postgresql
   private $password = "VP8%@TPNUn44D3Lg3Pkm";
   private $dbconn;
 
-  function __construct()
+  public function __construct()
   {
-    $this->dbconn = pg_connect("host={$this->host} port={$this->port} dbname={$this->dbname} user={$this->user} password={$this->password} ");
+    $this->connect();
+  }
+
+  private function connect()
+  {
+    $this->dbconn = pg_connect(
+      "host=$this->host port=$this->port dbname=$this->dbname user=$this->user password=$this->password"
+    );
+
+    if (!$this->dbconn) {
+      die("Connection failed: " . pg_last_error());
+    }
+  }
+
+  public function query($sql)
+  {
+    $result = pg_query($this->dbconn, $sql);
+
+    if (!$result) {
+      die("Query failed: " . pg_last_error());
+    }
+
+    return $result;
   }
   function getAd($index)
   {
-    //TODO select instead of this, this is just a workaround
-    return $this->getAllAds()[$index - 1];
+    $result = $this->query("select * from advertisement WHERE id=$index;");
+    $array = pg_fetch_all($result);
+    return $array[0];
+  }
+  function getUser($index)
+  {
+    $result = $this->query("select * from \"User\" WHERE id=$index;");
+    $array = pg_fetch_all($result);
+    return $array[0];
   }
   function getAllAds()
   {
-    $ad1 = new Advertisements(1, date("m.d.y"), "UwU", "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.", 120);
-    $ad2 = new Advertisements(2, date("m.d.y"), "Owo", "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.", 120);
-    $ad3 = new Advertisements(3, date("m.d.y"), "0V0", "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.", 120);
-    return array($ad1, $ad2, $ad3);
+    $result = $this->query("select * from advertisement;");
+    $array = pg_fetch_all($result);
+    return $array;
   }
-  //TODO : les selects et les inserts, faudra juste avoir des cookies pour gérer les connexions utilisateurs
+  function addAddress($zipCity, $street, $streetNumber)
+  {
+    // Prepare the SQL query with placeholders for parameters
+    $query = "INSERT INTO Address (zipCity, street, streetNumber) VALUES ($1, $2, $3)";
+
+    // Execute the query with pg_query_params
+    pg_query_params($this->dbconn, $query, array($zipCity, $street, $streetNumber));
+
+    $result = $this->query("SELECT MAX(id) FROM Address;");
+    $array = pg_fetch_all($result);
+    return $array[0]['max'];
+  }
+  function registerUser($firstname, $lastname, $mail, $password, $phoneNumber, $zipCity, $street, $streetNumber)
+  {
+    $id = $this->addAddress($zipCity, $street, $streetNumber);
+    // Prepare the SQL query with placeholders for parameters
+    $query = "INSERT INTO \"User\" (idAddress, firstname, lastname, mail, password, phoneNumber, status) VALUES ($1, $2, $3, $4, $5, $6 , 'ACTIVE')";
+
+    // Execute the query with pg_query_params
+    pg_query_params($this->dbconn, $query, array($id, $firstname, $lastname, $mail, $password, $phoneNumber));
+  }
 }
