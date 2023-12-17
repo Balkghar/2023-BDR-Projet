@@ -124,7 +124,7 @@ VALUES (1, 4, '2020-01-01 00:00:00', '2020-01-01 00:00:00', '2020-01-02 00:00:00
         'TWINT');
 
 
--- TODO correct insert into rating, currently probably wrong users rate wrong rantals
+-- TODO correct insert into rating, currently probably wrong users rate wrong rentals
 INSERT INTO Rating (idUser, idRental, rentalRating, objectRating)
 VALUES (1, 4, 4, 4),
        (2, 5, 5, 5),
