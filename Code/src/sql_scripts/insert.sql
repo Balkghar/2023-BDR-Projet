@@ -108,17 +108,28 @@ VALUES (1, 1, 'Outils', 'Perceuse', 'Perceuse Bosch', 30, 'WEEK', 'ACTIVE'),
        (4, 6, 'Enfant', 'Jouet', 'Jouet', 5, 'DAY', 'ACTIVE'),
        (5, 7, 'Autres', 'Autre', 'Autre', 5, 'DAY', 'ACTIVE');
 
-INSERT INTO Rental (idUser, idAdvertisement, startDate, endDate, paymentDate, comment, statusRental, paymentMethod)
-VALUES (1, 4, '2020-01-01 00:00:00', '2020-01-02 00:00:00', '2020-01-01 00:00:00', 'Comm1', 'RESERVATION_ASKED',
+INSERT INTO Rental (idUser, idAdvertisement, creationDate, startDate, endDate, paymentDate, comment, statusRental, paymentMethod)
+VALUES (1, 4, '2020-01-01 00:00:00', '2020-01-01 00:00:00', '2020-01-02 00:00:00', NULL, 'Comm1', 'RESERVATION_ASKED',
         'TWINT'),
-       (2, 5, '2020-02-01 00:00:00', '2020-02-12 00:00:00', '2020-01-01 00:00:00', 'Comm2', 'RESERVATION_CONFIRMED',
+       (2, 5, '2020-01-01 00:00:00', '2020-02-01 00:00:00', '2020-02-12 00:00:00', NULL, 'Comm2', 'RESERVATION_CONFIRMED',
         'CASH'),
-       (3, 6, '2020-03-01 00:00:00', '2020-03-05 00:00:00', '2020-01-01 00:00:00', 'Comme3', 'RESERVATION_CANCELED',
+       (3, 6, '2020-01-01 00:00:00', '2020-03-01 00:00:00', '2020-03-05 00:00:00', NULL, 'Comme3', 'RESERVATION_CANCELED',
         'TWINT'),
-       (4, 7, '2020-04-01 00:00:00', '2020-04-02 00:00:00', '2020-01-01 00:00:00', 'Comm4', 'LOCATION_ONGOING',
+       (4, 7, '2020-01-01 00:00:00', '2020-04-01 00:00:00', '2020-04-02 00:00:00', '2020-04-01 00:00:00', 'Comm4', 'LOCATION_ONGOING',
         'CASH'),
-       (5, 8, '2020-05-01 00:00:00', '2020-05-02 00:00:00', '2020-01-01 00:00:00', 'Comm5', 'ITEM_RETURNED', 'TWINT'),
-       (6, 9, '2020-06-01 00:00:00', '2020-06-02 00:00:00', '2020-01-01 00:00:00', 'Comm6', 'LOCATION_CANCELED',
+       (5, 8, '2020-01-01 00:00:00', '2020-05-01 00:00:00', '2020-05-02 00:00:00', '2020-05-01 00:00:00', 'Comm5', 'ITEM_RETURNED', 'TWINT'),
+       (6, 9, '2020-01-01 00:00:00', '2020-06-01 00:00:00', '2020-06-02 00:00:00', NULL, 'Comm6', 'LOCATION_CANCELED',
         'CASH'),
-       (7, 10, '2020-07-01 00:00:00', '2020-07-02 00:00:00', '2020-01-01 00:00:00', 'Comm7', 'LOCATION_FINISHED',
+       (7, 10, '2020-01-01 00:00:00', '2020-07-01 00:00:00', '2020-07-02 00:00:00', '2020-07-01 00:00:00', 'Comm7', 'LOCATION_FINISHED',
         'TWINT');
+
+
+-- TODO correct insert into rating, currently probably wrong users rate wrong rantals
+INSERT INTO Rating (idUser, idRental, rentalRating, objectRating)
+VALUES (1, 4, 4, 4),
+       (2, 5, 5, 5),
+       (3, 6, 3, 3),
+       (4, 6, 2, 2),
+       (5, 7, 1, 1),
+       (6, 1, 4, 4),
+       (7, 1, 5, 5);

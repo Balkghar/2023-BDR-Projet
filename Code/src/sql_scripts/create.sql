@@ -116,8 +116,8 @@ CREATE TABLE "User"
         REFERENCES Address (id)
         ON UPDATE RESTRICT
         ON DELETE RESTRICT,
-    CONSTRAINT CK_mail CHECK (mail like '%@%.%'),
-    CONSTRAINT CK_phoneNumber CHECK (phoneNumber like '+41%[0-9]{9}')
+    CONSTRAINT CK_mail CHECK (mail like '%@%.%')
+    -- CONSTRAINT CK_phoneNumber CHECK (phoneNumber like '+41%[0-9]{9}')
 );
 
 DROP TABLE IF EXISTS Advertisement CASCADE;
@@ -173,10 +173,10 @@ CREATE TABLE Rental
         REFERENCES Advertisement (id)
         ON UPDATE RESTRICT
         ON DELETE RESTRICT,
-    CONSTRAINT CK_creationDate CHECK (creationDate >= CURRENT_TIMESTAMP),
-    CONSTRAINT CK_startDate CHECK (startDate >= CURRENT_TIMESTAMP),
+    CONSTRAINT CK_creationDate CHECK (creationDate <= CURRENT_TIMESTAMP),
+    CONSTRAINT CK_startDate CHECK (startDate >= creationDate),
     CONSTRAINT CK_endDate CHECK (endDate > startDate),
-    CONSTRAINT CK_payEndDate CHECK (paymentDate > startDate)
+    CONSTRAINT CK_paymentDate CHECK (paymentDate >= creationDate)
 );
 
 DROP TABLE IF EXISTS Rating CASCADE;
@@ -200,4 +200,3 @@ CREATE TABLE Rating
     CONSTRAINT CK_rentalRating CHECK (rentalRating > 0 AND rentalRating < 6),
     CONSTRAINT CK_objectRating CHECK (objectRating > 0 AND objectRating < 6)
 );
-
