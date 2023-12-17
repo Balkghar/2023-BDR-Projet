@@ -34,11 +34,23 @@ class Postgresql
 
     return $result;
   }
+  function userIsAdOwner($index, $userId)
+  {
+    $ad = $this->getAd($index);
+    return $ad['iduser'] == $userId;
+  }
   function getAd($index)
   {
     $result = $this->query("select * from advertisement WHERE id=$index;");
     $array = pg_fetch_all($result);
+    $array[0]['avg'] = pg_fetch_all($this->query("SELECT avg(Ra.objectrating) FROM Rental as Re INNER JOIN Rating as Ra ON Ra.idRental = Re.id WHERE Re.idAdvertisement = " . $array[0]['id'] . ";"))[0]['avg'];
     return $array[0];
+  }
+  function getAllAdsFromUser($index)
+  {
+    $result = $this->query("select * from advertisement WHERE idUser = $index;");
+    $array = pg_fetch_all($result);
+    return $array;
   }
   function getUser($index)
   {

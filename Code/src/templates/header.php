@@ -32,6 +32,12 @@
         <ul class="nav navbar-nav">
           <li class="active"><a href="index.php">Home</a></li>
         </ul>
+        <?php
+        if (isset($_SESSION["connected"]) && $_SESSION["connected"] == true) { ?>
+          <ul class="nav navbar-nav">
+            <li class="active"><a href="userAd.php">Mes annonces</a></li>
+          </ul>
+        <?php } ?>
       </div>
     </div>
   </nav>
