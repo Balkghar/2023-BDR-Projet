@@ -1,0 +1,19 @@
+Modèle relationnel
+City(zip, name, canton)
+Address(id, zipCity, street, streetNumber)
+	Address.zipCity référence City.zip NOT NULL
+Category(name, parentCategory)
+Category.ParentCategory référence Category.name 
+User(id, idAddress, registrationDate, firstname, lastname, mail, password, phoneNumber, status)
+	User.idAddress référence Address.id
+Advertisement(id, idAddress, idUser, nameCategory, creationDate, title, description, price, priceInterval, status)
+	Advertisement.idAddress référence Address.id NOT NULL
+	Advertisement.idUser référence User.id NOT NULL
+	Advertisement.nameCategory référence Category.name NOT NULL
+Rental(id, idUser, idAdvertisement, creationDate, startDate, endDate, paymentDate, comment, statusRental, paymentMethod)
+	Rental.idUser référence User.id NOT NULL
+	Rental.idAdvertisement référence Advertisement.id NOT NULL
+Rating(id, idUser, idRental, ratingDate, rentalRating, objectRating)
+	Rating.idUser référence User.id NOT NULL
+	Rating.idRental référence Rental.id NOT NULL
+
