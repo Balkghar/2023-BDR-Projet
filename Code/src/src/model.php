@@ -35,7 +35,36 @@ class Postgresql
 
         return $result;
     }
+    function desactivateAd($index)
+    {
+        $updateQuery = [
+            'status' => 'INACTIVE'
+        ];
 
+        // Condition for the WHERE clause
+        $condition = ['id' => $index];
+        pg_update($this->dbconn, 'advertisement', $updateQuery, $condition);
+    }
+    function activateAd($index)
+    {
+        $updateQuery = [
+            'status' => 'ACTIVE'
+        ];
+
+        // Condition for the WHERE clause
+        $condition = ['id' => $index];
+        pg_update($this->dbconn, 'advertisement', $updateQuery, $condition);
+    }
+    function deleteAd($index)
+    {
+        $updateQuery = [
+            'status' => 'DELETED'
+        ];
+
+        // Condition for the WHERE clause
+        $condition = ['id' => $index];
+        pg_update($this->dbconn, 'advertisement', $updateQuery, $condition);
+    }
     function userIsAdOwner($index, $userId)
     {
         $ad = $this->getAd($index);
@@ -52,7 +81,7 @@ class Postgresql
 
     function getAllAdsFromUser($index)
     {
-        $result = $this->query("select * from advertisement WHERE idUser = $index;");
+        $result = $this->query("select * from advertisement WHERE idUser = $index AND status != 'DELETED';");
         $array = pg_fetch_all($result);
         return $array;
     }
@@ -66,7 +95,7 @@ class Postgresql
 
     function getAllAds()
     {
-        $result = $this->query("select * from advertisement;");
+        $result = $this->query("select * from advertisement WHERE status = 'ACTIVE';");
         $array = pg_fetch_all($result);
         return $array;
     }

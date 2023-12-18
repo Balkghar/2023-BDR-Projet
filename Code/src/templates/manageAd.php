@@ -10,4 +10,24 @@
                ?>
 </h3>
 <p><?php echo ($ad['description']) ?></p>
+<?php
+if ($ad['status'] == "ACTIVE") {
+?> <form action="desactiveAd.php" method="post">
+      <input type="hidden" name="id" value="<?php echo ($ad['id']) ?>">
+      <input type="submit" value="Désactiver" />
+   </form>
+<?php
+} else {
+?>
+   <form action="activateAd.php" method="post">
+      <input type="hidden" name="id" value="<?php echo ($ad['id']) ?>">
+      <input type="submit" value="Activer" />
+   </form>
+<?php
+}
+?>
+<form action="deleteAd.php" method="post">
+   <input type="hidden" name="id" value="<?php echo ($ad['id']) ?>">
+   <input type="submit" value="🗑" />
+</form>
 <?php require('footer.php') ?>
