@@ -45,6 +45,21 @@ class Postgresql
         $condition = ['id' => $index];
         pg_update($this->dbconn, 'advertisement', $updateQuery, $condition);
     }
+    function makeReservation($startDate, $endDate, $id, $idUser)
+    {
+        $d = "INSERT INTO Rental (idUser, idAdvertisement, creationDate, startDate, endDate, paymentDate, comment, statusRental, paymentMethod)
+        VALUES (1, 4, '2020-01-01 00:00:00', '2020-01-01 00:00:00', '2020-01-02 00:00:00', NULL, 'Comm1', 'RESERVATION_ASKED',
+                'TWINT'),";
+
+        $query = "INSERT INTO Rental (idUser, idAdvertisement, startDate, endDate, paymentDate, comment, statusRental, paymentMethod) VALUES ($1, $2, $3, $4, $5, $6 , $7, $8)";
+
+        // Execute the query with pg_query_params
+        pg_query_params($this->dbconn, $query, array($idUser, $id, $startDate, $endDate, NULL));
+    }
+    function getPaymentMethod()
+    {
+        return $this->query("select enum_range(null::PaymentMethod");
+    }
     function activateAd($index)
     {
         $updateQuery = [

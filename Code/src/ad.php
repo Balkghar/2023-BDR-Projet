@@ -13,4 +13,13 @@ $db = new Postgresql();
 
 $ad = $db->getAd($identifier);
 
+$paymentMethod;
+
+if ($ad['status'] != 'ACTIVE')
+   header('Location : /');
+
+if ($ad['iduser'] == $_SESSION["userId"]) {
+   header("Location: /manageAd.php?id=" . $ad['id'], true);
+}
+
 require('templates/ad.php');

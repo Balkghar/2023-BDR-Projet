@@ -8,6 +8,6 @@ if (isset($_POST["id"]) and isset($_SESSION["connected"]) and isset($_SESSION["u
       $db->desactivateAd($_POST['id']);
    }
    header("Location: /manageAd.php?id=" . $_POST['id']);
+} else {
+   header("Location: /");
 }
-
-header("Location: /");
