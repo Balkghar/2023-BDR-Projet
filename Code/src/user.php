@@ -11,6 +11,6 @@ if (isset($_GET['id']) && $_GET['id'] > 0) {
 }
 $db = new Postgresql();
 
-$user = $db->getUser($identifier);
+$user = $db->getProfile($identifier);
 
 require('templates/user.php');

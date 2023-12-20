@@ -98,8 +98,8 @@ CREATE TABLE Category
         ON DELETE RESTRICT
 );
 
-DROP TABLE IF EXISTS "User" CASCADE;
-CREATE TABLE "User"
+DROP TABLE IF EXISTS Profile CASCADE;
+CREATE TABLE Profile
 (
     id               serial,
     idAddress        int,
@@ -111,13 +111,12 @@ CREATE TABLE "User"
     phoneNumber      varchar(20) NOT NULL,
     status           Status      NOT NULL,
 
-    CONSTRAINT PK_User PRIMARY KEY (id),
-    CONSTRAINT FK_User_Address FOREIGN KEY (idAddress)
+    CONSTRAINT PK_Profile PRIMARY KEY (id),
+    CONSTRAINT FK_Profile_Address FOREIGN KEY (idAddress)
         REFERENCES Address (id)
         ON UPDATE RESTRICT
         ON DELETE RESTRICT,
     CONSTRAINT CK_mail CHECK (mail like '%@%.%')
-    -- CONSTRAINT CK_phoneNumber CHECK (phoneNumber like '+41%[0-9]{9}')
 );
 
 DROP TABLE IF EXISTS Advertisement CASCADE;
@@ -125,7 +124,7 @@ CREATE TABLE Advertisement
 (
     id            serial,
     idAddress     integer       NOT NULL,
-    idUser        integer       NOT NULL,
+    idProfile        integer       NOT NULL,
     nameCategory  varchar(80)   NOT NULL,
     creationDate  timestamp     NOT NULL DEFAULT CURRENT_TIMESTAMP,
     title         varchar(80)   NOT NULL,
@@ -139,8 +138,8 @@ CREATE TABLE Advertisement
         REFERENCES Address (id)
         ON UPDATE RESTRICT
         ON DELETE RESTRICT,
-    CONSTRAINT FK_Advertisement_idUser FOREIGN KEY (idUser)
-        REFERENCES "User" (id)
+    CONSTRAINT FK_Advertisement_idProfile FOREIGN KEY (idProfile)
+        REFERENCES Profile (id)
         ON UPDATE RESTRICT
         ON DELETE RESTRICT,
     CONSTRAINT FK_Advertisement_nameCategory FOREIGN KEY (nameCategory)
@@ -154,7 +153,7 @@ DROP TABLE IF EXISTS Rental CASCADE;
 CREATE TABLE Rental
 (
     id              serial,
-    idUser          int           NOT NULL,
+    idProfile          int           NOT NULL,
     idAdvertisement int           NOT NULL,
     creationDate    timestamp     NOT NULL DEFAULT CURRENT_TIMESTAMP,
     startDate       timestamp     NOT NULL,
@@ -165,8 +164,8 @@ CREATE TABLE Rental
     paymentMethod   PaymentMethod NOT NULL,
 
     CONSTRAINT PK_Rental PRIMARY KEY (id),
-    CONSTRAINT FK_Rental_User FOREIGN KEY (idUser)
-        REFERENCES "User" (id)
+    CONSTRAINT FK_Rental_Profile FOREIGN KEY (idProfile)
+        REFERENCES Profile (id)
         ON UPDATE RESTRICT
         ON DELETE RESTRICT,
     CONSTRAINT FK_Rental_Advertisement FOREIGN KEY (idAdvertisement)
@@ -183,14 +182,14 @@ DROP TABLE IF EXISTS Rating CASCADE;
 CREATE TABLE Rating
 (
     id           serial,
-    idUser       int       NOT NULL,
+    idProfile       int       NOT NULL,
     idRental     int       NOT NULL,
     ratingDate   timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
     rentalRating smallint  NOT NULL,
     objectRATING smallint,
     CONSTRAINT PK_Rating PRIMARY KEY (id),
-    CONSTRAINT FK_Rating_User FOREIGN KEY (idUser)
-        REFERENCES "User" (id)
+    CONSTRAINT FK_Rating_Profile FOREIGN KEY (idProfile)
+        REFERENCES Profile (id)
         ON UPDATE RESTRICT
         ON DELETE RESTRICT,
     CONSTRAINT FK_Rating_Rental FOREIGN KEY (idRental)

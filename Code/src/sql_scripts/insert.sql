@@ -81,7 +81,7 @@ VALUES ('Véhicules', NULL),
        ('Enfant', 'Vêtements'),
        ('Autres', NULL);
 
-INSERT INTO "User" (idAddress, firstname, lastname, mail, password, phoneNumber, status)
+INSERT INTO Profile (idAddress, firstname, lastname, mail, password, phoneNumber, status)
 VALUES (1, 'Michael', 'Dupont', 'michael@dupont.ch', '1234', '+41791234567', 'ACTIVE'),
        (2, 'Marie', 'Lemarie', 'marie@lemaire.ch', '1234', '+41792345678', 'ACTIVE'),
        (3, 'Pierre', 'Lapierre', 'pierre@lapierre.ch', '1234', '+41793456789', 'ACTIVE'),
@@ -91,7 +91,7 @@ VALUES (1, 'Michael', 'Dupont', 'michael@dupont.ch', '1234', '+41791234567', 'AC
        (7, 'Alice', 'Lecoin', 'alice@lecoin.ch', '1234', '+41797890123', 'ACTIVE'),
        (8, 'Gertrude', 'Bidule', 'gertrude@bidule.ch', '1234', '+417978901234', 'ACTIVE');
 
-INSERT INTO Advertisement (idAddress, idUser, nameCategory, title, description, price, priceInterval, status)
+INSERT INTO Advertisement (idAddress, idProfile, nameCategory, title, description, price, priceInterval, status)
 VALUES (1, 1, 'Outils', 'Perceuse', 'Perceuse Bosch', 30, 'WEEK', 'ACTIVE'),
        (2, 2, 'Voitures', 'Voiture Mercedes', 'Voiture de luxe', 100, 'DAY', 'ACTIVE'),
        (3, 3, 'Vélos', 'Vélo de course', 'Vélo de course', 20, 'DAY', 'ACTIVE'),
@@ -108,7 +108,7 @@ VALUES (1, 1, 'Outils', 'Perceuse', 'Perceuse Bosch', 30, 'WEEK', 'ACTIVE'),
        (4, 6, 'Enfant', 'Jouet', 'Jouet', 5, 'DAY', 'ACTIVE'),
        (5, 7, 'Autres', 'Autre', 'Autre', 5, 'DAY', 'ACTIVE');
 
-INSERT INTO Rental (idUser, idAdvertisement, creationDate, startDate, endDate, paymentDate, comment, statusRental, paymentMethod)
+INSERT INTO Rental (idProfile, idAdvertisement, creationDate, startDate, endDate, paymentDate, comment, statusRental, paymentMethod)
 VALUES (1, 4, '2020-01-01 00:00:00', '2020-01-01 00:00:00', '2020-01-02 00:00:00', NULL, 'Comm1', 'RESERVATION_ASKED',
         'TWINT'),
        (2, 5, '2020-01-01 00:00:00', '2020-02-01 00:00:00', '2020-02-12 00:00:00', NULL, 'Comm2', 'RESERVATION_CONFIRMED',
@@ -124,8 +124,8 @@ VALUES (1, 4, '2020-01-01 00:00:00', '2020-01-01 00:00:00', '2020-01-02 00:00:00
         'TWINT');
 
 
--- TODO correct insert into rating, currently probably wrong users rate wrong rentals
-INSERT INTO Rating (idUser, idRental, rentalRating, objectRating)
+-- TODO correct insert into rating, currently probably wrong Profiles rate wrong rentals
+INSERT INTO Rating (idProfile, idRental, rentalRating, objectRating)
 VALUES (1, 4, 4, 4),
        (2, 5, 5, 5),
        (3, 6, 3, 3),

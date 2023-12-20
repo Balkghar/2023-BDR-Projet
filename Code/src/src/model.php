@@ -45,16 +45,16 @@ class Postgresql
         $condition = ['id' => $index];
         pg_update($this->dbconn, 'advertisement', $updateQuery, $condition);
     }
-    function makeReservation($startDate, $endDate, $id, $idUser)
+    function makeReservation($startDate, $endDate, $id, $idProfile)
     {
-        $d = "INSERT INTO Rental (idUser, idAdvertisement, creationDate, startDate, endDate, paymentDate, comment, statusRental, paymentMethod)
+        $d = "INSERT INTO Rental (idProfile, idAdvertisement, creationDate, startDate, endDate, paymentDate, comment, statusRental, paymentMethod)
         VALUES (1, 4, '2020-01-01 00:00:00', '2020-01-01 00:00:00', '2020-01-02 00:00:00', NULL, 'Comm1', 'RESERVATION_ASKED',
                 'TWINT'),";
 
-        $query = "INSERT INTO Rental (idUser, idAdvertisement, startDate, endDate, paymentDate, comment, statusRental, paymentMethod) VALUES ($1, $2, $3, $4, $5, $6 , $7, $8)";
+        $query = "INSERT INTO Rental (idProfile, idAdvertisement, startDate, endDate, paymentDate, comment, statusRental, paymentMethod) VALUES ($1, $2, $3, $4, $5, $6 , $7, $8)";
 
         // Execute the query with pg_query_params
-        pg_query_params($this->dbconn, $query, array($idUser, $id, $startDate, $endDate, NULL));
+        pg_query_params($this->dbconn, $query, array($idProfile, $id, $startDate, $endDate, NULL));
     }
     function getPaymentMethod()
     {
@@ -83,7 +83,7 @@ class Postgresql
     function userIsAdOwner($index, $userId)
     {
         $ad = $this->getAd($index);
-        return $ad['iduser'] == $userId;
+        return $ad['idProfile'] == $userId;
     }
 
     function getAd($index)
@@ -96,14 +96,14 @@ class Postgresql
 
     function getAllAdsFromUser($index)
     {
-        $result = $this->query("select * from advertisement WHERE idUser = $index AND status != 'DELETED';");
+        $result = $this->query("select * from advertisement WHERE idProfile = $index AND status != 'DELETED';");
         $array = pg_fetch_all($result);
         return $array;
     }
 
-    function getUser($index)
+    function getProfile($index)
     {
-        $result = $this->query("select * from \"User\" WHERE id=$index;");
+        $result = $this->query("select * from profile WHERE id=$index;");
         $array = pg_fetch_all($result);
         return $array[0];
     }
@@ -128,26 +128,26 @@ class Postgresql
         return $array[0]['max'];
     }
 
-    function registerUser($firstname, $lastname, $mail, $password, $phoneNumber, $zipCity, $street, $streetNumber)
+    function registerProfile($firstname, $lastname, $mail, $password, $phoneNumber, $zipCity, $street, $streetNumber)
     {
         $id = $this->addAddress($zipCity, $street, $streetNumber);
         // Prepare the SQL query with placeholders for parameters
-        $query = "INSERT INTO \"User\" (idAddress, firstname, lastname, mail, password, phoneNumber, status) VALUES ($1, $2, $3, $4, $5, $6 , 'ACTIVE')";
+        $query = "INSERT INTO Profile (idAddress, firstname, lastname, mail, password, phoneNumber, status) VALUES ($1, $2, $3, $4, $5, $6 , 'ACTIVE')";
 
         // Execute the query with pg_query_params
         pg_query_params($this->dbconn, $query, array($id, $firstname, $lastname, $mail, $password, $phoneNumber));
     }
 
-    function connectUser($mail, $password)
+    function connectProfile($mail, $password)
     {
-        $sql = 'SELECT password, id FROM "User" WHERE mail = \'' . $mail . '\'; ';
+        $sql = 'SELECT password, id FROM Profile WHERE mail = \'' . $mail . '\'; ';
         $result = $this->query($sql);
         return $password == pg_fetch_all($result)[0]['password'];
     }
 
-    function getUserIdByMail($mail)
+    function getProfileIdByMail($mail)
     {
-        $sql = 'SELECT id FROM "User" WHERE mail = \'' . $mail . '\'; ';
+        $sql = 'SELECT id FROM Profile WHERE mail = \'' . $mail . '\'; ';
         $result = $this->query($sql);
         return pg_fetch_all($result)[0]['id'];
     }
@@ -170,14 +170,14 @@ class Postgresql
     function userIsRentalUser($index, $userId)
     {
         $ad = $this->getRental($index);
-        return $ad['iduser'] == $userId;
+        return $ad['idProfile'] == $userId;
     }
 
-    function getAllRentalsFromUser($userId)
+    function getAllRentalsFromProfile($userId)
     {
         $result = $this->query("Select * from Rental AS R
                                          INNER JOIN advertisement AS A ON R.idAdvertisement = A.id
-         WHERE R.idUser = $userId;");
+         WHERE R.idProfile = $userId;");
         $array = pg_fetch_all($result);
         return $array;
     }
@@ -187,7 +187,7 @@ class Postgresql
         // todo correct sql to get details from rental and advertisement,
         $result = $this->query("select * from Rental AS R
                                          INNER JOIN advertisement AS A ON R.idAdvertisement = A.id
-                                    WHERE A.iduser = $userId;");
+                                    WHERE A.idProfile = $userId;");
         $array = pg_fetch_all($result);
         return $array;
     }

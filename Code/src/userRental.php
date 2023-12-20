@@ -8,7 +8,7 @@ if (isset($_SESSION["connected"]) and isset($_SESSION["userId"])) {
 
     $db = new Postgresql();
 
-    $rentals = $db->getAllRentalsFromUser($_SESSION['userId']);
+    $rentals = $db->getAllRentalsFromProfile($_SESSION['userId']);
 
     require('templates/userRental.php');
 } else {
