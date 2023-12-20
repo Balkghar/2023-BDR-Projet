@@ -75,7 +75,7 @@ CREATE TABLE Address
 (
     id           serial,
     zipCity      int NOT NULL,
-    street       varchar(80),
+    street       varchar(80) NOT NULL,
     streetNumber smallint CHECK (streetNumber > 0),
 
     CONSTRAINT PK_Address PRIMARY KEY (id),
