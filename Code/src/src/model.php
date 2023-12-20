@@ -45,15 +45,12 @@ class Postgresql
         $condition = ['id' => $index];
         pg_update($this->dbconn, 'advertisement', $updateQuery, $condition);
     }
-    function makeReservation($startDate, $endDate, $id, $idProfile)
+    function makeReservation($startDate, $endDate, $id, $idProfile, $comment, $paymentMethod)
     {
-        $d = "INSERT INTO Rental (idProfile, idAdvertisement, creationDate, startDate, endDate, paymentDate, comment, statusRental, paymentMethod)
-        VALUES (1, 4, '2020-01-01 00:00:00', '2020-01-01 00:00:00', '2020-01-02 00:00:00', NULL, 'Comm1', 'RESERVATION_ASKED', 'TWINT')";
-
-        $query = "INSERT INTO Rental (idProfile, idAdvertisement, startDate, endDate, paymentDate, comment, statusRental, paymentMethod) VALUES ($1, $2, $3, $4, $5, $6 , $7, $8)";
+        $query = "INSERT INTO Rental (idProfile, idAdvertisement, startDate, endDate, comment, statusRental, paymentMethod) VALUES ($1, $2, $3, $4, $5, $6, $7)";
 
         // Execute the query with pg_query_params
-        pg_query_params($this->dbconn, $query, array($idProfile, $id, $startDate, $endDate, NULL));
+        pg_query_params($this->dbconn, $query, array($idProfile, $id, $startDate, $endDate, $comment, 'RESERVATION_ASKED', $paymentMethod));
     }
     function getPaymentMethod()
     {

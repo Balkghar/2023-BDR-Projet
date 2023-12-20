@@ -12,14 +12,14 @@
 <p><?php echo ($ad['description']) ?></p>
 
 <?php
-if (isset($_SESSION["connected"]) and $_SESSION['connected'] == true and isset($_SESSION["userId"]) and $ad['iduser'] != $_SESSION["userId"]) {
+if (isset($_SESSION["connected"]) and $_SESSION['connected'] == true and isset($_SESSION["userId"]) and $ad['idprofile'] != $_SESSION["userId"]) {
 ?>
    <form method="post" action="/makeRent.php">
       <input type="hidden" name="id" value="<?php echo ($ad['id']) ?>">
       <label for="startDate">Date de départ :</label>
       <input type="datetime-local" id="startDate" name="startDate"><br>
       <label for="endDate">Date de fin :</label>
-      <input type="datetime-local" id="startDate" name="startDate"><br>
+      <input type="datetime-local" id="endDate" name="endDate"><br>
       <select name="paymentMethod" id="paymentMethod">
          <?php
          foreach ($paymentMethod as $text) {
