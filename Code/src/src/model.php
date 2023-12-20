@@ -35,7 +35,51 @@ class Postgresql
 
         return $result;
     }
+    function desactivateAd($index)
+    {
+        $updateQuery = [
+            'status' => 'INACTIVE'
+        ];
 
+        // Condition for the WHERE clause
+        $condition = ['id' => $index];
+        pg_update($this->dbconn, 'advertisement', $updateQuery, $condition);
+    }
+    function makeReservation($startDate, $endDate, $id, $idUser)
+    {
+        $d = "INSERT INTO Rental (idUser, idAdvertisement, creationDate, startDate, endDate, paymentDate, comment, statusRental, paymentMethod)
+        VALUES (1, 4, '2020-01-01 00:00:00', '2020-01-01 00:00:00', '2020-01-02 00:00:00', NULL, 'Comm1', 'RESERVATION_ASKED',
+                'TWINT'),";
+
+        $query = "INSERT INTO Rental (idUser, idAdvertisement, startDate, endDate, paymentDate, comment, statusRental, paymentMethod) VALUES ($1, $2, $3, $4, $5, $6 , $7, $8)";
+
+        // Execute the query with pg_query_params
+        pg_query_params($this->dbconn, $query, array($idUser, $id, $startDate, $endDate, NULL));
+    }
+    function getPaymentMethod()
+    {
+        return $this->query("select enum_range(null::PaymentMethod");
+    }
+    function activateAd($index)
+    {
+        $updateQuery = [
+            'status' => 'ACTIVE'
+        ];
+
+        // Condition for the WHERE clause
+        $condition = ['id' => $index];
+        pg_update($this->dbconn, 'advertisement', $updateQuery, $condition);
+    }
+    function deleteAd($index)
+    {
+        $updateQuery = [
+            'status' => 'DELETED'
+        ];
+
+        // Condition for the WHERE clause
+        $condition = ['id' => $index];
+        pg_update($this->dbconn, 'advertisement', $updateQuery, $condition);
+    }
     function userIsAdOwner($index, $userId)
     {
         $ad = $this->getAd($index);
@@ -52,7 +96,7 @@ class Postgresql
 
     function getAllAdsFromUser($index)
     {
-        $result = $this->query("select * from advertisement WHERE idUser = $index;");
+        $result = $this->query("select * from advertisement WHERE idUser = $index AND status != 'DELETED';");
         $array = pg_fetch_all($result);
         return $array;
     }
@@ -66,7 +110,7 @@ class Postgresql
 
     function getAllAds()
     {
-        $result = $this->query("select * from advertisement;");
+        $result = $this->query("select * from advertisement WHERE status = 'ACTIVE';");
         $array = pg_fetch_all($result);
         return $array;
     }

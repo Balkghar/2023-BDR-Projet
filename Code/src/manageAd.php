@@ -11,6 +11,9 @@ if (isset($_GET['id']) && $_GET['id'] > 0 and isset($_SESSION["connected"]) and 
 
    if ($db->userIsAdOwner($identifier, $_SESSION["userId"])) {
       $ad = $db->getAd($identifier);
+      if ($ad['status'] == 'DELETED') {
+         header("Location: /userAd.php");
+      }
       require('templates/manageAd.php');
    }
 } else {
