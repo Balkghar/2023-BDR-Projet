@@ -156,12 +156,11 @@ class Postgresql
         return pg_fetch_all($result)[0]['id'];
     }
 
-    // todo test
+    // TODO test
     function getRental($index)
     {
-        $result = $this->query("select * from Rental WHERE id=$index;");
-        $array = pg_fetch_all($result);
-        $array[0]['avg'] = pg_fetch_all($this->query("SELECT avg(Ra.objectrating) FROM Rental as Re INNER JOIN Rating as Ra ON Ra.idRental = Re.id WHERE Re.id = " . $array[0]['id'] . ";"))[0]['avg'];
+        $query = $this->query("Select R.id as rentalId, A.id, A.title, R.startDate, R.endDate, status, R.idprofile from Rental AS R INNER JOIN advertisement AS A ON R.idAdvertisement = A.id WHERE R.id=$index;");
+        $array = pg_fetch_all($query);
         return $array[0];
     }
 
@@ -179,9 +178,7 @@ class Postgresql
 
     function getAllRentalsFromProfile($userId)
     {
-        $result = $this->query("Select * from Rental AS R
-                                         INNER JOIN advertisement AS A ON R.idAdvertisement = A.id
-         WHERE R.idProfile = $userId;");
+        $result = $this->query("Select R.id as rentalId, A.id, A.title, R.startDate, R.endDate from Rental AS R INNER JOIN advertisement AS A ON R.idAdvertisement = A.id WHERE R.idProfile = $userId;");
         $array = pg_fetch_all($result);
         return $array;
     }
