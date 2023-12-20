@@ -48,8 +48,7 @@ class Postgresql
     function makeReservation($startDate, $endDate, $id, $idProfile)
     {
         $d = "INSERT INTO Rental (idProfile, idAdvertisement, creationDate, startDate, endDate, paymentDate, comment, statusRental, paymentMethod)
-        VALUES (1, 4, '2020-01-01 00:00:00', '2020-01-01 00:00:00', '2020-01-02 00:00:00', NULL, 'Comm1', 'RESERVATION_ASKED',
-                'TWINT'),";
+        VALUES (1, 4, '2020-01-01 00:00:00', '2020-01-01 00:00:00', '2020-01-02 00:00:00', NULL, 'Comm1', 'RESERVATION_ASKED', 'TWINT')";
 
         $query = "INSERT INTO Rental (idProfile, idAdvertisement, startDate, endDate, paymentDate, comment, statusRental, paymentMethod) VALUES ($1, $2, $3, $4, $5, $6 , $7, $8)";
 
@@ -83,7 +82,7 @@ class Postgresql
     function userIsAdOwner($index, $userId)
     {
         $ad = $this->getAd($index);
-        return $ad['idProfile'] == $userId;
+        return $ad['idprofile'] == $userId;
     }
 
     function getAd($index)
@@ -170,7 +169,7 @@ class Postgresql
     function userIsRentalUser($index, $userId)
     {
         $ad = $this->getRental($index);
-        return $ad['idProfile'] == $userId;
+        return $ad['idprofile'] == $userId;
     }
 
     function getAllRentalsFromProfile($userId)

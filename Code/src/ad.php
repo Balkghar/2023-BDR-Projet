@@ -18,7 +18,7 @@ $paymentMethod;
 if ($ad['status'] != 'ACTIVE')
    header('Location : /');
 
-if ($ad['iduser'] == $_SESSION["userId"]) {
+if ($ad['idprofile'] == $_SESSION["userId"]) {
    header("Location: /manageAd.php?id=" . $ad['id'], true);
 }
 
