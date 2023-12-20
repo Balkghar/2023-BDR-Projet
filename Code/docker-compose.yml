@@ -16,7 +16,7 @@ services:
     ports:
       - 5432:5432
     volumes:
-      - ./postgresql/data:/var/lib/postgresql/data
+      - ./postgresql/postgres-data:/var/lib/postgresql/data
       #- ./postgres-data:/docker-entrypoint-initdb.d/
 
   php-fpm:
