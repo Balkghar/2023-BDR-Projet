@@ -13,7 +13,7 @@ $db = new Postgresql();
 
 $ad = $db->getAd($identifier);
 
-$paymentMethod;
+$paymentMethod = $db->getPaymentMethod();
 
 if ($ad['status'] != 'ACTIVE')
    header('Location : /');

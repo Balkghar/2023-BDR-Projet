@@ -57,7 +57,15 @@ class Postgresql
     }
     function getPaymentMethod()
     {
-        return $this->query("select enum_range(null::PaymentMethod");
+        return $this->getEnum("PaymentMethod");
+    }
+    function getEnum($enum)
+    {
+        $tmpArray = pg_fetch_all($this->query("select enum_range(null::" . $enum . ");"));
+        $txt = $tmpArray[0]['enum_range'];
+        $txt = substr($txt, 1, -1);
+        $array = explode(',', $txt);
+        return $array;
     }
     function activateAd($index)
     {
