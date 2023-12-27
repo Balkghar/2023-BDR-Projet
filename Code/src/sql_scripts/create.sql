@@ -147,6 +147,7 @@ CREATE TABLE Advertisement
         ON UPDATE RESTRICT
         ON DELETE RESTRICT,
     CONSTRAINT CK_creationDate CHECK (creationDate >= CURRENT_TIMESTAMP)
+    -- TODO changer cette contrainte, elle est fausse !
 );
 
 DROP TABLE IF EXISTS Rental CASCADE;

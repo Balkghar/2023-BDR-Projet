@@ -15,20 +15,35 @@
 if (isset($_SESSION["connected"]) and $_SESSION['connected'] == true and isset($_SESSION["userId"]) and $ad['idprofile'] != $_SESSION["userId"]) {
 ?>
    <form method="post" action="/makeRent.php">
+
       <input type="hidden" name="id" value="<?php echo ($ad['id']) ?>">
-      <label for="startDate">Date de départ :</label>
-      <input type="datetime-local" id="startDate" name="startDate"><br>
-      <label for="endDate">Date de fin :</label>
-      <input type="datetime-local" id="endDate" name="endDate"><br>
-      <select name="paymentMethod" id="paymentMethod">
-         <?php
-         foreach ($paymentMethod as $text) {
-            echo ("<option value=\"" . $text . "\">" . $text . "</option>");
-         }
-         ?>
-      </select><br>
-      <textarea id="comment" name="comment" rows="4" cols="50"></textarea><br>
-      <input type="submit" value="Demander Location">
+      <div class="row">
+         <div class="col">
+            <label for="startDate">Date de départ :</label>
+            <input class="form-control" type="datetime-local" id="startDate" name="startDate">
+         </div>
+         <div class="col">
+            <label for="endDate">Date de fin :</label>
+            <input class="form-control" type="datetime-local" id="endDate" name="endDate">
+         </div>
+      </div>
+
+      <div class="form-group">
+
+         <label for="startDate">Méthode de paiement :</label>
+         <select class="form-control" name="paymentMethod" id="paymentMethod">
+            <?php
+            foreach ($paymentMethod as $text) {
+               echo ("<option value=\"" . $text . "\">" . $text . "</option>");
+            }
+            ?>
+         </select>
+      </div>
+
+      <div class="form-group">
+         <textarea class="form-control" id="comment" name="comment" rows="4" cols="50"></textarea>
+      </div>
+      <input class="btn btn-primary" type="submit" value="Demander Location">
    </form>
 <?php
 }

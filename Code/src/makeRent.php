@@ -10,4 +10,7 @@ if (isset($_SESSION["connected"]) and isset($_SESSION["userId"]) and isset($_POS
    if (!$db->userIsAdOwner($identifier, $_SESSION["userId"]) and $_POST['startDate'] < $_POST['endDate']) {
       $db->makeReservation($_POST['startDate'], $_POST['endDate'], $identifier, $_SESSION["userId"], $_POST['comment'], $_POST['paymentMethod']);
    }
+   header("Location: /ad.php?id=" . $_POST['id']);
+} else {
+   header("Location: /");
 }

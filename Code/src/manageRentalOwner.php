@@ -12,6 +12,8 @@ if (isset($_GET['id']) && $_GET['id'] > 0 and isset($_SESSION["connected"]) and 
     if ($db->userIsRentalOwner($identifier, $_SESSION["userId"])) {
         $rental = $db->getRental($identifier);
         require('templates/manageRentalOwner.php');
+    } else {
+        header("Location: /");
     }
 } else {
     echo 'Erreur : aucun identifiant de billet envoyé';

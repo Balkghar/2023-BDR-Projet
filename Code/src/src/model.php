@@ -41,7 +41,6 @@ class Postgresql
             'status' => 'INACTIVE'
         ];
 
-        // Condition for the WHERE clause
         $condition = ['id' => $index];
         pg_update($this->dbconn, 'advertisement', $updateQuery, $condition);
     }
@@ -159,7 +158,7 @@ class Postgresql
     // TODO test
     function getRental($index)
     {
-        $query = $this->query("Select R.id as rentalId, A.id, A.title, R.startDate, R.endDate, status, R.idprofile from Rental AS R INNER JOIN advertisement AS A ON R.idAdvertisement = A.id WHERE R.id=$index;");
+        $query = $this->query("Select A.idprofile as idowner ,R.id as rentalId, A.id, A.title, R.startDate, R.endDate, status, R.idprofile from Rental AS R INNER JOIN advertisement AS A ON R.idAdvertisement = A.id WHERE R.id=$index;");
         $array = pg_fetch_all($query);
         return $array[0];
     }
@@ -185,9 +184,9 @@ class Postgresql
 
     function getAllRentalsFromOwner($userId)
     {
-        // todo correct sql to get details from rental and advertisement,
-        $result = $this->query("select * from Rental AS R
-                                         INNER JOIN advertisement AS A ON R.idAdvertisement = A.id
+        $result = $this->query("select R.idprofile as rentowner, A.idprofile as adowner, R.id as idrent, A.id as idAd, A.title as adtitle, R.startdate as rentstart, R.endDate as rentend
+                                    from Rental AS R
+                                    INNER JOIN advertisement AS A ON R.idAdvertisement = A.id
                                     WHERE A.idProfile = $userId;");
         $array = pg_fetch_all($result);
         return $array;

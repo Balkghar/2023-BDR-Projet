@@ -14,20 +14,20 @@
 if ($ad['status'] == "ACTIVE") {
 ?> <form action="desactiveAd.php" method="post">
       <input type="hidden" name="id" value="<?php echo ($ad['id']) ?>">
-      <input type="submit" value="Désactiver" />
+      <input type="submit" class="btn btn-outline-secondary" value="Désactiver" />
    </form>
 <?php
 } else {
 ?>
    <form action="activateAd.php" method="post">
       <input type="hidden" name="id" value="<?php echo ($ad['id']) ?>">
-      <input type="submit" value="Activer" />
+      <input type="submit" class="btn btn-outline-secondary" value="Activer" />
    </form>
 <?php
 }
 ?>
 <form action="deleteAd.php" method="post">
    <input type="hidden" name="id" value="<?php echo ($ad['id']) ?>">
-   <input type="submit" value="🗑" />
+   <input type="submit" class="btn btn-outline-secondary" value="🗑" />
 </form>
 <?php require('footer.php') ?>
