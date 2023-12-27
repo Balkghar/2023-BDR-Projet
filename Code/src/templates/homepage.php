@@ -2,19 +2,33 @@
 include('header.php');
 
 ?>
-<form method="get" action="/index.php">
-   <input type="text" placeholder="Chercher.." name="search">
-   <input type="submit" value="🔍">
-</form>
+<div class="input-group mb-3">
+   <input type="text" class="form-control">
+   <div class="input-group-append">
+      <button class="btn btn-primary">
+         <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-search" viewBox="0 0 16 16">
+            <path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0" />
+         </svg>
+      </button>
+   </div>
+</div>
 <?php
 foreach ($ads as $ad) {
 ?>
-   <h3><a href="ad.php?id=<?= urlencode($ad['id']) ?>"><?php echo ($ad['title']) ?></a></h3>
-   <h5>Date de création : <?php echo ($ad['creationdate']) ?></h5>
-   <h5>Prix : <?php echo ($ad['price']) ?></h5>
-   <p><?php echo ($ad['description']) ?></p>
+   <div class="card">
+      <div class="card-body">
+         <h5 class="card-title"><a href="ad.php?id=<?= urlencode($ad['id']) ?>"><?php echo ($ad['title']) ?></a></h5>
+         <h6 class="card-subtitle mb-2 text-muted">Date de création : <?php echo ($ad['creationdate']) ?></h6>
+         <h6 class="card-subtitle mb-2 text-muted">Prix : <?php echo ($ad['price']) ?></h6>
+         <p class="card-text"><?php echo ($ad['description']) ?></p>
+      </div>
+   </div>
+
 <?php
 }
+?>
+
+<?php
 
 
 include('footer.php');
