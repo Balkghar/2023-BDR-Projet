@@ -111,10 +111,14 @@ class Postgresql
         return $array[0];
     }
 
+    // TODO : il faut améliorer cette requête si possible.
     function getAllAds()
     {
         $result = $this->query("select * from advertisement WHERE status = 'ACTIVE';");
         $array = pg_fetch_all($result);
+        foreach ($array as &$ad) {
+            $ad['avg'] = pg_fetch_all($this->query("SELECT avg(Ra.objectrating) FROM Rental as Re INNER JOIN Rating as Ra ON Ra.idRental = Re.id WHERE Re.idAdvertisement = " . $ad['id'] . ";"))[0]['avg'];
+        }
         return $array;
     }
 
@@ -155,10 +159,9 @@ class Postgresql
         return pg_fetch_all($result)[0]['id'];
     }
 
-    // TODO test
     function getRental($index)
     {
-        $query = $this->query("Select A.idprofile as idowner ,R.id as rentalId, A.id, A.title, R.startDate, R.endDate, status, R.idprofile from Rental AS R INNER JOIN advertisement AS A ON R.idAdvertisement = A.id WHERE R.id=$index;");
+        $query = $this->query("Select A.idprofile as idowner ,R.id as rentalId, A.id as adid, A.title, R.startDate, R.endDate, statusrental, R.idprofile as rentidowner, A.description, R.comment, R.paymentMethod, R.paymentdate from Rental AS R INNER JOIN advertisement AS A ON R.idAdvertisement = A.id WHERE R.id=$index;");
         $array = pg_fetch_all($query);
         return $array[0];
     }
@@ -172,7 +175,7 @@ class Postgresql
     function userIsRentalUser($index, $userId)
     {
         $ad = $this->getRental($index);
-        return $ad['idprofile'] == $userId;
+        return $ad['rentidowner'] == $userId;
     }
 
     function getAllRentalsFromProfile($userId)

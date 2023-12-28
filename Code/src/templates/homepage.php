@@ -18,8 +18,16 @@ foreach ($ads as $ad) {
    <div class="card">
       <div class="card-body">
          <h5 class="card-title"><a href="ad.php?id=<?= urlencode($ad['id']) ?>"><?php echo ($ad['title']) ?></a></h5>
-         <h6 class="card-subtitle mb-2 text-muted">Date de création : <?php echo ($ad['creationdate']) ?></h6>
          <h6 class="card-subtitle mb-2 text-muted">Prix : <?php echo ($ad['price']) ?></h6>
+         <h6 class="card-subtitle mb-2 text-muted">
+            Évaluation :
+            <?php
+            if ($ad['avg'] != null)
+               echo (round($ad['avg'], 2));
+            else
+               echo ("-")
+            ?>
+         </h6>
          <p class="card-text"><?php echo ($ad['description']) ?></p>
       </div>
    </div>

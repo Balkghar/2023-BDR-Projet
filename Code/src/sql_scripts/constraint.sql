@@ -52,3 +52,5 @@ CREATE CONSTRAINT TRIGGER checkRating AFTER INSERT ON Rating
 -- Le streetNumber dans Address doit être strictement positif
 
 -- Le price dans Advertisement ne peut pas être négatif
+
+-- Annuler les locations qui ont dépassées la date de depart
