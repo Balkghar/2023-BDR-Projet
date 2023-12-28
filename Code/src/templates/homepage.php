@@ -18,7 +18,8 @@ foreach ($ads as $ad) {
    <div class="card">
       <div class="card-body">
          <h5 class="card-title"><a href="ad.php?id=<?= urlencode($ad['id']) ?>"><?php echo ($ad['title']) ?></a></h5>
-         <h6 class="card-subtitle mb-2 text-muted">Prix : <?php echo ($ad['price']) ?></h6>
+         <h6 class="card-subtitle mb-2 text-muted">Prix : <?php echo ($ad['price']) ?>
+             / <?php echo($ad['priceinterval']) ?></h6>
          <h6 class="card-subtitle mb-2 text-muted">
             Évaluation :
             <?php
