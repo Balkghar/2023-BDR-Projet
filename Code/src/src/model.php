@@ -194,4 +194,37 @@ class Postgresql
         $array = pg_fetch_all($result);
         return $array;
     }
+    function confirmateRental($id)
+    {
+        $this->updateRentalStatus($id, 'RESERVATION_CONFIRMED');
+    }
+    function cancelRental($id)
+    {
+        $this->updateRentalStatus($id, 'RESERVATION_CANCELED');
+    }
+
+    function locationOngoing($id)
+    {
+        $this->updateRentalStatus($id, 'LOCATION_ONGOING');
+    }
+    function itemReturned($id)
+    {
+        $this->updateRentalStatus($id, 'ITEM_RETURNED');
+    }
+    function finishLocation($id)
+    {
+        $this->updateRentalStatus($id, 'LOCATION_FINISHED');
+    }
+    function updateRentalStatus($id, $newStatus)
+    {
+
+        $updateQuery = [
+            'statusrental' => $newStatus
+        ];
+
+        // Condition for the WHERE clause
+        $condition = ['id' => $id];
+        pg_update($this->dbconn, 'rental', $updateQuery, $condition);
+    }
+    // TODO : un requête qui permet de chercher dans le titre et la description de l'objet, par catégorie, par ville, par canton, un plage de prix
 }
