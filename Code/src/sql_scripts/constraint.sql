@@ -1,37 +1,5 @@
--- Un User ne peut pas louer ses propres Advertisement
-
--- Category ne peut pas être une sub-category de lui-même.
-
--- La creationDate d’un Rental ne peut pas se situer avant la creationDate de l’Advertisement
-CREATE OR REPLACE FUNCTION chkDateCongruence() RETURNS TRIGGER
-    LANGUAGE plpgsql
-AS
-$$
-BEGIN
-    IF NEW.creationDate < (SELECT creationDate FROM Advertisement WHERE id = NEW.idAdvertisement) THEN
-        RAISE EXCEPTION 'Rental creation date is before its advertisement creation date';
-    END IF;
-END;
-$$;
-
-CREATE CONSTRAINT TRIGGER checkRentalAdvertDate
-    AFTER INSERT
-    ON Rental
-    DEFERRABLE INITIALLY DEFERRED
-    FOR EACH ROW
-EXECUTE FUNCTION chkDateCongruence();
-
-
--- La creationDate d’un Rental ne peut pas se situer avant la registrationDate du User
-CREATE CONSTRAINT TRIGGER checkRentalUserDate
-    AFTER INSERT
-    ON rental
-    DEFERRABLE INITIALLY DEFERRED
-    FOR EACH ROW
-EXECUTE FUNCTION chkDateCongruence();
-
 -- La creationDate d’un Advertisement ne peut pas se situer avant la registrationDate du User
-CREATE OR REPLACE FUNCTION chkDateAdvertisement() RETURNS TRIGGER
+CREATE OR REPLACE FUNCTION chkAdvertisement() RETURNS TRIGGER
     LANGUAGE plpgsql
 AS
 $$
@@ -39,8 +7,67 @@ BEGIN
     IF NEW.creationDate < (SELECT registrationDate FROM Profile WHERE id = NEW.idProfile) THEN
         RAISE EXCEPTION 'Advertisement creation date is before its owner registration date';
     END IF;
+    RETURN NULL;
 END
 $$;
+
+CREATE CONSTRAINT TRIGGER checkAdvertisement
+    AFTER INSERT
+    ON Advertisement
+    DEFERRABLE INITIALLY DEFERRED
+    FOR EACH ROW
+EXECUTE FUNCTION chkAdvertisement();
+
+
+-- Category ne peut pas être une sub-category de lui-même.
+CREATE OR REPLACE FUNCTION chkCategory() RETURNS TRIGGER
+    LANGUAGE plpgsql
+AS
+$$
+BEGIN
+    IF NEW.name = NEW.parentcategory THEN
+        RAISE EXCEPTION 'Category cannot be a sub-category of itself';
+    END IF;
+    RETURN NULL;
+END
+$$;
+
+CREATE CONSTRAINT TRIGGER checkCategory
+    AFTER INSERT
+    ON Category
+    DEFERRABLE INITIALLY DEFERRED
+    FOR EACH ROW
+EXECUTE FUNCTION chkCategory();
+
+
+-- Un User ne peut pas louer ses propres Advertisement
+-- La creationDate d’un Rental ne peut pas se situer avant la creationDate de l’Advertisement
+-- La creationDate d’un Rental ne peut pas se situer avant la registrationDate du User
+CREATE OR REPLACE FUNCTION chkRental() RETURNS TRIGGER
+    LANGUAGE plpgsql
+AS
+$$
+BEGIN
+    IF NEW.creationDate < (SELECT creationDate FROM Advertisement WHERE id = NEW.idAdvertisement) THEN
+        RAISE EXCEPTION 'Rental creation date is before its advertisement creation date';
+    END IF;
+    IF NEW.creationDate < (SELECT registrationDate FROM Profile WHERE id = NEW.idProfile) THEN
+        RAISE EXCEPTION 'Rental creation date is before its owner registration date';
+    END IF;
+    IF (SELECT idprofile FROM Advertisement WHERE id = NEW.idAdvertisement) = NEW.idProfile THEN
+        RAISE EXCEPTION 'Cannot rent your own advertisement';
+    END IF;
+    RETURN NULL;
+END;
+$$;
+
+CREATE CONSTRAINT TRIGGER checkRental
+    AFTER INSERT
+    ON Rental
+    DEFERRABLE INITIALLY DEFERRED
+    FOR EACH ROW
+EXECUTE FUNCTION chkRental();
+
 
 -- Un User peut seulement faire un Rating pour un Rental pour lequel il est le locataire ou le propriétaire de l’Advertisement.
 -- La date d’un Rating doit être après la creationDate d’un Rental
@@ -76,7 +103,8 @@ BEGIN
             RAISE EXCEPTION 'Object rating must be null';
         END IF;
     END IF;
-    END;
+    RETURN NULL;
+END;
 $$;
 
 CREATE CONSTRAINT TRIGGER checkRating
