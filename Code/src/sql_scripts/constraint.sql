@@ -85,7 +85,7 @@ BEGIN
         WHERE R.id = NEW.idRental) != NEW.idProfile THEN
         RAISE EXCEPTION 'Cannot rate Rental where user is not involved as a owner or customer';
     END IF;
-    IF NEW.creationDate < (SELECT creationDate FROM Rental WHERE id = NEW.idRental) THEN
+    IF NEW.ratingdate < (SELECT creationDate FROM Rental WHERE id = NEW.idRental) THEN
         RAISE EXCEPTION 'Rating creation date is before its rental creation date';
     END IF;
     IF (SELECT idprofile FROM Rental WHERE id = NEW.idRental) = NEW.idProfile THEN
