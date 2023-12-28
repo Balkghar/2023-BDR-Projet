@@ -194,6 +194,25 @@ class Postgresql
         $array = pg_fetch_all($result);
         return $array;
     }
+    function paymentDone($id)
+    {
+        // TODO : adapt timezone
+        $now = new DateTime();
+        $now->format('Y-m-d H:i:s');
+
+        $updateQuery = [
+            'paymentdate' => date("Y-m-d H:i:s", $now->getTimestamp())
+        ];
+
+        // Condition for the WHERE clause
+        $condition = ['id' => $id];
+        pg_update($this->dbconn, 'rental', $updateQuery, $condition);
+    }
+    function locationIsNotCanceled($id)
+    {
+        $result = $this->getRental($id);
+        return ($result['statusrental'] != 'LOCATION_CANCELED' && $result['statusrental'] != 'RESERVATION_CANCELED');
+    }
     function confirmateRental($id)
     {
         $this->updateRentalStatus($id, 'RESERVATION_CONFIRMED');
@@ -215,6 +234,10 @@ class Postgresql
     {
         $this->updateRentalStatus($id, 'LOCATION_FINISHED');
     }
+    function cancelLocation($id)
+    {
+        $this->updateRentalStatus($id, 'LOCATION_CANCELED');
+    }
     function updateRentalStatus($id, $newStatus)
     {
 
@@ -225,6 +248,13 @@ class Postgresql
         // Condition for the WHERE clause
         $condition = ['id' => $id];
         pg_update($this->dbconn, 'rental', $updateQuery, $condition);
+    }
+    function getAllCategory()
+    {
+
+        $result = $this->query("select name from category;");
+        $array = pg_fetch_all($result);
+        return $array;
     }
     // TODO : un requête qui permet de chercher dans le titre et la description de l'objet, par catégorie, par ville, par canton, un plage de prix
 }

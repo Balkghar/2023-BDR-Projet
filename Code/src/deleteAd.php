@@ -8,6 +8,7 @@ if (isset($_POST["id"]) and isset($_SESSION["connected"]) and isset($_SESSION["u
       $db->deleteAd($_POST['id']);
    }
    header("Location: /userAd.php");
-}
+} else {
 
-header("Location: /");
+   header("Location: /");
+}

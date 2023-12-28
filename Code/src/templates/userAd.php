@@ -1,6 +1,9 @@
 <?php
 include('header.php');
+?>
 
+<button class="btn btn-secondary" onclick="location.href='createAd.php';">Créer un objet</button>
+<?php
 foreach ($ads as $ad) {
 ?>
    <h3><a href="manageAd.php?id=<?= urlencode($ad['id']) ?>"><?php echo ($ad['title']) ?></a></h3>
