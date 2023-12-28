@@ -74,7 +74,7 @@ DROP TABLE IF EXISTS Address CASCADE;
 CREATE TABLE Address
 (
     id           serial,
-    zipCity      int NOT NULL,
+    zipCity      int         NOT NULL,
     street       varchar(80) NOT NULL,
     streetNumber varchar(5),
 
@@ -124,7 +124,7 @@ CREATE TABLE Advertisement
 (
     id            serial,
     idAddress     integer       NOT NULL,
-    idProfile        integer       NOT NULL,
+    idProfile     integer       NOT NULL,
     nameCategory  varchar(80)   NOT NULL,
     creationDate  timestamp     NOT NULL DEFAULT CURRENT_TIMESTAMP,
     title         varchar(80)   NOT NULL,
@@ -155,7 +155,7 @@ DROP TABLE IF EXISTS Rental CASCADE;
 CREATE TABLE Rental
 (
     id              serial,
-    idProfile          int           NOT NULL,
+    idProfile       int           NOT NULL,
     idAdvertisement int           NOT NULL,
     creationDate    timestamp     NOT NULL DEFAULT CURRENT_TIMESTAMP,
     startDate       timestamp     NOT NULL,
@@ -184,7 +184,7 @@ DROP TABLE IF EXISTS Rating CASCADE;
 CREATE TABLE Rating
 (
     id           serial,
-    idProfile       int       NOT NULL,
+    idProfile    int       NOT NULL,
     idRental     int       NOT NULL,
     ratingDate   timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
     rentalRating smallint  NOT NULL,

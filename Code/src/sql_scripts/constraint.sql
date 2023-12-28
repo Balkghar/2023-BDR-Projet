@@ -5,7 +5,8 @@
 -- La creationDate de Rental ne peut pas se situer avant la creationDate de Advertisement
 CREATE OR REPLACE FUNCTION chkDateCongruence() RETURNS TRIGGER
     LANGUAGE plpgsql
-AS $$
+AS
+$$
 BEGIN
     IF NEW.creationDate < (SELECT creationDate FROM Advertisement WHERE id = NEW.idAdvertisement) THEN
         RAISE EXCEPTION 'Rental creation date is before its advertisement creation date';
@@ -13,15 +14,21 @@ BEGIN
 END;
 $$;
 
-CREATE CONSTRAINT TRIGGER checkRentalAdvertDate AFTER INSERT ON Rental
+CREATE CONSTRAINT TRIGGER checkRentalAdvertDate
+    AFTER INSERT
+    ON Rental
     DEFERRABLE INITIALLY DEFERRED
-    FOR EACH ROW EXECUTE FUNCTION chkDateCongruence();
+    FOR EACH ROW
+EXECUTE FUNCTION chkDateCongruence();
 
 
 -- La creationDate de Rental ne peut pas se situer avant la registrationDate du User
-CREATE CONSTRAINT TRIGGER checkRentalUserDate AFTER INSERT ON rental
+CREATE CONSTRAINT TRIGGER checkRentalUserDate
+    AFTER INSERT
+    ON rental
     DEFERRABLE INITIALLY DEFERRED
-    FOR EACH ROW EXECUTE FUNCTION chkDateCongruence();
+    FOR EACH ROW
+EXECUTE FUNCTION chkDateCongruence();
 
 -- La registrationDate d’un User doit être avant le creationDate d’un Rental d’un User
 
@@ -31,17 +38,21 @@ CREATE CONSTRAINT TRIGGER checkRentalUserDate AFTER INSERT ON rental
 --TODO: WIP
 CREATE OR REPLACE FUNCTION chkRating() RETURNS TRIGGER
     LANGUAGE plpgsql
-AS $$
+AS
+$$
 BEGIN
     IF (SELECT idProfile FROM Rental) != NEW.idProfile THEN
-        RAISE EXCEPTION  'Cannot rates Rental where user not part of';
+        RAISE EXCEPTION 'Cannot rates Rental where user not part of';
     end if;
 END
 $$;
 
-CREATE CONSTRAINT TRIGGER checkRating AFTER INSERT ON Rating
+CREATE CONSTRAINT TRIGGER checkRating
+    AFTER INSERT
+    ON Rating
     DEFERRABLE INITIALLY DEFERRED
-    FOR EACH ROW EXECUTE FUNCTION chkRating();
+    FOR EACH ROW
+EXECUTE FUNCTION chkRating();
 
 -- La date d’un Rating doit être après la creationDate d’un Rental
 
