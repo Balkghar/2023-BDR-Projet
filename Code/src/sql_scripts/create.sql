@@ -76,7 +76,7 @@ CREATE TABLE Address
     id           serial,
     zipCity      int NOT NULL,
     street       varchar(80) NOT NULL,
-    streetNumber smallint CHECK (streetNumber > 0),
+    streetNumber varchar(5),
 
     CONSTRAINT PK_Address PRIMARY KEY (id),
     CONSTRAINT FK_Address_idZip FOREIGN KEY (zipCity)
@@ -146,7 +146,8 @@ CREATE TABLE Advertisement
         REFERENCES Category (name)
         ON UPDATE RESTRICT
         ON DELETE RESTRICT,
-    CONSTRAINT CK_creationDate CHECK (creationDate >= CURRENT_TIMESTAMP)
+    CONSTRAINT CK_creationDate CHECK (creationDate <= CURRENT_TIMESTAMP)
+    -- CONSTRAINT CK_creationDate CHECK (creationDate >= CURRENT_TIMESTAMP)
     -- TODO changer cette contrainte, elle est fausse !
 );
 
