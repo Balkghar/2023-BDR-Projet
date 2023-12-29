@@ -111,7 +111,7 @@ class Postgresql
         return $array[0];
     }
 
-    // TODO : il faut améliorer cette requête si possible.
+    // TODO : il faut améliorer cette requête si possible, aussi une option de recherche
     function getAllAds()
     {
         $result = $this->query("select * from advertisement WHERE status = 'ACTIVE';");
@@ -194,14 +194,18 @@ class Postgresql
         $array = pg_fetch_all($result);
         return $array;
     }
+    function getCurrentTime()
+    {
+
+        $now = new DateTime();
+        $now->format('Y-m-d H:i:s');
+        return date("Y-m-d H:i:s", $now->getTimestamp());
+    }
     function paymentDone($id)
     {
         // TODO : adapt timezone
-        $now = new DateTime();
-        $now->format('Y-m-d H:i:s');
-
         $updateQuery = [
-            'paymentdate' => date("Y-m-d H:i:s", $now->getTimestamp())
+            'paymentdate' => $this->getCurrentTime()
         ];
 
         // Condition for the WHERE clause
@@ -256,5 +260,23 @@ class Postgresql
         $array = pg_fetch_all($result);
         return $array;
     }
-    // TODO : un requête qui permet de chercher dans le titre et la description de l'objet, par catégorie, par ville, par canton, un plage de prix
+    function createAd($title, $description, $price, $categroy, $interval, $zip, $street, $streetNumber, $idProfile)
+    {
+        $idAdress = $this->addAddress($zip, $street, $streetNumber);
+        // Prepare the SQL query with placeholders for parameters
+        $query = "INSERT INTO Advertisement (idAddress, idProfile, creationdate, nameCategory, title, description, price, priceInterval,
+        status) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, 'ACTIVE');";
+        // Execute the query with pg_query_params
+        pg_query_params($this->dbconn, $query, array($idAdress, $idProfile, $this->getCurrentTime(), $categroy, $title, $description, $price, $interval));
+
+        $result = $this->query("SELECT MAX(id) FROM Advertisement;");
+        $array = pg_fetch_all($result);
+        return $array[0]['max'];
+    }
+    function getAllCity()
+    {
+        $result = $this->query("select * from city ;");
+        $array = pg_fetch_all($result);
+        return $array;
+    }
 }

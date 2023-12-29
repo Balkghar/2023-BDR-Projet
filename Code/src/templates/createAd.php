@@ -14,7 +14,7 @@ include('header.php');
    </div>
    <div class="form-group">
       <label for="lname">Prix :</label>
-      <input class="form-control" type="number" step="0.05" id="mail" name="mail">
+      <input class="form-control" type="number" step="0.05" id="price" name="price">
    </div>
 
 
@@ -33,7 +33,7 @@ include('header.php');
    <div class="form-group">
 
       <label for="startDate">Interval de location :</label>
-      <select class="form-control" name="priceInterval" id="priceInterval">
+      <select class="form-control" name="interval" id="interval">
          <?php
          foreach ($priceIntervals as $priceInterval) {
             echo ("<option value=\"" . $priceInterval . "\">" . $priceInterval . "</option>");
@@ -43,8 +43,14 @@ include('header.php');
    </div>
 
    <div class="form-group">
-      <label for=" lname">Zip de la ville de l'objet :</label>
-      <input class="form-control" type="text" id="zipCity" name="zipCity">
+      <label for="startDate">Zip de la ville de votre objet :</label>
+      <select class="form-control" name="zipCity" id="zipCity">
+         <?php
+         foreach ($cities as $city) {
+            echo ("<option value=\"" . $city['zip'] . "\">" . $city['name'] . " / " . $city['zip'] . "</option>");
+         }
+         ?>
+      </select>
    </div>
 
    <div class="form-group">
@@ -54,7 +60,7 @@ include('header.php');
 
    <div class="form-group">
       <label for="lname">Numéro de rue :</label>
-      <input class="form-control" type="text" id="street" name="streetNumber">
+      <input class="form-control" type="text" id="streetNumber" name="streetNumber">
    </div>
    <input class="btn btn-primary" type="submit" value="Créer">
 </form>
