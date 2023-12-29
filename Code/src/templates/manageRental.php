@@ -3,6 +3,60 @@
 <?php
 if ($rental['statusrental'] == 'RESERVATION_ASKED') {
 }
+switch ($rental['statusrental']) {
+    case 'RESERVATION_ASKED':
+?>
+
+        <h4>État : Demande de réservation</h4>
+        <div class="input-group">
+            <form action="cancelRental.php" method="post">
+                <input type="hidden" name="id" value="<?php echo ($rental['rentalid']) ?>">
+                <input type="submit" class="btn btn-light" value="Annuler la location" />
+            </form>
+        </div>
+    <?php
+        break;
+
+    case 'RESERVATION_CONFIRMED':
+    ?>
+        <h4>État : Réservation confirmée</h4>
+        <h5>Mail du propriétaire : <?php echo ($rental['ownermail']); ?></h5>
+    <?php
+        break;
+    case 'LOCATION_ONGOING':
+    ?>
+
+        <h4>État : Location en cours</h4>
+        <h5>Mail du propriétaire : <?php echo ($rental['ownermail']); ?></h5>
+    <?php
+        break;
+
+    case 'ITEM_RETURNED':
+    ?>
+        <h4>État : Objet rendu</h4>
+        <h5>Mail du propriétaire : <?php echo ($rental['ownermail']); ?></h5>
+    <?php
+        break;
+
+    case 'RESERVATION_CANCELED':
+    ?>
+        <h4>État : Réservation annulée</h4>
+    <?php
+        break;
+
+    case 'LOCATION_CANCELED':
+    ?>
+        <h4>État : Location annulée</h4>
+    <?php
+        break;
+
+    case 'LOCATION_FINISHED':
+    ?>
+        <h4>État : Location finie</h4>
+        <h5>Mail du propriétaire : <?php echo ($rental['ownermail']); ?></h5>
+<?php
+        break;
+}
 ?>
 <h4>Méthode de paiement :
     <?php
@@ -19,11 +73,11 @@ if ($rental['statusrental'] == 'RESERVATION_ASKED') {
 <?php
 if ($rental['paymentdate'] == null && $rental['statusrental'] != 'LOCATION_CANCELED' && $rental['statusrental'] != 'RESERVATION_CANCELED') {
 ?>
-    <p>Paiement pas encore effectué</p>
+    <h5>Paiement pas encore effectué</h5>
 <?php
 } else {
 ?>
-    <p>Paiement effectué le : <?php echo ($rental['paymentdate']) ?></p>
+    <h5>Paiement effectué le : <?php echo ($rental['paymentdate']) ?></h5>
 <?php
 }
 ?>

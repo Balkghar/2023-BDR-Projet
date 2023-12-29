@@ -112,9 +112,14 @@ class Postgresql
     }
 
     // TODO : il faut améliorer cette requête si possible, aussi une option de recherche
-    function getAllAds()
+    function getAllAds($search)
     {
-        $result = $this->query("select * from advertisement WHERE status = 'ACTIVE';");
+        $query = "select * from advertisement WHERE status = 'ACTIVE'";
+        if ($search != "") {
+            $query .= "AND (LOWER(title) LIKE LOWER('%$search%') OR LOWER(description) LIKE LOWER('%$search%'))";
+        }
+        $query .= ";";
+        $result = $this->query($query);
         $array = pg_fetch_all($result);
         foreach ($array as &$ad) {
             $ad['avg'] = pg_fetch_all($this->query("SELECT avg(Ra.objectrating) FROM Rental as Re INNER JOIN Rating as Ra ON Ra.idRental = Re.id WHERE Re.idAdvertisement = " . $ad['id'] . ";"))[0]['avg'];
@@ -161,7 +166,11 @@ class Postgresql
 
     function getRental($index)
     {
-        $query = $this->query("Select A.idprofile as idowner ,R.id as rentalId, A.id as adid, A.title, R.startDate, R.endDate, statusrental, R.idprofile as rentidowner, A.description, R.comment, R.paymentMethod, R.paymentdate from Rental AS R INNER JOIN advertisement AS A ON R.idAdvertisement = A.id WHERE R.id=$index;");
+        $query = $this->query("Select POwner.mail AS ownermail, PRenter.mail AS rentermail, A.idprofile as idowner ,R.id as rentalId, A.id as adid, A.title, R.startDate, R.endDate, statusrental, R.idprofile as rentidowner, A.description, R.comment, R.paymentMethod, R.paymentdate from Rental AS R 
+                                INNER JOIN advertisement AS A ON R.idAdvertisement = A.id
+                                INNER JOIN Profile as POwner ON POwner.id = A.idprofile
+                                INNER JOIN Profile as PRenter ON PRenter.id = R.idprofile
+                                WHERE R.id=$index;");
         $array = pg_fetch_all($query);
         return $array[0];
     }
@@ -180,7 +189,9 @@ class Postgresql
 
     function getAllRentalsFromProfile($userId)
     {
-        $result = $this->query("Select R.id as rentalId, A.id, A.title, R.startDate, R.endDate from Rental AS R INNER JOIN advertisement AS A ON R.idAdvertisement = A.id WHERE R.idProfile = $userId;");
+        $result = $this->query("Select R.id as rentalId, A.id, A.title, R.startDate, R.endDate from Rental AS R 
+                                INNER JOIN advertisement AS A ON R.idAdvertisement = A.id
+                                WHERE R.idProfile = $userId;");
         $array = pg_fetch_all($result);
         return $array;
     }
@@ -196,14 +207,13 @@ class Postgresql
     }
     function getCurrentTime()
     {
-
+        // TODO : adapt timezone
         $now = new DateTime();
         $now->format('Y-m-d H:i:s');
         return date("Y-m-d H:i:s", $now->getTimestamp());
     }
     function paymentDone($id)
     {
-        // TODO : adapt timezone
         $updateQuery = [
             'paymentdate' => $this->getCurrentTime()
         ];

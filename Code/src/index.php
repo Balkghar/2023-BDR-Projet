@@ -4,7 +4,14 @@ session_start();
 require('src/model.php');
 
 $db = new Postgresql();
-$ads = $db->getAllAds();
+if (isset($_GET['search'])) {
+   $ads = $db->getAllAds($_GET['search']);
+   if ($_GET['search'] == "") {
+      header("Location: /");
+   }
+} else {
+   $ads = $db->getAllAds("");
+}
 
 require('templates/homepage.php');
 

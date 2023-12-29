@@ -9,6 +9,7 @@ switch ($rental['statusrental']) {
 ?>
 
       <h4>État : Demande de réservation</h4>
+      <h5>Mail du loueur : <?php echo ($rental['rentermail']); ?></h5>
       <div class="input-group">
          <form action="confirmateRental.php" method="post">
             <input type="hidden" name="id" value="<?php echo ($rental['rentalid']) ?>">
@@ -27,6 +28,7 @@ switch ($rental['statusrental']) {
    ?>
 
       <h4>État : Réservation confirmée</h4>
+      <h5>Mail du loueur : <?php echo ($rental['rentermail']); ?></h5>
       <div class="input-group">
          <form action="locationOngoing.php" method="post">
             <input type="hidden" name="id" value="<?php echo ($rental['rentalid']) ?>">
@@ -43,6 +45,7 @@ switch ($rental['statusrental']) {
    ?>
 
       <h4>État : Location en cours</h4>
+      <h5>Mail du loueur : <?php echo ($rental['rentermail']); ?></h5>
       <form action="itemReturned.php" method="post">
          <input type="hidden" name="id" value="<?php echo ($rental['rentalid']) ?>">
          <input type="submit" class="btn btn-light" value="Objet de retour" />
@@ -53,6 +56,7 @@ switch ($rental['statusrental']) {
    case 'ITEM_RETURNED':
    ?>
       <h4>État : Objet rendu</h4>
+      <h5>Mail du loueur : <?php echo ($rental['rentermail']); ?></h5>
       <form action="finishLocation.php" method="post">
          <input type="hidden" name="id" value="<?php echo ($rental['rentalid']) ?>">
          <input type="submit" class="btn btn-light" value="Finir la location" />
@@ -63,18 +67,21 @@ switch ($rental['statusrental']) {
    case 'RESERVATION_CANCELED':
    ?>
       <h4>État : Réservation annulée</h4>
+      <h5>Mail du loueur : <?php echo ($rental['rentermail']); ?></h5>
    <?php
       break;
 
    case 'LOCATION_CANCELED':
    ?>
       <h4>État : Location annulée</h4>
+      <h5>Mail du loueur : <?php echo ($rental['rentermail']); ?></h5>
    <?php
       break;
 
    case 'LOCATION_FINISHED':
    ?>
       <h4>État : Location finie</h4>
+      <h5>Mail du loueur : <?php echo ($rental['rentermail']); ?></h5>
 <?php
       break;
 }
@@ -101,7 +108,7 @@ if ($rental['paymentdate'] == null && $rental['statusrental'] != 'LOCATION_CANCE
 <?php
 } else {
 ?>
-   <p>Paiement effectué le : <?php echo ($rental['paymentdate']) ?></p>
+   <h5>Paiement effectué le : <?php echo ($rental['paymentdate']) ?></h5>
 <?php
 }
 ?>
