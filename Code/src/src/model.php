@@ -112,11 +112,30 @@ class Postgresql
     }
 
     // TODO : il faut améliorer cette requête si possible, aussi une option de recherche
-    function getAllAds($search)
+    function getAllAds($search, $category, $canton, $zip)
     {
-        $query = "select * from advertisement WHERE status = 'ACTIVE'";
+        $query = "select Ad.id as id, 
+        Ad.title as title, 
+        Ad.price as price, 
+        Ad.description as description, 
+        Ad.priceinterval as priceinterval, 
+        Adr.zipCity as zipCity,
+        Cit.Canton as canton
+        from advertisement as Ad
+        INNER JOIN Address as Adr ON Ad.idAddress = Adr.id
+        INNER JOIN City as Cit ON Adr.zipCity = Cit.zip
+        WHERE status = 'ACTIVE'";
         if ($search != "") {
             $query .= "AND (LOWER(title) LIKE LOWER('%$search%') OR LOWER(description) LIKE LOWER('%$search%'))";
+        }
+        if ($category != "") {
+            $query .= "AND nameCategory = '$category'";
+        }
+        if ($canton != "") {
+            $query .= "AND canton = '$canton'";
+        }
+        if ($zip != "") {
+            $query .= "AND zipCity = '$zip'";
         }
         $query .= ";";
         $result = $this->query($query);
@@ -288,5 +307,9 @@ class Postgresql
         $result = $this->query("select * from city ;");
         $array = pg_fetch_all($result);
         return $array;
+    }
+    function getAllCanton()
+    {
+        return $this->getEnum("Canton");
     }
 }

@@ -4,13 +4,17 @@ session_start();
 require('src/model.php');
 
 $db = new Postgresql();
-if (isset($_GET['search'])) {
-   $ads = $db->getAllAds($_GET['search']);
-   if ($_GET['search'] == "") {
+$cities = $db->getAllCity();
+$cantons = $db->getAllCanton();
+$categories = $db->getAllCategory();
+
+if (isset($_GET['search']) and isset($_GET['category']) and isset($_GET['canton']) and isset($_GET['zipCity'])) {
+   if ($_GET['search'] == "" and $_GET['category'] == "" and $_GET['canton'] == "" and $_GET['zipCity'] == "") {
       header("Location: /");
    }
+   $ads = $db->getAllAds($_GET['search'], $_GET['category'], $_GET['canton'], $_GET['zipCity']);
 } else {
-   $ads = $db->getAllAds("");
+   $ads = $db->getAllAds("", "", "", "");
 }
 
 require('templates/homepage.php');
