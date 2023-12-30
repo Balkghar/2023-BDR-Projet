@@ -99,7 +99,7 @@ class Postgresql
 
     function getAllAdsFromUser($index)
     {
-        $result = $this->query("select * from advertisement WHERE idProfile = $index AND status != 'DELETED';");
+        $result = $this->query("select * from advertisement WHERE idProfile = $index AND status != 'DELETED' ORDER BY creationDate DESC;;");
         $array = pg_fetch_all($result);
         return $array;
     }
@@ -120,7 +120,8 @@ class Postgresql
         Ad.description as description, 
         Ad.priceinterval as priceinterval, 
         Adr.zipCity as zipCity,
-        Cit.Canton as canton
+        Cit.Canton as canton,
+        Ad.creationDate as creationDate
         from advertisement as Ad
         INNER JOIN Address as Adr ON Ad.idAddress = Adr.id
         INNER JOIN City as Cit ON Adr.zipCity = Cit.zip
@@ -129,21 +130,29 @@ class Postgresql
             $query .= "AND (LOWER(title) LIKE LOWER('%$search%') OR LOWER(description) LIKE LOWER('%$search%'))";
         }
         if ($category != "") {
-            $query .= "AND nameCategory = '$category'";
+            $query .= " AND (nameCategory = '$category' ";
+            foreach ($this->getAllChildCategory($category) as $cat) {
+                $query .= " OR nameCategory = '" . $cat['name'] . "' ";
+            }
+            $query .= ")";
         }
         if ($canton != "") {
-            $query .= "AND canton = '$canton'";
+            $query .= " AND canton = '$canton' ";
         }
         if ($zip != "") {
-            $query .= "AND zipCity = '$zip'";
+            $query .= " AND zipCity = '$zip'";
         }
-        $query .= ";";
+        $query .= "ORDER BY creationDate DESC;";
         $result = $this->query($query);
         $array = pg_fetch_all($result);
         foreach ($array as &$ad) {
             $ad['avg'] = pg_fetch_all($this->query("SELECT avg(Ra.objectrating) FROM Rental as Re INNER JOIN Rating as Ra ON Ra.idRental = Re.id WHERE Re.idAdvertisement = " . $ad['id'] . ";"))[0]['avg'];
         }
         return $array;
+    }
+    function getAllChildCategory($category)
+    {
+        return pg_fetch_all($this->query("select * from category WHERE parentcategory='$category';"));
     }
 
     function addAddress($zipCity, $street, $streetNumber)
