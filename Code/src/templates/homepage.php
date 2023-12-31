@@ -90,6 +90,33 @@ foreach ($ads as $ad) {
    <div class="card">
       <div class="card-body">
          <h5 class="card-title"><a href="ad.php?id=<?= urlencode($ad['id']) ?>"><?php echo ($ad['title']) ?></a></h5>
+         <?php
+         if ($ad['pictures'] != null) {
+            // Trim each element to remove leading and trailing whitespaces
+            $pictures = array_map('trim', explode(',', trim(trim($ad['pictures'], '{}'), "\"\"")));
+         ?>
+            <div id="carouselPictures<?= $ad['id'] ?>" class="carousel slide" data-ride="carousel">
+               <div class="carousel-inner">
+
+                  <?php foreach ($pictures as $picIndex => $picture) { ?>
+                     <div class="carousel-item <?php echo ($picIndex === 0) ? 'active' : ''; ?>">
+                        <img src="<?= $picture ?>" class="d-block mx-auto" alt="Ad Picture">
+                     </div>
+                  <?php } ?>
+
+               </div>
+               <a class="carousel-control-prev" href="#carouselPictures<?= $ad['id'] ?>" role="button" data-slide="prev">
+                  <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                  <span class="sr-only">Previous</span>
+               </a>
+               <a class="carousel-control-next" href="#carouselPictures<?= $ad['id'] ?>" role="button" data-slide="next">
+                  <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                  <span class="sr-only">Next</span>
+               </a>
+            </div>
+         <?php
+         }
+         ?>
          <h6 class="card-subtitle mb-2 text-muted">Catégorie : <?php echo ($ad['namecategory']); ?></h6>
          <h6 class="card-subtitle mb-2 text-muted">Prix : <?php echo ($ad['price']) ?>
             / <?php echo ($ad['priceinterval']) ?></h6>

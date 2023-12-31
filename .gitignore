@@ -1,3 +1,4 @@
 /Code/logs/nginx/*
 /Code/postgresql/postgres-data
 /.idea
+/Code/src/images/*

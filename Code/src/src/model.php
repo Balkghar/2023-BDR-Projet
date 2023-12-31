@@ -140,6 +140,7 @@ class Postgresql
         Adr.zipCity as zipCity,
         Adr.street as street,
         Adr.streetNumber as streetNumber,
+        Ad.pictures as pictures,
         Cit.Canton as canton,
         Ad.creationDate as creationDate
         from advertisement as Ad

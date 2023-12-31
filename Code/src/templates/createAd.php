@@ -8,7 +8,7 @@ include('header.php');
    </div>
    <div class="form-group">
       <label for="fname">Image(s) :</label>
-      <input type="file" name="files[]" id="files[]">
+      <input type="file" name="files[]" id="files[]" multiple>
    </div>
    <div class="form-group">
       <label for="lname">Description :</label>
