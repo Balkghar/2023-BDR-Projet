@@ -91,7 +91,24 @@ class Postgresql
 
     function getAd($index)
     {
-        $result = $this->query("select * from advertisement WHERE id=$index;");
+        $result = $this->query("select Ad.id as id,
+                                Ad.idProfile as idProfile, 
+                                Ad.title as title, 
+                                Ad.price as price, 
+                                Ad.description as description, 
+                                Ad.priceinterval as priceinterval, 
+                                Ad.nameCategory as nameCategory,
+                                Ad.status as status,
+                                Adr.zipCity as zipCity,
+                                Adr.id as idAdrr,
+                                Adr.street as street,
+                                Adr.streetNumber as streetNumber,
+                                Cit.Canton as canton,
+                                Ad.creationDate as creationDate
+                                from advertisement as Ad
+                                INNER JOIN Address as Adr ON Ad.idAddress = Adr.id
+                                INNER JOIN City as Cit ON Adr.zipCity = Cit.zip
+                                WHERE Ad.id=$index;");
         $array = pg_fetch_all($result);
         $array[0]['avg'] = pg_fetch_all($this->query("SELECT avg(Ra.objectrating) FROM Rental as Re INNER JOIN Rating as Ra ON Ra.idRental = Re.id WHERE Re.idAdvertisement = " . $array[0]['id'] . ";"))[0]['avg'];
         return $array[0];
@@ -121,6 +138,8 @@ class Postgresql
         Ad.priceinterval as priceinterval, 
         Ad.nameCategory as nameCategory,
         Adr.zipCity as zipCity,
+        Adr.street as street,
+        Adr.streetNumber as streetNumber,
         Cit.Canton as canton,
         Ad.creationDate as creationDate
         from advertisement as Ad
@@ -283,7 +302,6 @@ class Postgresql
     }
     function updateRentalStatus($id, $newStatus)
     {
-
         $updateQuery = [
             'statusrental' => $newStatus
         ];
@@ -294,7 +312,6 @@ class Postgresql
     }
     function getAllCategory()
     {
-
         $result = $this->query("select name from category;");
         $array = pg_fetch_all($result);
         return $array;
@@ -337,5 +354,34 @@ class Postgresql
     {
         $query = "INSERT INTO Rating (idProfile, idRental, rentalRating, objectRATING) VALUES ($1,$2,$3,$4);";
         pg_query_params($this->dbconn, $query, array($idProfile, $idRental, $ratingRental, $ratingObject));
+    }
+    function updateAddress($zip, $street, $streetNumber, $id)
+    {
+
+        $updateQuery = [
+            'zipcity' => $zip,
+            'street' => $street,
+            'streetnumber' => $streetNumber
+        ];
+
+        // Condition for the WHERE clause
+        $condition = ['id' => $id];
+        pg_update($this->dbconn, 'address', $updateQuery, $condition);
+    }
+    function modifyAd($title, $description, $price, $category, $interval, $zip, $street, $streetNumber, $idAd, $idAddr)
+    {
+        $this->updateAddress($zip, $street, $streetNumber, $idAddr);
+
+        $updateQuery = [
+            'title' => $title,
+            'description' => $description,
+            'price' => $price,
+            'namecategory' => $category,
+            'priceinterval' => $interval
+        ];
+
+        // Condition for the WHERE clause
+        $condition = ['id' => $idAd];
+        pg_update($this->dbconn, 'advertisement', $updateQuery, $condition);
     }
 }
