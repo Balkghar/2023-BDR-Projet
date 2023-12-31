@@ -111,7 +111,7 @@ class Postgresql
         return $array[0];
     }
 
-    // TODO : il faut améliorer cette requête si possible, aussi une option de recherche
+    // TODO : il faut améliorer cette requête, peut être une vue ou quelque chose du genre 
     function getAllAds($search, $category, $canton, $zip)
     {
         $query = "select Ad.id as id, 
@@ -119,6 +119,7 @@ class Postgresql
         Ad.price as price, 
         Ad.description as description, 
         Ad.priceinterval as priceinterval, 
+        Ad.nameCategory as nameCategory,
         Adr.zipCity as zipCity,
         Cit.Canton as canton,
         Ad.creationDate as creationDate
