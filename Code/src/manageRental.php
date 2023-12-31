@@ -10,10 +10,17 @@ if (isset($_GET['id']) && $_GET['id'] > 0 and isset($_SESSION["connected"]) and 
     $db = new Postgresql();
 
     if ($db->userIsRentalUser($identifier, $_SESSION["userId"])) {
+
         $rental = $db->getRental($identifier);
+
+        $rentalIsRated = !$db->checkIfRentalIsRated($identifier);
+
+        $objectIsRated = !$db->checkIfObjectIsRated($identifier);
+
         require('templates/manageRental.php');
+    } else {
+        header("Location: /");
     }
 } else {
-    echo 'Erreur : aucun identifiant de billet envoyé';
-    die;
+    header("Location: /");
 }

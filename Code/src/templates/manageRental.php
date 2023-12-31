@@ -54,7 +54,14 @@ switch ($rental['statusrental']) {
     ?>
         <h4>État : Location finie</h4>
         <h5>Mail du propriétaire : <?php echo ($rental['ownermail']); ?></h5>
+        <?php if ($rentalIsRated && $objectIsRated) { ?>
+            <form action="rateObject.php" method="post">
+                <input type="hidden" name="id" value="<?php echo ($rental['rentalid']) ?>">
+                <input type="number" max="5" name="rating" step="1">
+                <input type="submit" class="btn btn-light" value="Évaluer l'objet" />
+            </form>
 <?php
+        }
         break;
 }
 ?>

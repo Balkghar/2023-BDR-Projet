@@ -321,4 +321,38 @@ class Postgresql
     {
         return $this->getEnum("Canton");
     }
+    function checkIfRentalIsRated($idRental)
+    {
+        $query = "SELECT * FROM Rating WHERE idRental=$idRental;";
+        $array = pg_fetch_all($this->query($query));
+        return !$array;
+    }
+    function checkIfObjectIsRated($idRental)
+    {
+
+        $query = "SELECT * FROM Rating WHERE idRental=$idRental;";
+
+        $array = pg_fetch_all($this->query($query));
+        if (!$array) {
+            return false;
+        } else {
+            return $array[0]['objectrating'] != null;
+        }
+    }
+    function rateUser($idRental, $idProfile, $rating)
+    {
+        $query = "INSERT INTO Rating (idProfile, idRental, rentalRating) VALUES ($1,$2,$3);";
+        pg_query_params($this->dbconn, $query, array($idProfile, $idRental, $rating));
+    }
+    function rateObject($idRental, $rating)
+    {
+
+        $updateQuery = [
+            'objectrating' => $rating
+        ];
+
+        // Condition for the WHERE clause
+        $condition = ['idrental' => $idRental];
+        pg_update($this->dbconn, 'rating', $updateQuery, $condition);
+    }
 }
