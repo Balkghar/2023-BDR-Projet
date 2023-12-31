@@ -13,9 +13,7 @@ if (isset($_GET['id']) && $_GET['id'] > 0 and isset($_SESSION["connected"]) and 
 
         $rental = $db->getRental($identifier);
 
-        $rentalIsRated = !$db->checkIfRentalIsRated($identifier);
-
-        $objectIsRated = !$db->checkIfObjectIsRated($identifier);
+        $rentalIsRated = $db->checkIfRentalIsNotRated($identifier, $_SESSION["userId"]);
 
         require('templates/manageRental.php');
     } else {

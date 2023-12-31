@@ -87,7 +87,7 @@ switch ($rental['statusrental']) {
          <form action="rateUser.php" method="post">
             <input type="hidden" name="id" value="<?php echo ($rental['rentalid']) ?>">
             <input type="number" max="5" name="rating" step="1">
-            <input type="submit" class="btn btn-light" value="Évaluer le loueur" />
+            <input type="submit" class="btn btn-light" value="Évaluer la location" />
          </form>
 <?php
       }

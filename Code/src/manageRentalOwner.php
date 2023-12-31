@@ -11,7 +11,7 @@ if (isset($_GET['id']) && $_GET['id'] > 0 and isset($_SESSION["connected"]) and 
 
     if ($db->userIsRentalOwner($identifier, $_SESSION["userId"])) {
         $rental = $db->getRental($identifier);
-        $rentalIsNotRated = $db->checkIfRentalIsRated($identifier);
+        $rentalIsNotRated = $db->checkIfRentalIsNotRated($identifier, $_SESSION["userId"]);
         require('templates/manageRentalOwner.php');
     } else {
         header("Location: /");

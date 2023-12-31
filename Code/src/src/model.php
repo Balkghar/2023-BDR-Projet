@@ -321,38 +321,20 @@ class Postgresql
     {
         return $this->getEnum("Canton");
     }
-    function checkIfRentalIsRated($idRental)
+    function checkIfRentalIsNotRated($idRental, $idProfile)
     {
-        $query = "SELECT * FROM Rating WHERE idRental=$idRental;";
+        $query = "SELECT * FROM Rating WHERE idRental=$idRental AND idProfile=$idProfile;";
         $array = pg_fetch_all($this->query($query));
         return !$array;
     }
-    function checkIfObjectIsRated($idRental)
-    {
-
-        $query = "SELECT * FROM Rating WHERE idRental=$idRental;";
-
-        $array = pg_fetch_all($this->query($query));
-        if (!$array) {
-            return false;
-        } else {
-            return $array[0]['objectrating'] != null;
-        }
-    }
-    function rateUser($idRental, $idProfile, $rating)
+    function rateRental($idRental, $idProfile, $rating)
     {
         $query = "INSERT INTO Rating (idProfile, idRental, rentalRating) VALUES ($1,$2,$3);";
         pg_query_params($this->dbconn, $query, array($idProfile, $idRental, $rating));
     }
-    function rateObject($idRental, $rating)
+    function rateObject($idRental, $idProfile, $ratingObject, $ratingRental)
     {
-
-        $updateQuery = [
-            'objectrating' => $rating
-        ];
-
-        // Condition for the WHERE clause
-        $condition = ['idrental' => $idRental];
-        pg_update($this->dbconn, 'rating', $updateQuery, $condition);
+        $query = "INSERT INTO Rating (idProfile, idRental, rentalRating, objectRATING) VALUES ($1,$2,$3,$4);";
+        pg_query_params($this->dbconn, $query, array($idProfile, $idRental, $ratingRental, $ratingObject));
     }
 }

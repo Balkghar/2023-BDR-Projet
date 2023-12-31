@@ -8,8 +8,8 @@ if (isset($_POST['id']) && $_POST['id'] > 0 && isset($_POST['rating']) && isset(
 
    $db = new Postgresql();
    if ($db->userIsRentalOwner($identifier, $_SESSION["userId"])) {
-      if ($db->checkIfRentalIsRated($identifier))
-         $db->rateUser($_POST['id'], $_SESSION["userId"], $_POST['rating']);
+      if ($db->checkIfRentalIsNotRated($identifier, $_SESSION["userId"]))
+         $db->rateRental($_POST['id'], $_SESSION["userId"], $_POST['rating']);
       header('Location: /manageRentalOwner.php?id=' . $identifier);
    } else {
 
