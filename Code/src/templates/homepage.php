@@ -50,7 +50,7 @@ include('header.php');
 
       <div class="col">
          <label for="paymentMethod">Canton :</label>
-         <select class="form-control" name="canton" id="canton">
+         <select onchange="filterCity()" class="form-control" name="canton" id="canton">
             <option value=""></option>
             <?php
             foreach ($cantons as $canton) {
@@ -69,7 +69,7 @@ include('header.php');
          <label for="startDate">Ville :</label>
          <select class="form-control" name="zipCity" id="zipCity">
 
-            <option value=""></option>
+            <option id="default" value=""></option>
             <?php
             foreach ($cities as $city) {
                if (isset($_GET['zipCity']) and $_GET['zipCity'] == $city['zip']) {
@@ -77,7 +77,7 @@ include('header.php');
                } else {
                   $tmp = "";
                }
-               echo ("<option " . $tmp . " value=\"" . $city['zip'] . "\">" . $city['name'] . " / " . $city['zip'] . "</option>");
+               echo ("<option id=\"" . $city['canton'] . "\"" . $tmp . " value=\"" . $city['zip'] . "\">" . $city['zip'] . " / " . $city['name'] . "</option>");
             }
             ?>
          </select>
