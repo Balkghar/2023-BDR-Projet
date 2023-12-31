@@ -384,4 +384,15 @@ class Postgresql
         $condition = ['id' => $idAd];
         pg_update($this->dbconn, 'advertisement', $updateQuery, $condition);
     }
+    function addImagesToAd($adId, $imagePaths)
+    {
+        // Convert the array of image paths to a comma-separated string
+        $imagePathsStr = implode(',', $imagePaths);
+
+        // Prepare the SQL query with placeholders for parameters
+        $query = "UPDATE Advertisement SET pictures = array_append(pictures, $1) WHERE id = $2";
+
+        // Execute the query with pg_query_params
+        pg_query_params($this->dbconn, $query, array($imagePathsStr, $adId));
+    }
 }

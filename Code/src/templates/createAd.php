@@ -1,12 +1,15 @@
 <?php
 include('header.php');
 ?>
-<form method="post" action="<?php echo $_SERVER['PHP_SELF']; ?>">
+<form method="post" enctype="multipart/form-data" action="<?php echo $_SERVER['PHP_SELF']; ?>">
    <div class="form-group">
       <label for="fname">Titre :</label>
       <input class="form-control" type="text" id="title" name="title">
    </div>
-
+   <div class="form-group">
+      <label for="fname">Image(s) :</label>
+      <input type="file" name="files[]" id="files[]">
+   </div>
    <div class="form-group">
       <label for="lname">Description :</label>
       <textarea class="form-control" id="description" name="description" rows="4" cols="50"></textarea>

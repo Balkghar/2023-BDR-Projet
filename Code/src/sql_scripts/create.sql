@@ -132,6 +132,7 @@ CREATE TABLE Advertisement
     price         real          NOT NULL CHECK (price >= 0),
     priceInterval PriceInterval NOT NULL,
     status        Status        NOT NULL,
+    pictures      text[],
 
     CONSTRAINT PK_Advertisement PRIMARY KEY (id),
     CONSTRAINT FK_Advertisement_idAddress FOREIGN KEY (idAddress)
