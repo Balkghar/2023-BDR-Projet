@@ -100,7 +100,7 @@ foreach ($ads as $ad) {
 
                   <?php foreach ($pictures as $picIndex => $picture) { ?>
                      <div class="carousel-item <?php echo ($picIndex === 0) ? 'active' : ''; ?>">
-                        <img src="<?= $picture ?>" class="d-block mx-auto" alt="Ad Picture">
+                        <img src="<?= $picture ?>" class="d-block mx-auto responsive" alt="Ad Picture">
                      </div>
                   <?php } ?>
 
@@ -113,7 +113,7 @@ foreach ($ads as $ad) {
                   <span class="carousel-control-next-icon" aria-hidden="true"></span>
                   <span class="sr-only">Next</span>
                </a>
-            </div>
+            </div><br>
          <?php
          }
          ?>
