@@ -99,6 +99,7 @@ class Postgresql
                                 Ad.priceinterval as priceinterval, 
                                 Ad.nameCategory as nameCategory,
                                 Ad.status as status,
+                                Ad.pictures as pictures,
                                 Adr.zipCity as zipCity,
                                 Adr.id as idAdrr,
                                 Adr.street as street,

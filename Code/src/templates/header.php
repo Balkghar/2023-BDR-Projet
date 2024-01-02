@@ -53,3 +53,33 @@
     <main class="container" role="main">
         <div class="content">
             <br>
+            <?php
+            function showCarousel($ad)
+            {
+                if ($ad['pictures'] != null) {
+                    // Trim each element to remove leading and trailing whitespaces
+                    $pictures = array_map('trim', explode(',', trim(trim($ad['pictures'], '{}'), "\"\"")));
+            ?>
+                    <div id="carouselPictures<?= $ad['id'] ?>" class="carousel slide" data-ride="carousel">
+                        <div class="carousel-inner div-carousel">
+
+                            <?php foreach ($pictures as $picIndex => $picture) { ?>
+                                <div class="carousel-item <?php echo ($picIndex === 0) ? 'active' : ''; ?>">
+                                    <img src="<?= $picture ?>" class="d-block mx-auto img-carousel" alt="Ad Picture">
+                                </div>
+                            <?php } ?>
+
+                        </div>
+                        <a class="carousel-control-prev" href="#carouselPictures<?= $ad['id'] ?>" role="button" data-slide="prev">
+                            <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                            <span class="sr-only">Previous</span>
+                        </a>
+                        <a class="carousel-control-next" href="#carouselPictures<?= $ad['id'] ?>" role="button" data-slide="next">
+                            <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                            <span class="sr-only">Next</span>
+                        </a>
+                    </div><br>
+            <?php
+                }
+            }
+            ?>

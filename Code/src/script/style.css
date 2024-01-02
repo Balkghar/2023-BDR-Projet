@@ -1,5 +1,11 @@
-.responsive {
-   max-width: auto;
-   display: block;
-   height: 250px;
+.div-carousel {
+   height: 300px;
+   display: flex;
+   overflow: hidden;
+   /* Hide any content that overflows the container */
+}
+
+.img-carousel {
+   max-height: 100%;
+   max-width: 100%;
 }

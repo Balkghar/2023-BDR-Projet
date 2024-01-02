@@ -1,22 +1,23 @@
 <?php require('header.php') ?>
-    <h1><?php echo($ad['title']) ?></h1>
-    <h2>Date de création : <?php echo($ad['creationdate']) ?></h2>
-    <h2>Prix : <?php echo($ad['price']) ?> / <?php echo($ad['priceinterval']) ?></h2>
-    <h3>Rating : <?php
-        if ($ad['avg'] != null)
-            echo(round($ad['avg'], 2));
-        else
-            echo("-")
-        ?>
-    </h3>
-    <p><?php echo($ad['description']) ?></p>
+<h1><?php echo ($ad['title']) ?></h1>
+<?php showCarousel($ad); ?>
+<h2>Date de création : <?php echo ($ad['creationdate']) ?></h2>
+<h2>Prix : <?php echo ($ad['price']) ?> / <?php echo ($ad['priceinterval']) ?></h2>
+<h3>Rating : <?php
+                if ($ad['avg'] != null)
+                    echo (round($ad['avg'], 2));
+                else
+                    echo ("-")
+                ?>
+</h3>
+<p><?php echo ($ad['description']) ?></p>
 
 <?php
 if (isset($_SESSION["connected"]) and $_SESSION['connected'] == true and isset($_SESSION["userId"]) and $ad['idprofile'] != $_SESSION["userId"]) {
-    ?>
+?>
     <form method="post" action="/makeRent.php">
 
-        <input type="hidden" name="id" value="<?php echo($ad['id']) ?>">
+        <input type="hidden" name="id" value="<?php echo ($ad['id']) ?>">
         <div class="row">
             <div class="col">
                 <label for="startDate">Date de départ :</label>
@@ -33,7 +34,7 @@ if (isset($_SESSION["connected"]) and $_SESSION['connected'] == true and isset($
             <select class="form-control" name="paymentMethod" id="paymentMethod">
                 <?php
                 foreach ($paymentMethod as $text) {
-                    echo("<option value=\"" . $text . "\">" . $text . "</option>");
+                    echo ("<option value=\"" . $text . "\">" . $text . "</option>");
                 }
                 ?>
             </select>
@@ -45,7 +46,7 @@ if (isset($_SESSION["connected"]) and $_SESSION['connected'] == true and isset($
         </div>
         <input class="btn btn-primary" type="submit" value="Demander Location">
     </form>
-    <?php
+<?php
 }
 
 
