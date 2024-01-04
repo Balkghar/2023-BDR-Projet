@@ -225,7 +225,7 @@ class Postgresql
 
     function getRental($index)
     {
-        $this->query("CREATE OR REPLACE VIEW vRentalInfo
+        $this->query("CREATE OR REPLACE VIEW vRentalInfo AS
         SELECT POwner.mail AS ownermail, 
         PRenter.mail AS rentermail, 
         A.idprofile AS idowner,
@@ -243,7 +243,7 @@ class Postgresql
             INNER JOIN advertisement AS A ON R.idAdvertisement = A.id
             INNER JOIN Profile AS POwner ON POwner.id = A.idprofile
             INNER JOIN Profile AS PRenter ON PRenter.id = R.idprofile
-            WHERE R.id=$index;");
+        WHERE R.id=$index;");
         $query = $this->query("SELECT * FROM vRentalInfo");
         $array = pg_fetch_all($query);
         return $array[0];
@@ -263,19 +263,34 @@ class Postgresql
 
     function getAllRentalsFromProfile($userId)
     {
-        $result = $this->query("Select R.id as rentalId, A.id, A.title, R.startDate, R.endDate from Rental AS R 
-                                INNER JOIN advertisement AS A ON R.idAdvertisement = A.id
-                                WHERE R.idProfile = $userId;");
+        $this->query("CREATE OR REPLACE VIEW vRentalsFromProfile AS
+        SELECT R.id AS rentalId, 
+        A.id, 
+        A.title, 
+        R.startDate, 
+        R.endDate 
+        FROM Rental AS R 
+            INNER JOIN advertisement AS A ON R.idAdvertisement = A.id
+        WHERE R.idProfile = $userId;");
+        $result = $this->query("SELECT * FROM vRentalsFromProfile");
         $array = pg_fetch_all($result);
         return $array;
     }
 
     function getAllRentalsFromOwner($userId)
     {
-        $result = $this->query("select R.idprofile as rentowner, A.idprofile as adowner, R.id as idrent, A.id as idAd, A.title as adtitle, R.startdate as rentstart, R.endDate as rentend
-                                    from Rental AS R
-                                    INNER JOIN advertisement AS A ON R.idAdvertisement = A.id
-                                    WHERE A.idProfile = $userId;");
+        $result = $this->query("CREATE OR REPLACE VIEW vALLRentalsFromOwner AS
+        SELECT R.idprofile AS rentowner, 
+        A.idprofile AS adowner, 
+        R.id AS idrent, 
+        A.id AS idAd, 
+        A.title AS adtitle, 
+        R.startdate AS rentstart, 
+        R.endDate AS rentend
+        FROM Rental AS R
+            INNER JOIN advertisement AS A ON R.idAdvertisement = A.id
+        WHERE A.idProfile = $userId;");
+        $result = $this->query("SELECT * FROM vALLRentalsFromOwner");
         $array = pg_fetch_all($result);
         return $array;
     }
