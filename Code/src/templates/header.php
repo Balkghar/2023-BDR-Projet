@@ -38,6 +38,7 @@
                 </ul>
                 <?php
                 if (isset($_SESSION["connected"]) && $_SESSION["connected"] == true) { ?>
+                    <button class="btn btn-outline-success my-2 my-sm-0" onclick="location.href='account.php';">Mon compte</button>
                     <button class="btn btn-outline-success my-2 my-sm-0" onclick="location.href='userDeconnection.php';">Se déconnecter</button>
                 <?php } else {
                 ?>

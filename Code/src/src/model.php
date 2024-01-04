@@ -124,7 +124,10 @@ class Postgresql
 
     function getProfile($index)
     {
-        $result = $this->query("select * from profile WHERE id=$index;");
+        $result = $this->query("select * from profile AS P 
+                                INNER JOIN Address AS A ON P.idAddress = A.id
+                                INNER JOIN City as C ON A.zipCity = C.zip
+                                WHERE P.id=$index;");
         $array = pg_fetch_all($result);
         return $array[0];
     }
@@ -402,8 +405,27 @@ class Postgresql
 
         // Construct the SQL query to update the pictures array
         $sql = "UPDATE Advertisement SET pictures = array_remove(pictures, '$imagePath') WHERE id = $adId;";
-        echo ($sql);
         // Execute the query
         $this->query($sql);
+    }
+    function updateProfile($firstname, $lastname, $mail, $phoneNumber, $zipCity, $street, $streetNumber, $idProfile)
+    {
+        $query = "SELECT P.idAddress AS id from profile AS P 
+                    INNER JOIN Address AS A ON P.idAddress = A.id
+                    WHERE P.id=$idProfile;";
+        $array = pg_fetch_all($this->query($query));
+        $idAddr = $array[0]['id'];
+        $this->updateAddress($zipCity, $street, $streetNumber, $idAddr);
+
+        $updateQuery = [
+            'firstname' => $firstname,
+            'lastname' => $lastname,
+            'mail' => $mail,
+            'phonenumber' => $phoneNumber
+        ];
+
+        // Condition for the WHERE clause
+        $condition = ['id' => $idProfile];
+        pg_update($this->dbconn, 'profile', $updateQuery, $condition);
     }
 }

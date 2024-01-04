@@ -6,6 +6,7 @@ if (isset($_POST['firstname']) and isset($_POST['lastname']) and isset($_POST['m
    $db = new Postgresql();
    $db->registerProfile($_POST['firstname'], $_POST['lastname'], $_POST['mail'], $_POST['password'], $_POST['phoneNumber'], $_POST['zipCity'], $_POST['street'], $_POST['streetNumber']);
 } else {
+   header("Location: /");
 }
 
 require('templates/userRegistration.php');

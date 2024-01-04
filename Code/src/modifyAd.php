@@ -52,7 +52,7 @@ if (isset($_GET["id"]) and isset($_SESSION["connected"]) and isset($_SESSION["us
          $db->addImagesToAd($_POST['id'], $uploadedFiles);
       }
    }
-   //header("Location: /manageAd.php?id=" . $_POST['id']);
+   header("Location: /manageAd.php?id=" . $_POST['id']);
 } else {
    header("Location: /");
 }
