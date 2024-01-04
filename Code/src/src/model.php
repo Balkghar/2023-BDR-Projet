@@ -89,6 +89,7 @@ class Postgresql
         return $ad['idprofile'] == $userId;
     }
 
+    //TODO - Maybe using a view here too, but since it is used to modify ads just have to be sure what is to create relevant trigger
     function getAd($index)
     {
         $result = $this->query("select Ad.id as id,
