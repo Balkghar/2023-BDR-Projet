@@ -397,4 +397,13 @@ class Postgresql
         // Execute the query with pg_query_params
         pg_query_params($this->dbconn, $query, array($imagePathsStr, $adId));
     }
+    function deleteImageFromAd($adId, $imagePath)
+    {
+
+        // Construct the SQL query to update the pictures array
+        $sql = "UPDATE Advertisement SET pictures = array_remove(pictures, '$imagePath') WHERE id = $adId;";
+        echo ($sql);
+        // Execute the query
+        $this->query($sql);
+    }
 }

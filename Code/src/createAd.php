@@ -30,7 +30,7 @@ if (isset($_SESSION["connected"]) and isset($_SESSION["userId"])) {
                 $db->addImagesToAd($adId, $uploadedFiles);
             }
         }
-        //header("Location: /manageAd.php?id=" . $adId);
+        header("Location: /manageAd.php?id=" . $adId);
     } else {
         $cities = $db->getAllCity();
         $categories = $db->getAllCategory();

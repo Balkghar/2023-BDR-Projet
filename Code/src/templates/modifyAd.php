@@ -1,10 +1,29 @@
 <?php require('header.php') ?>
-<form method="post" action="<?php echo $_SERVER['PHP_SELF']; ?>">
+<form method="post" enctype="multipart/form-data" action="<?php echo $_SERVER['PHP_SELF']; ?>">
    <div class="form-group">
       <label for="fname">Titre :</label>
       <input class="form-control" type="text" value="<?php echo ($ad['title']) ?>" id="title" name="title">
    </div>
+   <div class="form-group">
+      <?php
+      if ($ad['pictures'] != null) {
+         $pictures = array_map('trim', explode(',', trim(trim($ad['pictures'], '{}'), "\"\"")));
 
+         foreach ($pictures as $picture) {
+      ?>
+            <img src="<?= $picture ?>" class="d-block img-carousel" alt="Ad Picture">
+            <input type="checkbox" name="deletePictures[]" value="<?= $picture ?>" />
+            <label for="deletePictures">Supprimer</label>
+      <?php
+         }
+      }
+      ?>
+
+   </div>
+   <div class="form-group">
+      <label for="fname">Ajouter des image(s) :</label>
+      <input type="file" name="files[]" id="files[]" multiple>
+   </div>
    <div class="form-group">
       <label for="lname">Description :</label>
       <textarea class="form-control" id="description" name="description" rows="4" cols="50"><?php echo ($ad['description']) ?></textarea>
