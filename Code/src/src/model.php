@@ -225,11 +225,26 @@ class Postgresql
 
     function getRental($index)
     {
-        $query = $this->query("Select POwner.mail AS ownermail, PRenter.mail AS rentermail, A.idprofile as idowner ,R.id as rentalId, A.id as adid, A.title, R.startDate, R.endDate, statusrental, R.idprofile as rentidowner, A.description, R.comment, R.paymentMethod, R.paymentdate from Rental AS R 
-                                INNER JOIN advertisement AS A ON R.idAdvertisement = A.id
-                                INNER JOIN Profile as POwner ON POwner.id = A.idprofile
-                                INNER JOIN Profile as PRenter ON PRenter.id = R.idprofile
-                                WHERE R.id=$index;");
+        $this->query("CREATE OR REPLACE VIEW vRentalInfo
+        SELECT POwner.mail AS ownermail, 
+        PRenter.mail AS rentermail, 
+        A.idprofile AS idowner,
+        R.id AS rentalId, 
+        A.id AS adid, 
+        A.title, 
+        R.startDate, 
+        R.endDate, 
+        statusrental, 
+        R.idprofile AS rentidowner, 
+        A.description, 
+        R.comment, 
+        R.paymentMethod, 
+        R.paymentdate from Rental AS R 
+            INNER JOIN advertisement AS A ON R.idAdvertisement = A.id
+            INNER JOIN Profile AS POwner ON POwner.id = A.idprofile
+            INNER JOIN Profile AS PRenter ON PRenter.id = R.idprofile
+            WHERE R.id=$index;");
+        $query = $this->query("SELECT * FROM vRentalInfo");
         $array = pg_fetch_all($query);
         return $array[0];
     }
