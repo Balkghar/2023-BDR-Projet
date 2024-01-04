@@ -132,10 +132,10 @@ class Postgresql
         return $array[0];
     }
 
-    // TODO : il faut améliorer cette requête, peut être une vue ou quelque chose du genre 
     function getAllAds($search, $category, $canton, $zip)
     {
-        $query = "select Ad.id as id, 
+        $query = "CREATE OR REPLACE VIEW vAds AS 
+        select Ad.id as id, 
         Ad.title as title, 
         Ad.price as price, 
         Ad.description as description, 
@@ -168,10 +168,16 @@ class Postgresql
             $query .= " AND zipCity = '$zip'";
         }
         $query .= "ORDER BY creationDate DESC;";
-        $result = $this->query($query);
+        //Create Views
+        $this->query($query);
+        //Select from view
+        $result = $this->query("SELECT * FROM vAds");
         $array = pg_fetch_all($result);
         foreach ($array as &$ad) {
-            $ad['avg'] = pg_fetch_all($this->query("SELECT avg(Ra.objectrating) FROM Rental as Re INNER JOIN Rating as Ra ON Ra.idRental = Re.id WHERE Re.idAdvertisement = " . $ad['id'] . ";"))[0]['avg'];
+            $ad['avg'] = pg_fetch_all($this->query("SELECT avg(Ra.objectrating) 
+            FROM Rental as Re 
+            INNER JOIN Rating as Ra 
+            ON Ra.idRental = Re.id WHERE Re.idAdvertisement = " . $ad['id'] . ";"))[0]['avg'];
         }
         return $array;
     }
