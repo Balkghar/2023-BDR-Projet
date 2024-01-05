@@ -95,7 +95,7 @@ foreach ($ads as $ad) {
             <h6 class="card-subtitle mb-2 text-muted">Catégorie : <?php echo($ad['namecategory']); ?></h6>
             <h6 class="card-subtitle mb-2 text-muted">Prix : <?php echo($ad['price']) ?>
                 / <?php echo($ad['priceinterval']) ?></h6>
-            <!-- TODO <h6 class="card-subtitle mb-2 text-muted">Location : <?php echo($ad['city']) ?></h6> -->
+            <h6 class="card-subtitle mb-2 text-muted">Localisation : <?php echo($ad['zipcity']) ?> <?php echo($ad['city']) ?> (<?php echo($ad['canton']) ?>)</h6>
             <h6 class="card-subtitle mb-2 text-muted">
                 Évaluation :
                 <?php

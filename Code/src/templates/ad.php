@@ -3,6 +3,7 @@
 <?php showCarousel($ad); ?>
     <h2>Date de création : <?php echo($ad['creationdate']) ?></h2>
     <h2>Prix : <?php echo($ad['price']) ?> / <?php echo($ad['priceinterval']) ?></h2>
+    <h3>Localisation : <?php echo($ad['zipcity']) ?> <?php echo($ad['city']) ?> (<?php echo($ad['canton']) ?>)</h3>
     <h3>Rating : <?php
         if ($ad['avg'] != null)
             echo(round($ad['avg'], 2));

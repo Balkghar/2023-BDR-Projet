@@ -202,63 +202,47 @@ CREATE TABLE Rating
 );
 
 -- VIEWS --
-CREATE OR REPLACE VIEW vAd AS
-SELECT Ad.id AS id,
-       Ad.idProfile as idProfile,
-       Ad.title as title,
-       Ad.price as price,
-       Ad.description as description,
-       Ad.priceinterval as priceinterval,
-       Ad.nameCategory as nameCategory,
-       Ad.status as status,
-       Ad.pictures as pictures,
-       Adr.zipCity as zipCity,
-       Adr.id as idAdrr,
-       Adr.street as street,
-       Adr.streetNumber as streetNumber,
-       Cit.Canton as canton,
-       Ad.creationDate as creationDate
-FROM advertisement as Ad
-         INNER JOIN Address as Adr ON Ad.idAddress = Adr.id
-         INNER JOIN City as Cit ON Adr.zipCity = Cit.zip;
-
 CREATE OR REPLACE VIEW vAds AS
-SELECT Ad.id AS id,
-       Ad.title AS title,
-       Ad.price AS price,
-       Ad.description AS description,
+SELECT Ad.id            AS id,
+       Ad.idProfile     as idProfile,
+       Ad.title         AS title,
+       Ad.price         AS price,
+       Ad.description   AS description,
        Ad.priceinterval AS priceinterval,
-       Ad.nameCategory AS nameCategory,
-       Adr.zipCity AS zipCity,
-       Adr.street AS street,
+       Ad.nameCategory  AS nameCategory,
+       Adr.id           AS idaddr,
+       Adr.zipCity      AS zipCity,
+       Adr.street       AS street,
        Adr.streetNumber AS streetNumber,
-       Ad.pictures AS pictures,
-       Cit.Canton AS canton,
-       Ad.creationDate AS creationDate,
-       Ad.status AS status
+       Ad.pictures      AS pictures,
+       Cit.name         as city,
+       Cit.Canton       AS canton,
+       Ad.creationDate  AS creationDate,
+       Ad.status        AS status
 FROM advertisement AS Ad
          INNER JOIN Address AS Adr ON Ad.idAddress = Adr.id
          INNER JOIN City AS Cit ON Adr.zipCity = Cit.zip;
 
 
 CREATE OR REPLACE VIEW vRentalInfo AS
-SELECT POwner.mail AS ownermail,
+SELECT POwner.mail  AS ownermail,
        PRenter.mail AS rentermail,
-       A.idprofile AS idowner,
-       R.id AS rentalId,
-       A.id AS adid,
+       A.idprofile  AS idowner,
+       R.id         AS rentalId,
+       A.id         AS adid,
        A.title,
        R.startDate,
        R.endDate,
        statusrental,
-       R.idprofile AS rentidowner,
+       R.idprofile  AS rentidowner,
        A.description,
        R.comment,
        R.paymentMethod,
-       R.paymentdate from Rental AS R
-                              INNER JOIN advertisement AS A ON R.idAdvertisement = A.id
-                              INNER JOIN Profile AS POwner ON POwner.id = A.idprofile
-                              INNER JOIN Profile AS PRenter ON PRenter.id = R.idprofile;
+       R.paymentdate
+from Rental AS R
+         INNER JOIN advertisement AS A ON R.idAdvertisement = A.id
+         INNER JOIN Profile AS POwner ON POwner.id = A.idprofile
+         INNER JOIN Profile AS PRenter ON PRenter.id = R.idprofile;
 
 CREATE OR REPLACE VIEW vRentalsFromProfile AS
 SELECT R.id AS rentalId,
@@ -272,14 +256,13 @@ FROM Rental AS R
 CREATE OR REPLACE VIEW vALLRentalsFromOwner AS
 SELECT R.idprofile AS rentowner,
        A.idprofile AS adowner,
-       R.id AS idrent,
-       A.id AS idAd,
-       A.title AS adtitle,
+       R.id        AS idrent,
+       A.id        AS idAd,
+       A.title     AS adtitle,
        R.startdate AS rentstart,
-       R.endDate AS rentend
+       R.endDate   AS rentend
 FROM Rental AS R
          INNER JOIN advertisement AS A ON R.idAdvertisement = A.id;
-
 
 
 -- TRIGGER ON VIEW UPDATE --
@@ -289,26 +272,46 @@ AS
 $$
 BEGIN
     IF TG_OP = 'INSERT' THEN
-        INSERT INTO advertisement VALUES(NEW.idadrr, NEW.idprofile, NEW.creationdate, NEW.namecategory, NEW.title, NEW.description, NEW.price, NEW.priceinterval, NEW.status);
-        INSERT INTO Address VALUES(NEW.zipcity, NEW.street, NEW.streetnumber);
+        INSERT INTO advertisement
+        VALUES (NEW.idaddr, NEW.idprofile, NEW.creationdate, NEW.namecategory, NEW.title, NEW.description, NEW.price,
+                NEW.priceinterval, NEW.status);
+        INSERT INTO Address VALUES (NEW.zipcity, NEW.street, NEW.streetnumber);
     ELSEIF TG_OP = 'UPDATE' THEN
-        UPDATE Advertisement SET idAddress = NEW.idadrr, idProfile = NEW.idprofile, creationdate = NEW.creationdate, nameCategory = NEW.namecategory, title = NEW.title, description = NEW.description, price = NEW.price, priceinterval = NEW.priceinterval, status = NEW.status WHERE id = NEW.id;
-        UPDATE Address SET zipCity = NEW.zipcity, street = NEW.street, streetNumber = NEW.streetnumber WHERE id = NEW.idadrr;
+        UPDATE Advertisement
+        SET idAddress     = NEW.idaddr,
+            idProfile     = NEW.idprofile,
+            creationdate  = NEW.creationdate,
+            nameCategory  = NEW.namecategory,
+            title         = NEW.title,
+            description   = NEW.description,
+            price         = NEW.price,
+            priceinterval = NEW.priceinterval,
+            status        = NEW.status
+        WHERE id = NEW.id;
+        UPDATE Address
+        SET zipCity      = NEW.zipcity,
+            street       = NEW.street,
+            streetNumber = NEW.streetnumber
+        WHERE id = NEW.idaddr;
     ELSEIF TG_OP = 'DELETE' THEN
         DELETE FROM Advertisement WHERE id = OLD.id;
-        DELETE FROM Address WHERE id = OLD.idadrr;
+        DELETE FROM Address WHERE id = OLD.idaddr;
     END IF;
     RETURN NEW;
 END
 $$;
 CREATE OR REPLACE TRIGGER vAdTrigger
-    INSTEAD OF INSERT OR UPDATE OR DELETE ON vAD
-    FOR EACH ROW EXECUTE FUNCTION updateAdFromView();
+    INSTEAD OF INSERT OR UPDATE OR DELETE
+    ON vAds
+    FOR EACH ROW
+EXECUTE FUNCTION updateAdFromView();
 
-UPDATE vAd SET title  = 'test',
-               description = 'test',
-               price = 69
+UPDATE vAds
+SET title       = 'test',
+    description = 'test',
+    price       = 69
 WHERE id = 1;
+
 
 -- CONTRAINTS --
 -- La creationDate d’un Advertisement ne peut pas se situer avant la registrationDate du User
