@@ -1,6 +1,6 @@
 # BDR - Project 'Prêt de chez toi'
 
-## Descritpion:
+## Description:
 
 This project is a web application that allows users to create advertisements for objects and to rent objects from other
 users. The application is developed in PHP. The database is a PostgreSQL database. The application is deployed in Docker
@@ -24,6 +24,10 @@ To be able to execute and deploy the project, the following software is required
 5. Execute the SQL script create.sql and insert.sql in the Code/src/sql_scripts folder to create the database tables and
    insert the template data
 6. Open the browser and navigate to http://localhost/
+
+`sudo chown -R www-data:www-data images` # change owership of the images folder to www-data
+`find images -type d -exec chmod 775 {} ` # change all the directories to 775 (write for user & group www-data, read for others)
+`find images -type f -exec chmod 664 {} ` # To change all the files to 664 (write for user & group www-data, read for others)
 
 ### Stop the app:
 
