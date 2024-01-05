@@ -25,9 +25,9 @@ To be able to execute and deploy the project, the following software is required
    insert the template data
 6. Open the browser and navigate to http://localhost/
 ```bash
-`sudo chown -R www-data:www-data images` # change owership of the images folder to www-data
-`find images -type d -exec chmod 775 {} ` # change all the directories to 775 (write for user & group www-data, read for others)
-`find images -type f -exec chmod 664 {} ` # To change all the files to 664 (write for user & group www-data, read for others)
+sudo chown -R www-data:www-data images # change owership of the images folder to www-data
+find images -type d -exec chmod 775 {} # change all the directories to 775 (write for user & group www-data, read for others)
+`find images -type f -exec chmod 664 {} # To change all the files to 664 (write for user & group www-data, read for others)
 ```
 ### Stop the app:
 
