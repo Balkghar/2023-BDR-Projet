@@ -93,6 +93,7 @@ class Postgresql
     {
         $result = $this->query("SELECT * FROM vAds WHERE id=$index;");
         $array = pg_fetch_all($result);
+        # TODO : add rating of object in the view vAds ?
         $array[0]['avg'] = pg_fetch_all($this->query("SELECT avg(Ra.objectrating) FROM Rental as Re INNER JOIN Rating as Ra ON Ra.idRental = Re.id WHERE Re.idAdvertisement = " . $array[0]['id'] . ";"))[0]['avg'];
         return $array[0];
     }

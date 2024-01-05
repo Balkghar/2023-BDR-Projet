@@ -223,7 +223,7 @@ FROM advertisement AS Ad
          INNER JOIN Address AS Adr ON Ad.idAddress = Adr.id
          INNER JOIN City AS Cit ON Adr.zipCity = Cit.zip;
 
-
+-- TODO : isn't it possible to use one single view instead of the three following ones ?
 CREATE OR REPLACE VIEW vRentalInfo AS
 SELECT POwner.mail  AS ownermail,
        PRenter.mail AS rentermail,
