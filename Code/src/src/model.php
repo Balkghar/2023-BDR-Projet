@@ -89,28 +89,9 @@ class Postgresql
         return $ad['idprofile'] == $userId;
     }
 
-    //TODO - Maybe using a view here too, but since it is used to modify ads just have to be sure what is to create relevant trigger
     function getAd($index)
     {
-        $result = $this->query("select Ad.id as id,
-                                Ad.idProfile as idProfile, 
-                                Ad.title as title, 
-                                Ad.price as price, 
-                                Ad.description as description, 
-                                Ad.priceinterval as priceinterval, 
-                                Ad.nameCategory as nameCategory,
-                                Ad.status as status,
-                                Ad.pictures as pictures,
-                                Adr.zipCity as zipCity,
-                                Adr.id as idAdrr,
-                                Adr.street as street,
-                                Adr.streetNumber as streetNumber,
-                                Cit.Canton as canton,
-                                Ad.creationDate as creationDate
-                                from advertisement as Ad
-                                INNER JOIN Address as Adr ON Ad.idAddress = Adr.id
-                                INNER JOIN City as Cit ON Adr.zipCity = Cit.zip
-                                WHERE Ad.id=$index;");
+        $result = $this->query("SELECT * FROM vAd WHERE id=$index;");
         $array = pg_fetch_all($result);
         $array[0]['avg'] = pg_fetch_all($this->query("SELECT avg(Ra.objectrating) FROM Rental as Re INNER JOIN Rating as Ra ON Ra.idRental = Re.id WHERE Re.idAdvertisement = " . $array[0]['id'] . ";"))[0]['avg'];
         return $array[0];
@@ -135,22 +116,8 @@ class Postgresql
 
     function getAllAds($search, $category, $canton, $zip)
     {
-        $query = "CREATE OR REPLACE VIEW vAds AS 
-        select Ad.id as id, 
-        Ad.title as title, 
-        Ad.price as price, 
-        Ad.description as description, 
-        Ad.priceinterval as priceinterval, 
-        Ad.nameCategory as nameCategory,
-        Adr.zipCity as zipCity,
-        Adr.street as street,
-        Adr.streetNumber as streetNumber,
-        Ad.pictures as pictures,
-        Cit.Canton as canton,
-        Ad.creationDate as creationDate
-        from advertisement as Ad
-        INNER JOIN Address as Adr ON Ad.idAddress = Adr.id
-        INNER JOIN City as Cit ON Adr.zipCity = Cit.zip
+        $query = "SELECT * 
+        FROM vAds 
         WHERE status = 'ACTIVE'";
         if ($search != "") {
             $query .= "AND (LOWER(title) LIKE LOWER('%$search%') OR LOWER(description) LIKE LOWER('%$search%'))";
@@ -169,10 +136,7 @@ class Postgresql
             $query .= " AND zipCity = '$zip'";
         }
         $query .= "ORDER BY creationDate DESC;";
-        //Create Views
-        $this->query($query);
-        //Select from view
-        $result = $this->query("SELECT * FROM vAds");
+        $result = $this->query($query);
         $array = pg_fetch_all($result);
         foreach ($array as &$ad) {
             $ad['avg'] = pg_fetch_all($this->query("SELECT avg(Ra.objectrating) 
@@ -226,26 +190,7 @@ class Postgresql
 
     function getRental($index)
     {
-        $this->query("CREATE OR REPLACE VIEW vRentalInfo AS
-        SELECT POwner.mail AS ownermail, 
-        PRenter.mail AS rentermail, 
-        A.idprofile AS idowner,
-        R.id AS rentalId, 
-        A.id AS adid, 
-        A.title, 
-        R.startDate, 
-        R.endDate, 
-        statusrental, 
-        R.idprofile AS rentidowner, 
-        A.description, 
-        R.comment, 
-        R.paymentMethod, 
-        R.paymentdate from Rental AS R 
-            INNER JOIN advertisement AS A ON R.idAdvertisement = A.id
-            INNER JOIN Profile AS POwner ON POwner.id = A.idprofile
-            INNER JOIN Profile AS PRenter ON PRenter.id = R.idprofile
-        WHERE R.id=$index;");
-        $query = $this->query("SELECT * FROM vRentalInfo");
+        $query = $this->query("SELECT * FROM vRentalInfo WHERE rentidowner= $index");
         $array = pg_fetch_all($query);
         return $array[0];
     }
@@ -264,34 +209,14 @@ class Postgresql
 
     function getAllRentalsFromProfile($userId)
     {
-        $this->query("CREATE OR REPLACE VIEW vRentalsFromProfile AS
-        SELECT R.id AS rentalId, 
-        A.id, 
-        A.title, 
-        R.startDate, 
-        R.endDate 
-        FROM Rental AS R 
-            INNER JOIN advertisement AS A ON R.idAdvertisement = A.id
-        WHERE R.idProfile = $userId;");
-        $result = $this->query("SELECT * FROM vRentalsFromProfile");
+        $result = $this->query("SELECT * FROM vRentalsFromProfile WHERE rentalid = $userId");
         $array = pg_fetch_all($result);
         return $array;
     }
 
     function getAllRentalsFromOwner($userId)
     {
-        $result = $this->query("CREATE OR REPLACE VIEW vALLRentalsFromOwner AS
-        SELECT R.idprofile AS rentowner, 
-        A.idprofile AS adowner, 
-        R.id AS idrent, 
-        A.id AS idAd, 
-        A.title AS adtitle, 
-        R.startdate AS rentstart, 
-        R.endDate AS rentend
-        FROM Rental AS R
-            INNER JOIN advertisement AS A ON R.idAdvertisement = A.id
-        WHERE A.idProfile = $userId;");
-        $result = $this->query("SELECT * FROM vALLRentalsFromOwner");
+        $result = $this->query("SELECT * FROM vAllRentalsFromOwner WHERE rentowner = $userId");
         $array = pg_fetch_all($result);
         return $array;
     }
