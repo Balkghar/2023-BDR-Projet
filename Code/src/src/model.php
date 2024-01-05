@@ -94,6 +94,7 @@ class Postgresql
         $result = $this->query("SELECT * FROM vAds WHERE id=$index;");
         $array = pg_fetch_all($result);
         # TODO : add rating of object in the view vAds ?
+        // TODO : trouvre un moyen de faire l'average directement dans la requête de base
         $array[0]['avg'] = pg_fetch_all($this->query("SELECT avg(Ra.objectrating) FROM Rental as Re INNER JOIN Rating as Ra ON Ra.idRental = Re.id WHERE Re.idAdvertisement = " . $array[0]['id'] . ";"))[0]['avg'];
         return $array[0];
     }
@@ -139,6 +140,7 @@ class Postgresql
         $query .= "ORDER BY creationDate DESC;";
         $result = $this->query($query);
         $array = pg_fetch_all($result);
+        // TODO : trouvre un moyen de faire l'average directement dans la requête de base
         foreach ($array as &$ad) {
             $ad['avg'] = pg_fetch_all($this->query("SELECT avg(Ra.objectrating) 
             FROM Rental as Re 
