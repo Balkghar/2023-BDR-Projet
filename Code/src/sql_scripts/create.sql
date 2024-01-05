@@ -429,10 +429,3 @@ CREATE CONSTRAINT TRIGGER checkRating
     DEFERRABLE INITIALLY DEFERRED
     FOR EACH ROW
 EXECUTE FUNCTION chkRating();
-
-
-
--- TODO Create vue for advertisements with rating, address, owner, category, etc.?
--- TODO Create vue for rentals with address, owner, renter and advertisement, etc.?
--- TODO Add locations of the advertisements everywhere
--- TODO Add locations of the rentals everywhere
