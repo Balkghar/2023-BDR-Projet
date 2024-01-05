@@ -204,6 +204,7 @@ CREATE TABLE Rating
 -- VIEWS --
 CREATE OR REPLACE VIEW vAds AS
 SELECT Ad.id            AS id,
+       Adr.id           AS idadrr,
        Ad.idProfile     as idProfile,
        Ad.title         AS title,
        Ad.price         AS price,

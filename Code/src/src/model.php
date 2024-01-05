@@ -365,24 +365,17 @@ class Postgresql
     }
     function deleteImagesFromAd($adId, $imagePaths)
     {
-        // Retrieve the current array
-        $querySelect = "SELECT pictures FROM Advertisement WHERE id = $1";
-        $resultSelect = pg_query_params($this->dbconn, $querySelect, array($adId));
+        $stringCurrentImages = pg_fetch_all($this->query("SELECT pictures FROM Advertisement WHERE id = $adId"))[0]['pictures'];
+        $currentPictures = array_map('trim', explode(',', str_replace("\"", "", trim($stringCurrentImages, '{}'))));
 
-        if (!$resultSelect) {
-            echo "Error retrieving data from the database.";
-            return;
+        $newPictures = array_diff($currentPictures, $imagePaths);
+        if (!empty($newPictures)) {
+            $newString = '{"' . implode(",", $newPictures) . '"}';
+        } else {
+            $newString = null;
         }
-
-        $row = pg_fetch_assoc($resultSelect);
-        $currentArray = array_map('trim', explode(',', trim(trim($row['pictures'], '{}'), "\"\"")));
-
-        // Remove the specified image paths
-        $newArray = array_diff($currentArray, $imagePaths);
-        // seems to work sometimes raaaaaaaaah
-        // Update the database with the new array
         $queryUpdate = "UPDATE Advertisement SET pictures = $1 WHERE id = $2";
-        pg_query_params($this->dbconn, $queryUpdate, array('{"' . implode(",", $newArray) . '"}', $adId));
+        pg_query_params($this->dbconn, $queryUpdate, array($newString, $adId));
     }
 
 
