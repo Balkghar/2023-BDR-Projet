@@ -1,23 +1,33 @@
-# BDR Project
+# BDR - Project 'Prêt de chez toi'
 
-Prerequisites: docker installed
+## Descritpion:
 
-Start:
-Go to Code repository in the terminal and start the containers with the following command:
+This project is a web application that allows users to create advertisements for objects and to rent objects from other
+users. The application is developed in PHP. The database is a PostgreSQL database. The application is deployed in Docker
+containers.
 
-`docker compose up -d`
+## Installation/Deployment Guide:
 
-Connect:
-Connect to the web-application with the following link:
-http://localhost/
+### Prerequisites:
 
+To be able to execute and deploy the project, the following software is required to be installed:
 
-Stop:
-Stop the container with the followin command:
+- Docker installed
+- Software to connect to the database (e.g. DBeaver / IntelliJ)
 
-`docker compose down`
+### Start the app:
 
+1. Clone the repository
+2. Open the terminal and navigate to the Code folder of the repository
+3. Execute the following command to start the docker containers: `docker compose up -d`
+4. Connect yourself to the database with the credentials provided in the Code/docker-compose.yml file
+5. Execute the SQL script create.sql and insert.sql in the Code/src/sql_scripts folder to create the database tables and
+   insert the template data
+6. Open the browser and navigate to http://localhost/
 
-### old
-Command to create SSL certificate:
-sudo openssl req -x509 -nodes -days 365 -newkey rsa:2048 -keyout Code/nginx/ssl/server.key -out Code/nginx/ssl/server.crt
+### Stop the app:
+
+1. Open the terminal and navigate to the Code folder of the repository
+2. Execute the following command to stop the docker containers: `docker compose down`
+3. ( Execute the following command if you want to remove the docker containers: `docker compose rm`)
+
