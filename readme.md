@@ -19,7 +19,7 @@ To be able to execute and deploy the project, the following software is required
 
 1. Clone the repository
 2. Open the terminal and navigate to the Code folder of the repository
-3. Change the right of the folder (images)[./Code/src/images] with this command : 
+3. Change the right of the folder [images](./Code/src/images) with this command : 
 ```bash
 sudo chown -R www-data:www-data images # change owership of the images folder to www-data
 find images -type d -exec chmod 775 {} # change all the directories to 775 (write for user & group www-data, read for others)
