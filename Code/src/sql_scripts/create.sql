@@ -250,9 +250,11 @@ SELECT R.id AS rentalId,
        A.id,
        A.title,
        R.startDate,
-       R.endDate
-FROM Rental AS R
-         INNER JOIN advertisement AS A ON R.idAdvertisement = A.id;
+       R.endDate,
+       R.idProfile
+       FROM Rental AS R
+       INNER JOIN advertisement AS A ON R.idAdvertisement = A.id
+       INNER JOIN Profile AS P ON R.idProfile = P.id;
 
 CREATE OR REPLACE VIEW vALLRentalsFromOwner AS
 SELECT R.idprofile AS rentowner,

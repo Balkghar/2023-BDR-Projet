@@ -193,7 +193,7 @@ class Postgresql
 
     function getRental($index)
     {
-        $query = $this->query("SELECT * FROM vRentalInfo WHERE rentidowner= $index");
+        $query = $this->query("SELECT * FROM vRentalInfo WHERE rentalId= $index");
         $array = pg_fetch_all($query);
         return $array[0];
     }
@@ -212,7 +212,7 @@ class Postgresql
 
     function getAllRentalsFromProfile($userId)
     {
-        $result = $this->query("SELECT * FROM vRentalsFromProfile WHERE rentalid = $userId");
+        $result = $this->query("SELECT * FROM vRentalsFromProfile WHERE idProfile = $userId");
         $array = pg_fetch_all($result);
         return $array;
     }
