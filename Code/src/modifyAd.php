@@ -21,11 +21,11 @@ if (isset($_GET["id"]) and isset($_SESSION["connected"]) and isset($_SESSION["us
 
     // Handle picture deletions
     if (isset($_POST['deletePictures']) && !empty($_POST['deletePictures'])) {
+        // Delete the selected picture
+        // Assuming that $ad['pictures'] is a comma-separated list of picture paths
+        $db->deleteImagesFromAd($_POST['id'], $_POST['deletePictures']);
+        // Delete the physical file from the server
         foreach ($_POST['deletePictures'] as $pictureToDelete) {
-            // Delete the selected picture
-            // Assuming that $ad['pictures'] is a comma-separated list of picture paths
-            $db->deleteImageFromAd($_POST['id'], $pictureToDelete);
-            // Delete the physical file from the server
             if (file_exists($pictureToDelete)) {
                 unlink($pictureToDelete);
             }

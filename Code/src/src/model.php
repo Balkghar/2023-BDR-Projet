@@ -363,14 +363,29 @@ class Postgresql
         // Execute the query with pg_query_params
         pg_query_params($this->dbconn, $query, array($imagePathsStr, $adId));
     }
-    function deleteImageFromAd($adId, $imagePath)
+    function deleteImagesFromAd($adId, $imagePaths)
     {
+        // Retrieve the current array
+        $querySelect = "SELECT pictures FROM Advertisement WHERE id = $1";
+        $resultSelect = pg_query_params($this->dbconn, $querySelect, array($adId));
 
-        // Construct the SQL query to update the pictures array
-        $sql = "UPDATE Advertisement SET pictures = array_remove(pictures, '$imagePath') WHERE id = $adId;";
-        // Execute the query
-        $this->query($sql);
+        if (!$resultSelect) {
+            echo "Error retrieving data from the database.";
+            return;
+        }
+
+        $row = pg_fetch_assoc($resultSelect);
+        $currentArray = array_map('trim', explode(',', trim(trim($row['pictures'], '{}'), "\"\"")));
+
+        // Remove the specified image paths
+        $newArray = array_diff($currentArray, $imagePaths);
+        // seems to work sometimes raaaaaaaaah
+        // Update the database with the new array
+        $queryUpdate = "UPDATE Advertisement SET pictures = $1 WHERE id = $2";
+        pg_query_params($this->dbconn, $queryUpdate, array('{"' . implode(",", $newArray) . '"}', $adId));
     }
+
+
     function updateProfile($firstname, $lastname, $mail, $phoneNumber, $zipCity, $street, $streetNumber, $idProfile)
     {
         $query = "SELECT P.idAddress AS id from profile AS P 
