@@ -1,32 +1,32 @@
 /* For Mobile */
 @media screen and (max-width: 540px) {
 
-   .div-carousel {
-      height: 150px;
-      display: flex;
-      overflow: hidden;
-      /* Hide any content that overflows the container */
-   }
+    .div-carousel {
+        height: 150px;
+        display: flex;
+        overflow: hidden;
+        /* Hide any content that overflows the container */
+    }
 
-   .img-carousel {
-      height: 150px;
-      max-height: 100%;
-      max-width: 100%;
-   }
+    .img-carousel {
+        height: 150px;
+        max-height: 100%;
+        max-width: 100%;
+    }
 }
 
 @media screen and (min-width: 540px) {
 
-   .div-carousel {
-      height: 300px;
-      display: flex;
-      overflow: hidden;
-      /* Hide any content that overflows the container */
-   }
+    .div-carousel {
+        height: 300px;
+        display: flex;
+        overflow: hidden;
+        /* Hide any content that overflows the container */
+    }
 
-   .img-carousel {
-      height: 300px;
-      max-height: 100%;
-      max-width: 100%;
-   }
+    .img-carousel {
+        height: 300px;
+        max-height: 100%;
+        max-width: 100%;
+    }
 }
