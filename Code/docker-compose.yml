@@ -17,8 +17,7 @@ services:
       - 5432:5432
     volumes:
       - ./postgresql/postgres-data:/var/lib/postgresql/data
-      #- ./postgres-data:/docker-entrypoint-initdb.d/
-
+      - ./src/sql_scripts/create.sql:/docker-entrypoint-initdb.d/init.sql
   php-fpm:
     build: ./php-fpm
     restart: always
