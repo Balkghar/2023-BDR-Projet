@@ -189,6 +189,7 @@ CREATE TABLE Rating
     rentalRating smallint  NOT NULL,
     objectRATING smallint,
     comment      text,
+
     CONSTRAINT PK_Rating PRIMARY KEY (id),
     CONSTRAINT FK_Rating_Profile FOREIGN KEY (idProfile)
         REFERENCES Profile (id)
