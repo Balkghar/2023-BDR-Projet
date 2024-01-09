@@ -280,7 +280,11 @@ class Postgresql
         $condition = ['id' => $id];
         pg_update($this->dbconn, 'rental', $updateQuery, $condition);
     }
-    function getAllCategory()
+
+    /**
+     * @return array
+     */
+    function getAllCategory(): array
     {
         $result = $this->query("select name from category;");
         $array = pg_fetch_all($result);
@@ -315,15 +319,15 @@ class Postgresql
         $array = pg_fetch_all($this->query($query));
         return !$array;
     }
-    function rateRental($idRental, $idProfile, $rating)
+    function rateRental($idRental, $idProfile, $rating, $comment)
     {
-        $query = "INSERT INTO Rating (idProfile, idRental, rentalRating) VALUES ($1,$2,$3);";
-        pg_query_params($this->dbconn, $query, array($idProfile, $idRental, $rating));
+        $query = "INSERT INTO Rating (idProfile, idRental, rentalRating, comment) VALUES ($1,$2,$3,$4);";
+        pg_query_params($this->dbconn, $query, array($idProfile, $idRental, $rating, $comment));
     }
-    function rateObject($idRental, $idProfile, $ratingObject, $ratingRental)
+    function rateObject($idRental, $idProfile, $ratingObject, $ratingRental, $comment)
     {
-        $query = "INSERT INTO Rating (idProfile, idRental, rentalRating, objectRATING) VALUES ($1,$2,$3,$4);";
-        pg_query_params($this->dbconn, $query, array($idProfile, $idRental, $ratingRental, $ratingObject));
+        $query = "INSERT INTO Rating (idProfile, idRental, rentalRating, objectRATING, comment) VALUES ($1,$2,$3,$4,$5);";
+        pg_query_params($this->dbconn, $query, array($idProfile, $idRental, $ratingRental, $ratingObject, $comment));
     }
     function updateAddress($zip, $street, $streetNumber, $id)
     {
