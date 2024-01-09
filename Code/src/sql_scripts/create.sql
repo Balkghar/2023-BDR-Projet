@@ -188,6 +188,7 @@ CREATE TABLE Rating
     ratingDate   timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
     rentalRating smallint  NOT NULL,
     objectRATING smallint,
+    comment      text,
     CONSTRAINT PK_Rating PRIMARY KEY (id),
     CONSTRAINT FK_Rating_Profile FOREIGN KEY (idProfile)
         REFERENCES Profile (id)
@@ -252,9 +253,9 @@ SELECT R.id AS rentalId,
        R.startDate,
        R.endDate,
        R.idProfile
-       FROM Rental AS R
-       INNER JOIN advertisement AS A ON R.idAdvertisement = A.id
-       INNER JOIN Profile AS P ON R.idProfile = P.id;
+FROM Rental AS R
+         INNER JOIN advertisement AS A ON R.idAdvertisement = A.id
+         INNER JOIN Profile AS P ON R.idProfile = P.id;
 
 CREATE OR REPLACE VIEW vALLRentalsFromOwner AS
 SELECT R.idprofile AS rentowner,
