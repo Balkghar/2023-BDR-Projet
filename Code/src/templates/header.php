@@ -92,4 +92,28 @@
             <?php
                 }
             }
+            function convertDateToHumanReadable($date)
+            {
+                // source : https://stackoverflow.com/questions/70930824/php-8-1-strftime-is-deprecated
+                // "date_default_timezone_set" may be required by your server
+                date_default_timezone_set('Europe/Zurich');
+
+                // make a DateTime object 
+                // the "now" parameter is for get the current date, 
+                // but that work with a date recived from a database 
+                // ex. replace "now" by '2022-04-04 05:05:05'
+                $dateTimeObj = new DateTime($date, new DateTimeZone('Europe/Zurich'));
+
+                // format the date according to your preferences
+                // the 3 params are [ DateTime object, ICU date scheme, string locale ]
+                $dateFormatted =
+                    IntlDateFormatter::formatObject(
+                        $dateTimeObj,
+                        'eee d MMMM y à HH:mm',
+                        'fr'
+                    );
+
+                // test :
+                return ucwords($dateFormatted);
+            }
             ?>
