@@ -225,7 +225,6 @@ FROM advertisement AS Ad
          INNER JOIN Address AS Adr ON Ad.idAddress = Adr.id
          INNER JOIN City AS Cit ON Adr.zipCity = Cit.zip;
 
--- TODO : isn't it possible to use one single view instead of the three following ones ?
 CREATE OR REPLACE VIEW vRentalInfo AS
 SELECT POwner.mail  AS ownermail,
        PRenter.mail AS rentermail,
@@ -235,7 +234,7 @@ SELECT POwner.mail  AS ownermail,
        A.title,
        R.startDate,
        R.endDate,
-       statusrental,
+       R.statusrental,
        R.idprofile  AS rentidowner,
        A.description,
        R.comment,
@@ -247,24 +246,14 @@ from Rental AS R
          INNER JOIN Profile AS PRenter ON PRenter.id = R.idprofile;
 
 CREATE OR REPLACE VIEW vRentalsFromProfile AS
-SELECT R.id AS rentalId,
-       A.id,
+SELECT R.id        AS idRental,
+       A.id        AS idAd,
+       R.idProfile AS idRenter,
+       A.idProfile AS idOwner,
        A.title,
        R.startDate,
        R.endDate,
        R.idProfile
-FROM Rental AS R
-         INNER JOIN advertisement AS A ON R.idAdvertisement = A.id
-         INNER JOIN Profile AS P ON R.idProfile = P.id;
-
-CREATE OR REPLACE VIEW vALLRentalsFromOwner AS
-SELECT R.idprofile AS rentowner,
-       A.idprofile AS adowner,
-       R.id        AS idrent,
-       A.id        AS idAd,
-       A.title     AS adtitle,
-       R.startdate AS rentstart,
-       R.endDate   AS rentend
 FROM Rental AS R
          INNER JOIN advertisement AS A ON R.idAdvertisement = A.id;
 
