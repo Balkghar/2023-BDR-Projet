@@ -2,3 +2,4 @@
 /Code/postgresql/postgres-data
 /.idea
 /Code/src/images/*
+/Code/php-fpm/images/*
