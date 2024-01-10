@@ -19,12 +19,11 @@ To be able to execute and deploy the project, the following software is required
 
 1. Clone the repository
 2. Open the terminal and navigate to the [Code](./Code/) folder of the repository
-3. Change the right of the folder [images](./Code/src/images) with those commands :
+3. Change the right of the folder [images](./Code/php-fpm/images) with those commands :
 
 ```bash
-sudo chown -R www-data:www-data images # change owership of the images folder to www-data
-find images -type d -exec chmod 775 {} # change all the directories to 775 (write for user & group www-data, read for others)
-find images -type f -exec chmod 664 {} # To change all the files to 664 (write for user & group www-data, read for others)
+sudo chmod 777 Code/php-fpm/images/ # modify permissions of images folder
+sudo chmod 666 Code/php-fpm/images/* # modify permissions of content in image folder
 ```
 
 4. Execute the following command to start the docker containers: `docker compose up -d`
