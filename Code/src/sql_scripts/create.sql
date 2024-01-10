@@ -226,6 +226,17 @@ FROM advertisement AS Ad
          INNER JOIN Address AS Adr ON Ad.idAddress = Adr.id
          INNER JOIN City AS Cit ON Adr.zipCity = Cit.zip;
 
+CREATE OR REPLACE VIEW vComments AS
+SELECT Ad.id As id,
+       Ra.objectrating as objectrating,
+       P.firstname,
+       P.lastname,
+       Ra.comment
+FROM rating AS Ra
+         INNER JOIN Rental as Re ON Re.id = Ra.idRental
+         INNER JOIN Advertisement as Ad ON Ad.id = Re.idAdvertisement
+         INNER JOIN Profile as P on P.id = Ra.idProfile;
+
 CREATE OR REPLACE VIEW vRentalInfo AS
 SELECT POwner.mail  AS ownermail,
        PRenter.mail AS rentermail,
