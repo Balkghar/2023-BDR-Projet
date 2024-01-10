@@ -284,7 +284,16 @@ SELECT R.id        AS idRental,
 FROM Rental AS R
          INNER JOIN advertisement AS A ON R.idAdvertisement = A.id;
 
+/*
+CREATE OR REPLACE VIEW vProfile AS
+SELECT P.id AS profileId,
+       A.id AS addressId,
+       * FROM Profile AS P
+                  INNER JOIN Address AS A ON P.idAddress = A.id
+                  INNER JOIN City AS C ON A.zipCity = C.zip;
 
+
+ */
 -- TRIGGER ON VIEW UPDATE --
 CREATE OR REPLACE FUNCTION updateAdFromView() RETURNS TRIGGER
     LANGUAGE plpgsql
