@@ -35,6 +35,7 @@ class Postgresql
 
         return $result;
     }
+
     function desactivateAd($index)
     {
         $updateQuery = [
@@ -44,17 +45,21 @@ class Postgresql
         $condition = ['id' => $index];
         pg_update($this->dbconn, 'advertisement', $updateQuery, $condition);
     }
+
     function makeReservation($startDate, $endDate, $id, $idProfile, $comment, $paymentMethod)
     {
-        $query = "INSERT INTO Rental (idProfile, idAdvertisement, startDate, endDate, comment, statusRental, paymentMethod) VALUES ($1, $2, $3, $4, $5, $6, $7)";
+        //$query = "INSERT INTO Rental (idProfile, idAdvertisement, startDate, endDate, comment, statusRental, paymentMethod) VALUES ($1, $2, $3, $4, $5, $6, $7)";
+        $query = "CALL insertRental($1, $2, $3, $4, $5, $6, $7)";
 
         // Execute the query with pg_query_params
         pg_query_params($this->dbconn, $query, array($idProfile, $id, $startDate, $endDate, $comment, 'RESERVATION_ASKED', $paymentMethod));
     }
+
     function getPaymentMethod()
     {
         return $this->getEnum("PaymentMethod");
     }
+
     function getEnum($enum)
     {
         $tmpArray = pg_fetch_all($this->query("select enum_range(null::" . $enum . ");"));
@@ -63,6 +68,7 @@ class Postgresql
         $array = explode(',', $txt);
         return $array;
     }
+
     function activateAd($index)
     {
         $updateQuery = [
@@ -73,6 +79,7 @@ class Postgresql
         $condition = ['id' => $index];
         pg_update($this->dbconn, 'advertisement', $updateQuery, $condition);
     }
+
     function deleteAd($index)
     {
         $updateQuery = [
@@ -83,6 +90,7 @@ class Postgresql
         $condition = ['id' => $index];
         pg_update($this->dbconn, 'advertisement', $updateQuery, $condition);
     }
+
     function userIsAdOwner($index, $userId)
     {
         $ad = $this->getAd($index);
@@ -148,6 +156,7 @@ class Postgresql
         }
         return $array;
     }
+
     function getAllChildCategory($category)
     {
         return pg_fetch_all($this->query("select * from category WHERE parentcategory='$category';"));
@@ -222,6 +231,7 @@ class Postgresql
         $array = pg_fetch_all($result);
         return $array;
     }
+
     function getCurrentTime()
     {
         // TODO : adapt timezone
@@ -229,6 +239,7 @@ class Postgresql
         $now->format('Y-m-d H:i:s');
         return date("Y-m-d H:i:s", $now->getTimestamp());
     }
+
     function paymentDone($id)
     {
         $updateQuery = [
@@ -239,15 +250,18 @@ class Postgresql
         $condition = ['id' => $id];
         pg_update($this->dbconn, 'rental', $updateQuery, $condition);
     }
+
     function locationIsNotCanceled($id)
     {
         $result = $this->getRental($id);
         return ($result['statusrental'] != 'LOCATION_CANCELED' && $result['statusrental'] != 'RESERVATION_CANCELED');
     }
+
     function confirmateRental($id)
     {
         $this->updateRentalStatus($id, 'RESERVATION_CONFIRMED');
     }
+
     function cancelRental($id)
     {
         $this->updateRentalStatus($id, 'RESERVATION_CANCELED');
@@ -257,18 +271,22 @@ class Postgresql
     {
         $this->updateRentalStatus($id, 'LOCATION_ONGOING');
     }
+
     function itemReturned($id)
     {
         $this->updateRentalStatus($id, 'ITEM_RETURNED');
     }
+
     function finishLocation($id)
     {
         $this->updateRentalStatus($id, 'LOCATION_FINISHED');
     }
+
     function cancelLocation($id)
     {
         $this->updateRentalStatus($id, 'LOCATION_CANCELED');
     }
+
     function updateRentalStatus($id, $newStatus)
     {
         $updateQuery = [
@@ -289,6 +307,7 @@ class Postgresql
         $array = pg_fetch_all($result);
         return $array;
     }
+
     function createAd($title, $description, $price, $categroy, $interval, $zip, $street, $streetNumber, $idProfile)
     {
         $idAdress = $this->addAddress($zip, $street, $streetNumber);
@@ -302,22 +321,26 @@ class Postgresql
         $array = pg_fetch_all($result);
         return $array[0]['max'];
     }
+
     function getAllCity()
     {
         $result = $this->query("select * from city ;");
         $array = pg_fetch_all($result);
         return $array;
     }
+
     function getAllCanton()
     {
         return $this->getEnum("Canton");
     }
+
     function checkIfRentalIsNotRated($idRental, $idProfile)
     {
         $query = "SELECT * FROM Rating WHERE idRental=$idRental AND idProfile=$idProfile;";
         $array = pg_fetch_all($this->query($query));
         return !$array;
     }
+
     function rateRental($idRental, $idProfile, $rating, $comment)
     {
         if ($comment == "")
@@ -325,6 +348,7 @@ class Postgresql
         $query = "INSERT INTO Rating (idProfile, idRental, rentalRating, comment) VALUES ($1,$2,$3,$4);";
         pg_query_params($this->dbconn, $query, array($idProfile, $idRental, $rating, $comment));
     }
+
     function rateObject($idRental, $idProfile, $ratingObject, $ratingRental, $comment)
     {
         if ($comment == "")
@@ -332,6 +356,7 @@ class Postgresql
         $query = "INSERT INTO Rating (idProfile, idRental, rentalRating, objectRATING, comment) VALUES ($1,$2,$3,$4,$5);";
         pg_query_params($this->dbconn, $query, array($idProfile, $idRental, $ratingRental, $ratingObject, $comment));
     }
+
     function updateAddress($zip, $street, $streetNumber, $id)
     {
 
@@ -345,6 +370,7 @@ class Postgresql
         $condition = ['id' => $id];
         pg_update($this->dbconn, 'address', $updateQuery, $condition);
     }
+
     function modifyAd($title, $description, $price, $category, $interval, $zip, $street, $streetNumber, $idAd, $idAddr)
     {
         $this->updateAddress($zip, $street, $streetNumber, $idAddr);
@@ -361,6 +387,7 @@ class Postgresql
         $condition = ['id' => $idAd];
         pg_update($this->dbconn, 'advertisement', $updateQuery, $condition);
     }
+
     function addImagesToAd($adId, $imagePaths)
     {
         // Convert the array of image paths to a comma-separated string
@@ -372,6 +399,7 @@ class Postgresql
         // Execute the query with pg_query_params
         pg_query_params($this->dbconn, $query, array($imagePathsStr, $adId));
     }
+
     function deleteImagesFromAd($adId, $imagePaths)
     {
         $stringCurrentImages = pg_fetch_all($this->query("SELECT pictures FROM Advertisement WHERE id = $adId"))[0]['pictures'];

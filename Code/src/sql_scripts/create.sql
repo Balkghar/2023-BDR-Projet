@@ -227,18 +227,34 @@ FROM advertisement AS Ad
          INNER JOIN Address AS Adr ON Ad.idAddress = Adr.id
          INNER JOIN City AS Cit ON Adr.zipCity = Cit.zip;
 
-/*CREATE OR REPLACE FUNCTION calculatePrice(startDate, endDate, price, priceInterval)
-    RETURNS integer
+
+CREATE OR REPLACE PROCEDURE insertRental(idProfile integer, idAdvertisement integer, startDate timestamp,
+                                         endDate timestamp, comment text,
+                                         statusRental StatusRental, paymentMethod PaymentMethod)
     LANGUAGE plpgsql
 AS
 $$
+DECLARE
+    dateDifference  integer;
+    totalPrice      integer;
+    priceAd         integer;
+    priceIntervalAd PriceInterval;
 BEGIN
-    IF priceInterval = PriceInterval:DAY THEN
-        RETURN price * (endDate - startDate)
+    SELECT A.price, A.priceInterval FROM Advertisement AS A WHERE A.id = idAdvertisement INTO priceAd, priceIntervalAd;
+    IF priceIntervalAd = 'DAY'::PriceInterval THEN
+        SELECT DATE_PART('day', endDate) - DATE_PART('day', startDate) INTO dateDifference;
+    ELSIF priceIntervalAd = 'WEEK'::PriceInterval THEN
+        SELECT DATE_PART('week', endDate) - DATE_PART('week', startDate) INTO dateDifference;
+    ELSIF priceIntervalAd = 'MONTH'::PriceInterval THEN
+        SELECT DATE_PART('month', endDate) - DATE_PART('month', startDate) INTO dateDifference;
     END IF;
-
+    totalPrice := priceAd * dateDifference;
+    INSERT INTO Rental (idProfile, idAdvertisement, startDate, endDate, comment, statusRental,
+                        paymentMethod, price)
+    VALUES (idProfile, idAdvertisement, startDate, endDate, comment, statusRental, paymentMethod,
+            totalPrice);
 END
-$$;*/
+$$;
 
 CREATE OR REPLACE VIEW vRatingsComments AS
 SELECT Ad.id,
