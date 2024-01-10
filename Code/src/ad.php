@@ -12,6 +12,7 @@ if (isset($_GET['id']) && $_GET['id'] > 0) {
 $db = new Postgresql();
 
 $ad = $db->getAd($identifier);
+$comments = $db->getAllCommentsOfProfile($identifier);
 
 $paymentMethod = $db->getPaymentMethod();
 
