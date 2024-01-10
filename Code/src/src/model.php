@@ -416,7 +416,7 @@ class Postgresql
         $query = "SELECT P.firstname, P.lastname, Ra.comment from rating as Ra 
                 INNER JOIN rental as Re ON Re.id = Ra.idRental 
                 INNER JOIN advertisement as Ad ON Ad.id = Re.idAdvertisement INNER JOIN profile as P on P.id = Ra.idProfile 
-                WHERE Ad.id = $idAd;";
+                WHERE Ad.id = $idAd AND Ra.objectrating IS NOT NULL;";
         $result = $this->query($query);
         return pg_fetch_all($result);
     }
