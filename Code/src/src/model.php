@@ -106,12 +106,13 @@ class Postgresql
         return $array;
     }
 
+
     function getProfile($index)
     {
-        $result = $this->query("select * from profile AS P 
-                                INNER JOIN Address AS A ON P.idAddress = A.id
-                                INNER JOIN City as C ON A.zipCity = C.zip
-                                WHERE P.id=$index;");
+        $result = $this->query("
+        SELECT * 
+        FROM vProfile
+        WHERE profileId=$index;");
         $array = pg_fetch_all($result);
         return $array[0];
     }
@@ -140,12 +141,10 @@ class Postgresql
         $query .= "ORDER BY creationDate DESC;";
         $result = $this->query($query);
         $array = pg_fetch_all($result);
-        // TODO : trouvre un moyen de faire l'average directement dans la requête de base
         foreach ($array as &$ad) {
-            $ad['avg'] = pg_fetch_all($this->query("SELECT avg(Ra.objectrating) 
-            FROM Rental as Re 
-            INNER JOIN Rating as Ra 
-            ON Ra.idRental = Re.id WHERE Re.idAdvertisement = " . $ad['id'] . ";"))[0]['avg'];
+            $ad['avg'] = pg_fetch_all($this->query("SELECT avg(objectrating) 
+            FROM vRatingsComments
+            WHERE id = " . $ad['id'] . ";"))[0]['avg'];
         }
         return $array;
     }
