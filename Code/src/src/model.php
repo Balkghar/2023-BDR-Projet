@@ -212,14 +212,14 @@ class Postgresql
 
     function getAllRentalsFromProfile($userId)
     {
-        $result = $this->query("SELECT * FROM vRentalsFromProfile WHERE idRenter = $userId");
+        $result = $this->query("SELECT * FROM vRentals WHERE idRenter = $userId");
         $array = pg_fetch_all($result);
         return $array;
     }
 
     function getAllRentalsFromOwner($userId)
     {
-        $result = $this->query("SELECT * FROM vRentalsFromProfile WHERE idOwner = $userId");
+        $result = $this->query("SELECT * FROM vRentals WHERE idOwner = $userId");
         $array = pg_fetch_all($result);
         return $array;
     }

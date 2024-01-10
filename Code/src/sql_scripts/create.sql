@@ -246,7 +246,7 @@ from Rental AS R
          INNER JOIN Profile AS POwner ON POwner.id = A.idprofile
          INNER JOIN Profile AS PRenter ON PRenter.id = R.idprofile;
 
-CREATE OR REPLACE VIEW vRentalsFromProfile AS
+CREATE OR REPLACE VIEW vRentals AS
 SELECT R.id        AS idRental,
        A.id        AS idAd,
        R.idProfile AS idRenter,
