@@ -310,22 +310,22 @@ VALUES (1, 1, 'Outils', 'Perceuse', 'Perceuse Bosch', 30, 'WEEK', 'ACTIVE'),
        (5, 7, 'Autres', 'Autre', 'Autre', 5, 'DAY', 'ACTIVE');*/
 
 INSERT INTO Rental (idProfile, idAdvertisement, creationDate, startDate, endDate, paymentDate, comment, statusRental,
-                    paymentMethod)
+                    paymentMethod, price)
 VALUES (1, 4, '2020-01-01 00:00:00', '2020-01-01 00:00:00', '2020-01-02 00:00:00', NULL, 'Comm1', 'RESERVATION_ASKED',
-        'TWINT'),
+        'TWINT', 0),
        (2, 5, '2020-01-01 00:00:00', '2020-02-01 00:00:00', '2020-02-12 00:00:00', NULL, 'Comm2',
-        'RESERVATION_CONFIRMED', 'CASH'),
+        'RESERVATION_CONFIRMED', 'CASH', 10),
        (3, 6, '2020-01-01 00:00:00', '2020-03-01 00:00:00', '2020-03-05 00:00:00', NULL, 'Comme3',
-        'RESERVATION_CANCELED', 'TWINT'),
+        'RESERVATION_CANCELED', 'TWINT', 12),
        (4, 7, '2020-01-01 00:00:00', '2020-04-01 00:00:00', '2020-04-02 00:00:00', '2020-04-01 00:00:00', 'Comm4',
-        'LOCATION_ONGOING', 'CASH'),
+        'LOCATION_ONGOING', 'CASH', 0),
        (5, 8, '2020-01-01 00:00:00', '2020-05-01 00:00:00', '2020-05-02 00:00:00', '2020-05-01 00:00:00', 'Comm5',
-        'ITEM_RETURNED', 'TWINT'),
+        'ITEM_RETURNED', 'TWINT', 14),
        (6, 9, '2020-01-01 00:00:00', '2020-06-01 00:00:00', '2020-06-02 00:00:00', NULL, 'Comm6', 'LOCATION_CANCELED',
-        'CASH'),
+        'CASH', 45),
        (7, 10, '2020-01-01 00:00:00', '2020-07-01 00:00:00', '2020-07-02 00:00:00', '2020-07-01 00:00:00', 'Comm7',
         'LOCATION_FINISHED',
-        'TWINT');
+        'TWINT', 6);
 
 
 INSERT INTO Rating (idProfile, idRental, rentalRating, objectRating)

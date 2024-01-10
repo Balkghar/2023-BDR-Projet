@@ -70,7 +70,8 @@ switch ($rental['statusrental']) {
         break;
 }
 ?>
-<h4>Méthode de paiement :
+    <h4>Price: <?php echo($rental['price']) ?></h4>
+    <h4>Méthode de paiement :
     <?php
     switch ($rental['paymentmethod']) {
         case 'TWINT':

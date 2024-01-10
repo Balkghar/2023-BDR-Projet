@@ -164,6 +164,7 @@ CREATE TABLE Rental
     comment         text,
     statusRental    StatusRental  NOT NULL,
     paymentMethod   PaymentMethod NOT NULL,
+    price           real          NOT NULL CHECK (price >= 0),
 
     CONSTRAINT PK_Rental PRIMARY KEY (id),
     CONSTRAINT FK_Rental_Profile FOREIGN KEY (idProfile)
@@ -226,6 +227,21 @@ FROM advertisement AS Ad
          INNER JOIN Address AS Adr ON Ad.idAddress = Adr.id
          INNER JOIN City AS Cit ON Adr.zipCity = Cit.zip;
 
+
+/*CREATE OR REPLACE FUNCTION calculatePrice(startDate, endDate, price, priceInterval)
+    RETURNS integer
+    LANGUAGE plpgsql
+AS
+$$
+BEGIN
+    IF priceInterval = PriceInterval:DAY THEN
+        RETURN price * (endDate - startDate)
+    END IF;
+
+END
+$$;*/
+
+
 CREATE OR REPLACE VIEW vRentalInfo AS
 SELECT POwner.mail  AS ownermail,
        PRenter.mail AS rentermail,
@@ -240,7 +256,8 @@ SELECT POwner.mail  AS ownermail,
        A.description,
        R.comment,
        R.paymentMethod,
-       R.paymentdate
+       R.paymentdate,
+       R.price
 from Rental AS R
          INNER JOIN advertisement AS A ON R.idAdvertisement = A.id
          INNER JOIN Profile AS POwner ON POwner.id = A.idprofile
