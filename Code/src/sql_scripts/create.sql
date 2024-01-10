@@ -344,13 +344,6 @@ CREATE OR REPLACE TRIGGER vAdTrigger
     FOR EACH ROW
 EXECUTE FUNCTION updateAdFromView();
 
-UPDATE vAds
-SET title       = 'test',
-    description = 'test',
-    price       = 69
-WHERE id = 1;
-
-
 -- CONTRAINTS --
 
 -- La creationDate d’un Advertisement ne peut pas se situer avant la registrationDate du User
