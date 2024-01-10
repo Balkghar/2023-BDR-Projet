@@ -240,9 +240,9 @@ BEGIN
 END
 $$;*/
 
-CREATE OR REPLACE VIEW vComments AS
-SELECT Ad.id As id,
-       Ra.objectrating as objectrating,
+CREATE OR REPLACE VIEW vRatingsComments AS
+SELECT Ad.id,
+       Ra.objectrating,
        P.firstname,
        P.lastname,
        Ra.comment
@@ -334,9 +334,6 @@ WHERE id = 1;
 
 
 -- CONTRAINTS --
-
--- Streetview
-
 
 -- La creationDate d’un Advertisement ne peut pas se situer avant la registrationDate du User
 CREATE OR REPLACE FUNCTION chkAdvertisement() RETURNS TRIGGER
