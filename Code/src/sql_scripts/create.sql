@@ -79,6 +79,7 @@ CREATE TABLE Address
     streetNumber varchar(5),
 
     CONSTRAINT PK_Address PRIMARY KEY (id),
+    CONSTRAINT CK_Address_streetNumber check (streetNumber SIMILAR TO '[0-9]{1,3}[a-zA-z]?'),
     CONSTRAINT FK_Address_idZip FOREIGN KEY (zipCity)
         REFERENCES City (zip)
         ON UPDATE RESTRICT
