@@ -321,11 +321,15 @@ class Postgresql
     }
     function rateRental($idRental, $idProfile, $rating, $comment)
     {
+        if ($comment == "")
+            $comment = null;
         $query = "INSERT INTO Rating (idProfile, idRental, rentalRating, comment) VALUES ($1,$2,$3,$4);";
         pg_query_params($this->dbconn, $query, array($idProfile, $idRental, $rating, $comment));
     }
     function rateObject($idRental, $idProfile, $ratingObject, $ratingRental, $comment)
     {
+        if ($comment == "")
+            $comment = null;
         $query = "INSERT INTO Rating (idProfile, idRental, rentalRating, objectRATING, comment) VALUES ($1,$2,$3,$4,$5);";
         pg_query_params($this->dbconn, $query, array($idProfile, $idRental, $ratingRental, $ratingObject, $comment));
     }
@@ -405,8 +409,10 @@ class Postgresql
         $condition = ['id' => $idProfile];
         pg_update($this->dbconn, 'profile', $updateQuery, $condition);
     }
+
     function getAllCommentsOfProfile($idAd)
     {
+        // TODO: à transformer en vue
         $query = "SELECT P.firstname, P.lastname, Ra.comment from rating as Ra 
                 INNER JOIN rental as Re ON Re.id = Ra.idRental 
                 INNER JOIN advertisement as Ad ON Ad.id = Re.idAdvertisement INNER JOIN profile as P on P.id = Ra.idProfile 
