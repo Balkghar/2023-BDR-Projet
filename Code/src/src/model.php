@@ -109,10 +109,10 @@ class Postgresql
 
     function getProfile($index)
     {
-        $result = $this->query("SELECT * FROM profile AS P 
-                                INNER JOIN Address AS A ON P.idAddress = A.id
-                                INNER JOIN City AS C ON A.zipCity = C.zip
-                                WHERE P.id=$index;");
+        $result = $this->query("
+        SELECT * 
+        FROM vProfile
+        WHERE profileId=$index;");
         $array = pg_fetch_all($result);
         return $array[0];
     }
