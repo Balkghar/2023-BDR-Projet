@@ -85,11 +85,18 @@ switch ($rental['statusrental']) {
         <?php
         if ($rentalIsNotRated) { ?>
             <form action="rateUser.php" method="post">
-                <input type="hidden" name="id" value="<?php echo($rental['rentalid']) ?>">
-                <input type="number" max="5" name="rating" step="1" required>
-                <label>Commentaire : </label>
-                <textarea id="comment" name="comment" rows="4" cols="50" required></textarea>
-                <input type="submit" class="btn btn-light" value="Évaluer la location"/>
+                <div class="form-group">
+                    <label>Note de la location : </label>
+                    <input type="hidden" name="id" value="<?php echo ($rental['rentalid']) ?>">
+                    <input class="form-control" type="number" max="5" name="rating" step="1" required>
+                </div>
+                <div class="form-group">
+                    <label>Commentaire : </label>
+                    <textarea class="form-control" id="comment" name="comment" rows="4" cols="50" required></textarea>
+                </div>
+                <div class="form-group">
+                    <input type="submit" class="btn btn-light" value="Évaluer la location" />
+                </div>
             </form>
             <?php
         }

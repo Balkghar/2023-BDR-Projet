@@ -21,13 +21,14 @@ foreach ($comments as $comment) {
             <h5 class="card-title"><?php echo ($comment['firstname'] . " " . $comment['lastname']) ?></h5>
             <p class="card-text"><?php echo ($comment['comment']) ?></p>
         </div>
-    </div>
+    </div><br>
 <?php
 }
 ?>
 <?php
 if (isset($_SESSION["connected"]) and $_SESSION['connected'] == true and isset($_SESSION["userId"]) and $ad['idprofile'] != $_SESSION["userId"]) {
 ?>
+    <h2>Louer : </h2>
     <form method="post" action="/makeRent.php">
 
         <input type="hidden" name="id" value="<?php echo ($ad['id']) ?>">
