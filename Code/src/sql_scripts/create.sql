@@ -226,9 +226,9 @@ FROM advertisement AS Ad
          INNER JOIN Address AS Adr ON Ad.idAddress = Adr.id
          INNER JOIN City AS Cit ON Adr.zipCity = Cit.zip;
 
-CREATE OR REPLACE VIEW vComments AS
-SELECT Ad.id As id,
-       Ra.objectrating as objectrating,
+CREATE OR REPLACE VIEW vRatingsComments AS
+SELECT Ad.id,
+       Ra.objectrating,
        P.firstname,
        P.lastname,
        Ra.comment

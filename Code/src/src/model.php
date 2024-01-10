@@ -95,7 +95,9 @@ class Postgresql
         $array = pg_fetch_all($result);
         # TODO : add rating of object in the view vAds ?
         // TODO : trouvre un moyen de faire l'average directement dans la requête de base
-        $array[0]['avg'] = pg_fetch_all($this->query("SELECT avg(Ra.objectrating) FROM Rental as Re INNER JOIN Rating as Ra ON Ra.idRental = Re.id WHERE Re.idAdvertisement = " . $array[0]['id'] . ";"))[0]['avg'];
+        $array[0]['avg'] = pg_fetch_all($this->query("SELECT avg(objectrating) 
+        FROM vRatingsComments
+        WHERE id = " . $array[0]['id'] . ";"))[0]['avg'];
         return $array[0];
     }
 
@@ -412,7 +414,7 @@ class Postgresql
 
     function getAllCommentsOfProfile($idAd)
     {
-        $query = "SELECT firstname, lastname, comment FROM vComments WHERE id = $idAd AND objectrating IS NOT NULL;";
+        $query = "SELECT firstname, lastname, comment FROM vRatingsComments WHERE id = $idAd AND objectrating IS NOT NULL;";
         $result = $this->query($query);
         return pg_fetch_all($result);
     }
