@@ -303,7 +303,7 @@ class Postgresql
      */
     function getAllCategory(): array
     {
-        $result = $this->query("select name from category;");
+        $result = $this->query("SELECT name FROM category;");
         $array = pg_fetch_all($result);
         return $array;
     }
