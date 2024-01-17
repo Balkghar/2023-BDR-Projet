@@ -242,6 +242,8 @@ DECLARE
 BEGIN
     SELECT A.price, A.priceInterval FROM Advertisement AS A WHERE A.id = idAdvertisement INTO priceAd, priceIntervalAd;
     IF priceIntervalAd = 'DAY'::PriceInterval THEN
+        -- endDate - startDate > rends un interval de temps
+        -- convert the interval into hours
         SELECT DATE_PART('day', endDate) - DATE_PART('day', startDate) INTO dateDifference;
     ELSIF priceIntervalAd = 'WEEK'::PriceInterval THEN
         SELECT DATE_PART('week', endDate) - DATE_PART('week', startDate) INTO dateDifference;
