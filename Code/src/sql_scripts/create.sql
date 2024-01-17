@@ -235,22 +235,22 @@ CREATE OR REPLACE PROCEDURE insertRental(idProfile integer, idAdvertisement inte
 AS
 $$
 DECLARE
-    dateDifference  integer;
+    dateDifference  Interval = endDate - startDate;
     totalPrice      integer;
     priceAd         integer;
     priceIntervalAd PriceInterval;
 BEGIN
     SELECT A.price, A.priceInterval FROM Advertisement AS A WHERE A.id = idAdvertisement INTO priceAd, priceIntervalAd;
+    dateDifference := dateDifference + '1 day'::interval - '1 second'::interval;
+
     IF priceIntervalAd = 'DAY'::PriceInterval THEN
-        -- endDate - startDate > rends un interval de temps
-        -- convert the interval into hours
-        SELECT DATE_PART('day', endDate) - DATE_PART('day', startDate) INTO dateDifference;
+        totalPrice := priceAd * DATE_PART('day', dateDifference);
     ELSIF priceIntervalAd = 'WEEK'::PriceInterval THEN
-        SELECT DATE_PART('week', endDate) - DATE_PART('week', startDate) INTO dateDifference;
+        totalPrice := priceAd * CEILING(DATE_PART('day', dateDifference) / 7);
     ELSIF priceIntervalAd = 'MONTH'::PriceInterval THEN
-        SELECT DATE_PART('month', endDate) - DATE_PART('month', startDate) INTO dateDifference;
+        totalPrice := priceAd * CEILING(DATE_PART('day', dateDifference) / 30);
     END IF;
-    totalPrice := priceAd * dateDifference;
+
     INSERT INTO Rental (idProfile, idAdvertisement, startDate, endDate, comment, statusRental,
                         paymentMethod, price)
     VALUES (idProfile, idAdvertisement, startDate, endDate, comment, statusRental, paymentMethod,
