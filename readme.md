@@ -22,6 +22,7 @@ To be able to execute and deploy the project, the following softwares are requir
 3. Change the right of the folder [images](./Code/php-fpm/images) with those commands :
 
 ```bash
+# This commands are for linux (bash)
 sudo chmod 777 Code/php-fpm/images/ # modify permissions of images folder
 sudo chmod 666 Code/php-fpm/images/* # modify permissions of content in image folder
 ```
@@ -31,7 +32,7 @@ sudo chmod 666 Code/php-fpm/images/* # modify permissions of content in image fo
 
 ```bash
 docker cp ./src/sql_scripts/insert.sql postgres:/docker-entrypoint-initdb.d/insert.sql
-docker exec  postgres psql BDRProject projectuser -f /docker-entrypoint-initdb.d/insert.sql
+docker exec postgres psql BDRProject projectuser -f /docker-entrypoint-initdb.d/insert.sql
 ```
 
 The first one will copy the insert file to the container postgres and the second one will execute the script
