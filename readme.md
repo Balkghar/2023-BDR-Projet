@@ -10,7 +10,7 @@ containers.
 
 ### Prerequisites
 
-To be able to execute and deploy the project, the following software is required to be installed:
+To be able to execute and deploy the project, the following softwares are required:
 
 - Docker installed
 - Software to connect to the database (e.g. DBeaver / IntelliJ)

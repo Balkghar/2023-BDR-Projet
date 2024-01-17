@@ -362,6 +362,38 @@ CREATE OR REPLACE TRIGGER vAdTrigger
     FOR EACH ROW
 EXECUTE FUNCTION updateAdFromView();
 
+CREATE OR REPLACE FUNCTION updateProfileFromView() RETURNS TRIGGER
+    LANGUAGE plpgsql
+AS
+$$
+BEGIN
+    IF TG_OP = 'INSERT' THEN
+    ELSEIF TG_OP = 'UPDATE' THEN
+        UPDATE Profile
+        SET idAddress     = NEW.addressid,
+            firstname  = NEW.firstname,
+            lastname  = NEW.lastname,
+            mail         = NEW.mail
+        WHERE id = NEW.profileId;
+        UPDATE Address
+        SET zipCity      = NEW.zip,
+            street       = NEW.street,
+            streetNumber = NEW.streetnumber
+        WHERE id = NEW.addressId;
+        UPDATE City
+            SET name = NEW.name
+        WHERE zip = NEW.zip;
+    END IF;
+    RETURN NEW;
+END
+$$;
+CREATE OR REPLACE TRIGGER vProfileTrigger
+    INSTEAD OF INSERT OR UPDATE OR DELETE
+    ON vProfile
+    FOR EACH ROW
+EXECUTE FUNCTION updateProfileFromView();
+
+
 -- CONTRAINTS --
 
 -- La creationDate d’un Advertisement ne peut pas se situer avant la registrationDate du User

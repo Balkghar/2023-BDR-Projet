@@ -418,9 +418,9 @@ class Postgresql
 
     function updateProfile($firstname, $lastname, $mail, $phoneNumber, $zipCity, $street, $streetNumber, $idProfile)
     {
-        $query = "SELECT P.idAddress AS id from profile AS P 
-                    INNER JOIN Address AS A ON P.idAddress = A.id
-                    WHERE P.id=$idProfile;";
+        $query = "SELECT addressid AS id 
+        FROM vProfile  
+        WHERE profileId=$idProfile;";
         $array = pg_fetch_all($this->query($query));
         $idAddr = $array[0]['id'];
         $this->updateAddress($zipCity, $street, $streetNumber, $idAddr);
