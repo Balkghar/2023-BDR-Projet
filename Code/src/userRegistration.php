@@ -9,4 +9,5 @@ if (isset($_POST['firstname']) and isset($_POST['lastname']) and isset($_POST['m
     // header("Location: /");
 // }
 
+
 require('templates/userRegistration.php');

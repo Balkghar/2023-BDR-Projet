@@ -303,7 +303,7 @@ class Postgresql
      */
     function getAllCategory(): array
     {
-        $result = $this->query("select name from category;");
+        $result = $this->query("SELECT name FROM category;");
         $array = pg_fetch_all($result);
         return $array;
     }
@@ -314,7 +314,6 @@ class Postgresql
         // Prepare the SQL query with placeholders for parameters
         $query = "INSERT INTO Advertisement (idAddress, idProfile, creationdate, nameCategory, title, description, price, priceInterval,
         status) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, 'ACTIVE');";
-        // Execute the query with pg_query_params
         pg_query_params($this->dbconn, $query, array($idAdress, $idProfile, $this->getCurrentTime(), $categroy, $title, $description, $price, $interval));
 
         $result = $this->query("SELECT MAX(id) FROM Advertisement;");
@@ -324,7 +323,7 @@ class Postgresql
 
     function getAllCity()
     {
-        $result = $this->query("select * from city ;");
+        $result = $this->query("SELECT * FROM city;");
         $array = pg_fetch_all($result);
         return $array;
     }
