@@ -241,7 +241,9 @@ DECLARE
     priceIntervalAd PriceInterval;
 BEGIN
     SELECT A.price, A.priceInterval FROM Advertisement AS A WHERE A.id = idAdvertisement INTO priceAd, priceIntervalAd;
-    dateDifference := dateDifference + '1 day'::interval - '1 second'::interval;
+    IF DATE_PART('hour', dateDifference) != 0 THEN
+        dateDifference := dateDifference + '1 day'::interval - '1 second'::interval;
+    END IF;
 
     IF priceIntervalAd = 'DAY'::PriceInterval THEN
         totalPrice := priceAd * DATE_PART('day', dateDifference);
@@ -304,20 +306,19 @@ FROM Rental AS R
 
 
 CREATE OR REPLACE VIEW vProfile AS
-SELECT P.id AS profileId,
+SELECT P.id      AS profileId,
        P.firstname,
        P.lastname,
        P.mail,
        P.phoneNumber,
-       A.id AS addressId,
+       A.id      AS addressId,
        A.zipCity as zip,
        A.street,
        A.streetNumber,
        C.name
 FROM Profile AS P
-                  INNER JOIN Address AS A ON P.idAddress = A.id
-                  INNER JOIN City AS C ON A.zipCity = C.zip;
-
+         INNER JOIN Address AS A ON P.idAddress = A.id
+         INNER JOIN City AS C ON A.zipCity = C.zip;
 
 
 
@@ -370,10 +371,10 @@ BEGIN
     IF TG_OP = 'INSERT' THEN
     ELSEIF TG_OP = 'UPDATE' THEN
         UPDATE Profile
-        SET idAddress     = NEW.addressid,
-            firstname  = NEW.firstname,
+        SET idAddress = NEW.addressid,
+            firstname = NEW.firstname,
             lastname  = NEW.lastname,
-            mail         = NEW.mail
+            mail      = NEW.mail
         WHERE id = NEW.profileId;
         UPDATE Address
         SET zipCity      = NEW.zip,
@@ -381,7 +382,7 @@ BEGIN
             streetNumber = NEW.streetnumber
         WHERE id = NEW.addressId;
         UPDATE City
-            SET name = NEW.name
+        SET name = NEW.name
         WHERE zip = NEW.zip;
     END IF;
     RETURN NEW;
