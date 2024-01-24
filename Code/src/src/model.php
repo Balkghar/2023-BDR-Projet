@@ -91,9 +91,6 @@ class Postgresql
     {
         $result = $this->query("SELECT * FROM vAds WHERE id=$index;");
         $array = pg_fetch_all($result);
-        $array[0]['avg'] = pg_fetch_all($this->query("SELECT avg(objectrating) 
-        FROM vRatingsComments
-        WHERE id = " . $array[0]['id'] . ";"))[0]['avg'];
         return $array[0];
     }
 
@@ -139,11 +136,6 @@ class Postgresql
         $query .= "ORDER BY creationDate DESC;";
         $result = $this->query($query);
         $array = pg_fetch_all($result);
-        foreach ($array as &$ad) {
-            $ad['avg'] = pg_fetch_all($this->query("SELECT avg(objectrating) 
-            FROM vRatingsComments
-            WHERE id = " . $ad['id'] . ";"))[0]['avg'];
-        }
         return $array;
     }
 

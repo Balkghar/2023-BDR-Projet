@@ -99,8 +99,8 @@ foreach ($ads as $ad) {
             <h6 class="card-subtitle mb-2 text-muted">
                 Évaluation :
                 <?php
-                if ($ad['avg'] != null)
-                    echo(round($ad['avg'], 2));
+                if ($ad['ratingavg'] != null)
+                    echo(round($ad['ratingavg'], 2));
                 else
                     echo("-")
                 ?>

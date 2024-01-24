@@ -207,30 +207,34 @@ CREATE TABLE Rating
 
 -- VIEWS --
 CREATE OR REPLACE VIEW vAds AS
-SELECT Ad.id            AS id,
-       Ad.idProfile     as idProfile,
-       Ad.title         AS title,
-       Ad.price         AS price,
-       Ad.description   AS description,
-       Ad.priceinterval AS priceinterval,
-       Ad.nameCategory  AS nameCategory,
-       Adr.id           AS idaddr,
-       Adr.zipCity      AS zipCity,
-       Adr.street       AS street,
-       Adr.streetNumber AS streetNumber,
-       Ad.pictures      AS pictures,
-       Cit.name         as city,
-       Cit.Canton       AS canton,
-       Ad.creationDate  AS creationDate,
-       Ad.status        AS status
-FROM advertisement AS Ad
-         INNER JOIN Address AS Adr ON Ad.idAddress = Adr.id
-         INNER JOIN City AS Cit ON Adr.zipCity = Cit.zip;
+SELECT Ad.id                    AS id,
+       Ad.idProfile             as idProfile,
+       Ad.title                 AS title,
+       Ad.price                 AS price,
+       Ad.description           AS description,
+       Ad.priceinterval         AS priceinterval,
+       Ad.nameCategory          AS nameCategory,
+       Address.id               AS idaddr,
+       Address.zipCity          AS zipCity,
+       Address.street           AS street,
+       Address.streetNumber     AS streetNumber,
+       Ad.pictures              AS pictures,
+       City.name                AS city,
+       City.Canton              AS canton,
+       Ad.creationDate          AS creationDate,
+       Ad.status                AS status,
+       avg(Rating.objectrating) AS ratingAvg
+FROM Advertisement AS Ad
+         INNER JOIN Address ON Ad.idAddress = Address.id
+         INNER JOIN City ON Address.zipCity = City.zip
+         LEFT JOIN Rental ON Rental.idAdvertisement = Ad.id
+         LEFT JOIN Rating ON Rating.idRental = Rental.id
+GROUP BY Ad.id, Address.id, City.name, City.canton;
 
 
 CREATE OR REPLACE PROCEDURE insertRental(idProfile integer, idAdvertisement integer, startDate timestamp,
-                                         endDate timestamp, comment text,
-                                         statusRental StatusRental, paymentMethod PaymentMethod)
+                                         endDate timestamp, comment text, statusRental StatusRental,
+                                         paymentMethod PaymentMethod)
     LANGUAGE plpgsql
 AS
 $$
@@ -262,64 +266,63 @@ END
 $$;
 
 CREATE OR REPLACE VIEW vRatingsComments AS
-SELECT Ad.id,
-       Ra.objectrating,
-       P.firstname,
-       P.lastname,
-       Ra.comment
-FROM rating AS Ra
-         INNER JOIN Rental as Re ON Re.id = Ra.idRental
-         INNER JOIN Advertisement as Ad ON Ad.id = Re.idAdvertisement
-         INNER JOIN Profile as P on P.id = Ra.idProfile;
+SELECT Rental.idAdvertisement AS id,
+       Rating.objectrating,
+       Profile.firstname,
+       Profile.lastname,
+       Rental.comment
+FROM Rating
+         INNER JOIN Rental ON Rental.id = Rating.idRental
+         INNER JOIN Profile ON Profile.id = Rating.idProfile;
 
 CREATE OR REPLACE VIEW vRentalInfo AS
-SELECT POwner.mail  AS ownermail,
-       PRenter.mail AS rentermail,
-       A.idprofile  AS idowner,
-       R.id         AS rentalId,
-       A.id         AS adid,
-       A.title,
-       R.startDate,
-       R.endDate,
-       R.statusrental,
-       R.idprofile  AS rentidowner,
-       A.description,
-       R.comment,
-       R.paymentMethod,
-       R.paymentdate,
-       R.price
-from Rental AS R
-         INNER JOIN advertisement AS A ON R.idAdvertisement = A.id
-         INNER JOIN Profile AS POwner ON POwner.id = A.idprofile
-         INNER JOIN Profile AS PRenter ON PRenter.id = R.idprofile;
+SELECT POwner.mail      AS ownermail,
+       PRenter.mail     AS rentermail,
+       Ad.idprofile     AS idowner,
+       Rental.id        AS rentalId,
+       Ad.id            AS adid,
+       Ad.title,
+       Rental.startDate,
+       Rental.endDate,
+       Rental.statusrental,
+       Rental.idprofile AS rentidowner,
+       Ad.description,
+       Rental.comment,
+       Rental.paymentMethod,
+       Rental.paymentdate,
+       Rental.price
+from Rental
+         INNER JOIN Advertisement AS Ad ON Rental.idAdvertisement = Ad.id
+         INNER JOIN Profile AS POwner ON POwner.id = Ad.idprofile
+         INNER JOIN Profile AS PRenter ON PRenter.id = Rental.idprofile;
 
 CREATE OR REPLACE VIEW vRentals AS
-SELECT R.id        AS idRental,
-       A.id        AS idAd,
-       R.idProfile AS idRenter,
-       A.idProfile AS idOwner,
-       A.title,
-       R.startDate,
-       R.endDate,
-       R.idProfile
-FROM Rental AS R
-         INNER JOIN advertisement AS A ON R.idAdvertisement = A.id;
+SELECT Rental.id        AS idRental,
+       Ad.id            AS idAd,
+       Rental.idProfile AS idRenter,
+       Ad.idProfile     AS idOwner,
+       Ad.title,
+       Rental.startDate,
+       Rental.endDate,
+       Rental.idProfile
+FROM Rental
+         INNER JOIN advertisement AS Ad ON Rental.idAdvertisement = Ad.id;
 
 
 CREATE OR REPLACE VIEW vProfile AS
-SELECT P.id      AS profileId,
-       P.firstname,
-       P.lastname,
-       P.mail,
-       P.phoneNumber,
-       A.id      AS addressId,
-       A.zipCity as zip,
-       A.street,
-       A.streetNumber,
-       C.name
-FROM Profile AS P
-         INNER JOIN Address AS A ON P.idAddress = A.id
-         INNER JOIN City AS C ON A.zipCity = C.zip;
+SELECT Profile.id      AS profileId,
+       Profile.firstname,
+       Profile.lastname,
+       Profile.mail,
+       Profile.phoneNumber,
+       Address.id      AS addressId,
+       Address.zipCity AS zip,
+       Address.street,
+       Address.streetNumber,
+       City.name
+FROM Profile
+         INNER JOIN Address ON Profile.idAddress = Address.id
+         INNER JOIN City ON Address.zipCity = City.zip;
 
 
 
