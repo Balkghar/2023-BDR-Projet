@@ -157,6 +157,8 @@ class Postgresql
     {
         $sql = 'SELECT password, id FROM Profile WHERE mail = \'' . $mail . '\'; ';
         $result = $this->query($sql);
+        if (pg_fetch_all($result) == null)
+            return false;
         return $password == pg_fetch_all($result)[0]['password'];
     }
 
