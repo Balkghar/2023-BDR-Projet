@@ -4,20 +4,20 @@
     <form method="post" action="<?php echo $_SERVER['PHP_SELF']; ?>">
         <div class="form-group">
             <label for="fname">Prénom :</label>
-            <input class="form-control" type="text" id="firstname" name="firstname">
+            <input class="form-control" type="text" id="firstname" name="firstname" required>
         </div>
 
         <div class="form-group">
             <label for="lname">Nom :</label>
-            <input class="form-control" type="text" id="lastname" name="lastname">
+            <input class="form-control" type="text" id="lastname" name="lastname" required>
         </div>
         <div class="form-group">
             <label for="lname">Mail :</label>
-            <input class="form-control" type="text" id="mail" name="mail">
+            <input class="form-control" type="text" id="mail" name="mail" required>
         </div>
         <div class="form-group">
             <label for="lname">Mot de passe :</label>
-            <input class="form-control" type="password" id="password" name="password">
+            <input class="form-control" type="password" id="password" name="password" required>
         </div>
 
         <div class="form-group">
