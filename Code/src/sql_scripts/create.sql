@@ -244,7 +244,7 @@ DECLARE
     priceAd         integer;
     priceIntervalAd PriceInterval;
 BEGIN
-    SELECT A.price, A.priceInterval FROM Advertisement AS A WHERE A.id = idAdvertisement INTO priceAd, priceIntervalAd;
+    SELECT Ad.price, Ad.priceInterval FROM Advertisement AS Ad WHERE Ad.id = idAdvertisement INTO priceAd, priceIntervalAd;
     -- if date difference isn't in days exact but in hours, add 23h59:59'
     IF DATE_PART('hour', dateDifference) != 0 THEN
         dateDifference := dateDifference + '1 day'::interval - '1 second'::interval;
