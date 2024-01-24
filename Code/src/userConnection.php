@@ -11,6 +11,8 @@ if (isset($_POST['mail']) and isset($_POST['password'])) {
         $_SESSION["userId"] = $db->getProfileIdByMail($_POST['mail']);
 
         header("Location: /");
+    } else {
+        header("Location: /userConnection.php");
     }
 }
 
