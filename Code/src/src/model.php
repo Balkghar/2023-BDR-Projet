@@ -48,7 +48,6 @@ class Postgresql
 
     function makeReservation($startDate, $endDate, $id, $idProfile, $comment, $paymentMethod)
     {
-        //$query = "INSERT INTO Rental (idProfile, idAdvertisement, startDate, endDate, comment, statusRental, paymentMethod) VALUES ($1, $2, $3, $4, $5, $6, $7)";
         $query = "CALL insertRental($1, $2, $3, $4, $5, $6, $7)";
 
         // Execute the query with pg_query_params
@@ -71,24 +70,15 @@ class Postgresql
 
     function activateAd($index)
     {
-        $updateQuery = [
-            'status' => 'ACTIVE'
-        ];
+        $query = "UPDATE Advertisement SET status = 'ACTIVE' WHERE id = $index;";
 
-        // Condition for the WHERE clause
-        $condition = ['id' => $index];
-        pg_update($this->dbconn, 'advertisement', $updateQuery, $condition);
+        $this->query($query);
     }
 
     function deleteAd($index)
     {
-        $updateQuery = [
-            'status' => 'DELETED'
-        ];
-
-        // Condition for the WHERE clause
-        $condition = ['id' => $index];
-        pg_update($this->dbconn, 'advertisement', $updateQuery, $condition);
+        $query = "UPDATE Advertisement SET status = 'DELETED' WHERE id = $index;";
+        $this->query($query);
     }
 
     function userIsAdOwner($index, $userId)
@@ -232,23 +222,10 @@ class Postgresql
         return $array;
     }
 
-    function getCurrentTime()
-    {
-        // TODO : adapt timezone
-        $now = new DateTime();
-        $now->format('Y-m-d H:i:s');
-        return date("Y-m-d H:i:s", $now->getTimestamp());
-    }
-
     function paymentDone($id)
     {
-        $updateQuery = [
-            'paymentdate' => $this->getCurrentTime()
-        ];
-
-        // Condition for the WHERE clause
-        $condition = ['id' => $id];
-        pg_update($this->dbconn, 'rental', $updateQuery, $condition);
+        $query = "UPDATE Rental SET paymentdate = now() WHERE id = $id";
+        $this->query($query);
     }
 
     function locationIsNotCanceled($id)
@@ -289,13 +266,8 @@ class Postgresql
 
     function updateRentalStatus($id, $newStatus)
     {
-        $updateQuery = [
-            'statusrental' => $newStatus
-        ];
-
-        // Condition for the WHERE clause
-        $condition = ['id' => $id];
-        pg_update($this->dbconn, 'rental', $updateQuery, $condition);
+        $query = "UPDATE Rental SET statusRental = $newStatus WHERE id = $id";
+        $this->query($query);
     }
 
     /**
@@ -313,8 +285,8 @@ class Postgresql
         $idAdress = $this->addAddress($zip, $street, $streetNumber);
         // Prepare the SQL query with placeholders for parameters
         $query = "INSERT INTO Advertisement (idAddress, idProfile, creationdate, nameCategory, title, description, price, priceInterval,
-        status) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, 'ACTIVE');";
-        pg_query_params($this->dbconn, $query, array($idAdress, $idProfile, $this->getCurrentTime(), $categroy, $title, $description, $price, $interval));
+        status) VALUES ($1, $2, 'NOW()', $3, $4, $5, $6, $7, 'ACTIVE');";
+        pg_query_params($this->dbconn, $query, array($idAdress, $idProfile, $categroy, $title, $description, $price, $interval));
 
         $result = $this->query("SELECT MAX(id) FROM Advertisement;");
         $array = pg_fetch_all($result);
@@ -358,33 +330,15 @@ class Postgresql
 
     function updateAddress($zip, $street, $streetNumber, $id)
     {
-
-        $updateQuery = [
-            'zipcity' => $zip,
-            'street' => $street,
-            'streetnumber' => $streetNumber
-        ];
-
-        // Condition for the WHERE clause
-        $condition = ['id' => $id];
-        pg_update($this->dbconn, 'address', $updateQuery, $condition);
+        $query = "UPDATE Address SET zipCity = $1 , street = $2, streetNumber = $3 WHERE id = $4;";
+        pg_query_params($this->dbconn, $query, array($zip, $street, $streetNumber, $id));
     }
 
     function modifyAd($title, $description, $price, $category, $interval, $zip, $street, $streetNumber, $idAd, $idAddr)
     {
         $this->updateAddress($zip, $street, $streetNumber, $idAddr);
-
-        $updateQuery = [
-            'title' => $title,
-            'description' => $description,
-            'price' => $price,
-            'namecategory' => $category,
-            'priceinterval' => $interval
-        ];
-
-        // Condition for the WHERE clause
-        $condition = ['id' => $idAd];
-        pg_update($this->dbconn, 'advertisement', $updateQuery, $condition);
+        $query = "UPDATE Advertisement SET title = $1, description = $2, price = $3, priceInterval = $4, nameCategory = $5 WHERE id = $6;";
+        pg_query_params($this->dbconn, $query, array($title, $description, $price, $interval, $category, $idAd));
     }
 
     function addImagesToAd($adId, $imagePaths)
@@ -424,16 +378,8 @@ class Postgresql
         $idAddr = $array[0]['id'];
         $this->updateAddress($zipCity, $street, $streetNumber, $idAddr);
 
-        $updateQuery = [
-            'firstname' => $firstname,
-            'lastname' => $lastname,
-            'mail' => $mail,
-            'phonenumber' => $phoneNumber
-        ];
-
-        // Condition for the WHERE clause
-        $condition = ['id' => $idProfile];
-        pg_update($this->dbconn, 'profile', $updateQuery, $condition);
+        $query = "UPDATE Profile SET firstname = $1 , lastname = $2, mail = $3, phoneNumber = $4 WHERE id = $5;";
+        pg_query_params($this->dbconn, $query, array($firstname, $lastname, $mail, $phoneNumber, $idProfile));
     }
 
     function getAllCommentsOfProfile($idAd)
