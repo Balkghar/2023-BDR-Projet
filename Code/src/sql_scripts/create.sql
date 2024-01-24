@@ -402,6 +402,20 @@ CREATE OR REPLACE TRIGGER vProfileTrigger
 EXECUTE FUNCTION updateProfileFromView();
 
 
+CREATE OR REPLACE PROCEDURE insertProfile(zip integer, street text, streetNumber text, firstname text, lastname text,
+                                          mail text, password text, phoneNumber text, status Status)
+    LANGUAGE plpgsql
+AS
+$$
+BEGIN
+    WITH newAddress
+             AS (INSERT INTO Address (zipCity, street, streetNumber) VALUES (zip, street, streetNumber) RETURNING id)
+    INSERT
+    INTO Profile (idAddress, firstname, lastname, mail, password, phoneNumber, status)
+    VALUES ((SELECT id FROM newAddress), firstname, lastname, mail, password, phoneNumber, status);
+END
+$$;
+
 -- CONTRAINTS --
 
 -- La creationDate d’un Advertisement ne peut pas se situer avant la registrationDate du User

@@ -146,9 +146,7 @@ class Postgresql
 
     function registerProfile($firstname, $lastname, $mail, $password, $phoneNumber, $zipCity, $street, $streetNumber)
     {
-        $query = "WITH newAddress AS (INSERT INTO Address (zipCity, street, streetNumber) VALUES ($1, $2, $3) RETURNING id)";
-        $query .= "INSERT INTO Profile (idAddress, firstname, lastname, mail, password, phoneNumber, status) VALUES ((SELECT id FROM newAddress), $4, $5, $6, $7, $8 , 'ACTIVE')";
-
+        $query = "CALL insertProfile($1, $2, $3, $4, $5, $6, $7, $8 , 'ACTIVE')";
         // Execute the query with pg_query_params
         pg_query_params($this->dbconn, $query, array($zipCity, $street, $streetNumber, $firstname, $lastname, $mail, $password, $phoneNumber));
     }
