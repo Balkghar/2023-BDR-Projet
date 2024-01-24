@@ -58,11 +58,11 @@ switch ($rental['statusrental']) {
         <form action="rateObject.php" method="post">
             <div class="form-group">
                 <input type="hidden" name="id" value="<?php echo($rental['rentalid']) ?>">
-                <label>Objet : </label>
+                <label>Evaluation Objet : </label>
                 <input class="form-control" type="number" max="5" name="ratingObject" step="1">
             </div>
             <div class="form-group">
-                <label>Location : </label>
+                <label>Evaluation Location : </label>
                 <input class="form-control" type="number" max="5" name="ratingRental" step="1">
             </div>
             <div class="form-group">
