@@ -154,10 +154,6 @@ class Postgresql
 
     function registerProfile($firstname, $lastname, $mail, $password, $phoneNumber, $zipCity, $street, $streetNumber)
     {
-        /*
-        $id = $this->addAddress($zipCity, $street, $streetNumber);
-        Prepare the SQL query with placeholders for parameters
-        */
         $query = "WITH newAddress AS (INSERT INTO Address (zipCity, street, streetNumber) VALUES ($1, $2, $3) RETURNING id)";
         $query .= "INSERT INTO Profile (idAddress, firstname, lastname, mail, password, phoneNumber, status) VALUES ((SELECT id FROM newAddress), $4, $5, $6, $7, $8 , 'ACTIVE')";
 
@@ -273,14 +269,11 @@ class Postgresql
     function createAd($title, $description, $price, $categroy, $interval, $zip, $street, $streetNumber, $idProfile)
     {
         $query = "WITH newAddress AS (INSERT INTO Address (zipCity, street, streetNumber) VALUES ($1, $2, $3) RETURNING id)";
-        // Prepare the SQL query with placeholders for parameters
-        $query .= "INSERT INTO Advertisement (idAddress, idProfile, creationdate, nameCategory, title, description, price, priceInterval,
-        status) VALUES ((SELECT id FROM newAddress), $4, now(), $5, $6, $7, $8, $9, 'ACTIVE')";
-        pg_query_params($this->dbconn, $query, array($zip, $street, $streetNumber, $idProfile, $categroy, $title, $description, $price, $interval));
 
-        $result = $this->query("SELECT MAX(id) FROM Advertisement;");
-        $array = pg_fetch_all($result);
-        return $array[0]['max'];
+        $query .= "INSERT INTO Advertisement (idAddress, idProfile, creationdate, nameCategory, title, description, price, priceInterval,
+        status) VALUES ((SELECT id FROM newAddress), $4, now(), $5, $6, $7, $8, $9, 'ACTIVE') RETURNING id";
+        $result = pg_query_params($this->dbconn, $query, array($zip, $street, $streetNumber, $idProfile, $categroy, $title, $description, $price, $interval));
+        return pg_fetch_result($result, 0, 0);
     }
 
     function getAllCity()
