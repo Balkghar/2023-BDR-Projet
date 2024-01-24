@@ -333,7 +333,7 @@ AS
 $$
 BEGIN
     IF TG_OP = 'INSERT' THEN
-        INSERT INTO advertisement
+        INSERT INTO Advertisement
         VALUES (NEW.idaddr, NEW.idprofile, NEW.creationdate, NEW.namecategory, NEW.title, NEW.description, NEW.price,
                 NEW.priceinterval, NEW.status);
         INSERT INTO Address VALUES (NEW.zipcity, NEW.street, NEW.streetnumber);
@@ -482,10 +482,10 @@ AS
 $$
 BEGIN
     IF (SELECT idprofile FROM Rental WHERE id = NEW.idRental) != NEW.idProfile AND
-       (SELECT A.idprofile
-        FROM Rental AS R
-                 INNER JOIN advertisement AS A ON R.idAdvertisement = A.id
-        WHERE R.id = NEW.idRental) != NEW.idProfile THEN
+       (SELECT Advertisement.idprofile
+        FROM Rental
+                 INNER JOIN Advertisement ON Rental.idAdvertisement = Advertisement.id
+        WHERE Rental.id = NEW.idRental) != NEW.idProfile THEN
         RAISE EXCEPTION 'Cannot rate Rental where user is not involved as a owner or customer';
     END IF;
     IF NEW.ratingdate < (SELECT creationDate FROM Rental WHERE id = NEW.idRental) THEN
