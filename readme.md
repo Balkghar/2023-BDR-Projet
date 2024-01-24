@@ -20,13 +20,6 @@ To be able to execute and deploy the project, the following softwares are requir
 1. Clone the repository
 2. Open the terminal and navigate to the [Code](./Code/) folder of the repository
 3. Change the right of the folder [images](./Code/php-fpm/images) with those commands :
-
-```bash
-# This commands are for linux (bash)
-sudo chmod 777 Code/php-fpm/images/ # modify permissions of images folder
-sudo chmod 666 Code/php-fpm/images/* # modify permissions of content in image folder
-```
-
 4. Execute the following command to start the docker containers: `docker compose up -d`
 5. Execute those command if you want to populate the database :
 
