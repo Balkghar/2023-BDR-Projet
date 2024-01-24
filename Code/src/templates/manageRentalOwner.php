@@ -130,7 +130,8 @@ if ($rental['paymentdate'] == null && $rental['statusrental'] != 'LOCATION_CANCE
 <?php
 }
 ?>
-<p>Date de départ : <?php echo (convertDateToHumanReadable($rental['startdate'])); ?> / Date de fin : <?php echo (convertDateToHumanReadable($rental['enddate'])); ?></p>
+<p>Date de départ : <?php echo (convertDateToHumanReadable($rental['startdate'])); ?> / Date de fin
+    : <?php echo (convertDateToHumanReadable($rental['enddate'])); ?></p>
 <h5>Commentaire : </h5>
 <p><?php echo ($rental['comment']) ?></p>
 <?php require('footer.php');

@@ -246,7 +246,7 @@ class Postgresql
 
     function updateRentalStatus($id, $newStatus)
     {
-        $query = "UPDATE Rental SET statusRental = $newStatus WHERE id = $id";
+        $query = "UPDATE Rental SET statusRental = '$newStatus' WHERE id = $id";
         $this->query($query);
     }
 
