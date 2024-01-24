@@ -144,27 +144,13 @@ class Postgresql
         return pg_fetch_all($this->query("select * from category WHERE parentcategory='$category';"));
     }
 
-    function addAddress($zipCity, $street, $streetNumber)
-    {
-        // Prepare the SQL query with placeholders for parameters
-        $query = "INSERT INTO Address (zipCity, street, streetNumber) VALUES ($1, $2, $3)";
-
-        // Execute the query with pg_query_params
-        pg_query_params($this->dbconn, $query, array($zipCity, $street, $streetNumber));
-
-        $result = $this->query("SELECT MAX(id) FROM Address;");
-        $array = pg_fetch_all($result);
-        return $array[0]['max'];
-    }
-
     function registerProfile($firstname, $lastname, $mail, $password, $phoneNumber, $zipCity, $street, $streetNumber)
     {
-        $id = $this->addAddress($zipCity, $street, $streetNumber);
-        // Prepare the SQL query with placeholders for parameters
-        $query = "INSERT INTO Profile (idAddress, firstname, lastname, mail, password, phoneNumber, status) VALUES ($1, $2, $3, $4, $5, $6 , 'ACTIVE')";
+        $query = "WITH newAddress AS (INSERT INTO Address (zipCity, street, streetNumber) VALUES ($1, $2, $3) RETURNING id)";
+        $query .= "INSERT INTO Profile (idAddress, firstname, lastname, mail, password, phoneNumber, status) VALUES ((SELECT id FROM newAddress), $4, $5, $6, $7, $8 , 'ACTIVE')";
 
         // Execute the query with pg_query_params
-        pg_query_params($this->dbconn, $query, array($id, $firstname, $lastname, $mail, $password, $phoneNumber));
+        pg_query_params($this->dbconn, $query, array($zipCity, $street, $streetNumber, $firstname, $lastname, $mail, $password, $phoneNumber));
     }
 
     function connectProfile($mail, $password)
@@ -274,15 +260,12 @@ class Postgresql
 
     function createAd($title, $description, $price, $categroy, $interval, $zip, $street, $streetNumber, $idProfile)
     {
-        $idAdress = $this->addAddress($zip, $street, $streetNumber);
-        // Prepare the SQL query with placeholders for parameters
-        $query = "INSERT INTO Advertisement (idAddress, idProfile, creationdate, nameCategory, title, description, price, priceInterval,
-        status) VALUES ($1, $2, 'NOW()', $3, $4, $5, $6, $7, 'ACTIVE');";
-        pg_query_params($this->dbconn, $query, array($idAdress, $idProfile, $categroy, $title, $description, $price, $interval));
+        $query = "WITH newAddress AS (INSERT INTO Address (zipCity, street, streetNumber) VALUES ($1, $2, $3) RETURNING id)";
 
-        $result = $this->query("SELECT MAX(id) FROM Advertisement;");
-        $array = pg_fetch_all($result);
-        return $array[0]['max'];
+        $query .= "INSERT INTO Advertisement (idAddress, idProfile, creationdate, nameCategory, title, description, price, priceInterval,
+        status) VALUES ((SELECT id FROM newAddress), $4, now(), $5, $6, $7, $8, $9, 'ACTIVE') RETURNING id";
+        $result = pg_query_params($this->dbconn, $query, array($zip, $street, $streetNumber, $idProfile, $categroy, $title, $description, $price, $interval));
+        return pg_fetch_result($result, 0, 0);
     }
 
     function getAllCity()
