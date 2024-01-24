@@ -250,9 +250,6 @@ class Postgresql
         $this->query($query);
     }
 
-    /**
-     * @return array
-     */
     function getAllCategory(): array
     {
         $result = $this->query("SELECT name FROM category;");

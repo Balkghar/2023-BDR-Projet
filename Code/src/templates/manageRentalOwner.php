@@ -126,8 +126,7 @@ if ($rental['paymentdate'] == null && $rental['statusrental'] != 'LOCATION_CANCE
 <?php
 } else if ($rental['paymentdate'] != null) {
 ?>
-    <h5>Paiement effectué le : <?php echo (convertDateToHumanReadable($rental['paymentdate']));
-                                var_dump($rental); ?></h5>
+    <h5>Paiement effectué le : <?php echo (convertDateToHumanReadable($rental['paymentdate'])); ?></h5>
 <?php
 }
 ?>
