@@ -30,7 +30,7 @@ docker exec postgres psql BDRProject projectuser -f /docker-entrypoint-initdb.d/
 
 The first one will copy the insert file to the container postgres and the second one will execute the script
 
-6. Open the browser and navigate to <http://localhost/>
+6. Open the browser and navigate to [localhost](http://localhost/)
 
 ### Stop the app
 
