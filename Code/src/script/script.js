@@ -29,10 +29,6 @@ function filterCity() {
     }
 }
 
-function deletePicture() {
-    alert("patate");
-}
-
 $(document).ready(function () {
     filterCity();
 });

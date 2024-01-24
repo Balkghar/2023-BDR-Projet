@@ -30,7 +30,6 @@ services:
       - ./src:/var/www
       - ./logs:/var/logs
       - images:/var/www/images
-      #- ./php-fpm/php.ini:/usr/local/etc/php/conf.d/php.ini
 
   nginx:
     image: nginx
