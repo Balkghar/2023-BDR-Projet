@@ -27,10 +27,10 @@ For Windows:
 3. Execute the following command to start the docker containers: `docker compose up -d`
 4. Execute those command if you want to populate the database:
 
-   ```bash
-   docker cp ./src/sql_scripts/insert.sql postgres:/docker-entrypoint-initdb.d/insert.sql
-   docker exec postgres psql BDRProject projectuser -f /docker-entrypoint-initdb.d/insert.sql
-   ```
+    ```bash
+    docker cp ./src/sql_scripts/insert.sql postgres:/docker-entrypoint-initdb.d/insert.sql
+    docker exec postgres psql BDRProject projectuser -f /docker-entrypoint-initdb.d/insert.sql
+    ```
 
    The first one will copy the insert file to the container postgres and the second one will execute the script
 
