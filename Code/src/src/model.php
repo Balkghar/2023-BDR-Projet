@@ -345,15 +345,10 @@ class Postgresql
 
     function updateProfile($firstname, $lastname, $mail, $phoneNumber, $zipCity, $street, $streetNumber, $idProfile)
     {
-        $query = "SELECT addressid AS id 
-        FROM vProfile  
-        WHERE profileId=$idProfile;";
-        $array = pg_fetch_all($this->query($query));
-        $idAddr = $array[0]['id'];
-        $this->updateAddress($zipCity, $street, $streetNumber, $idAddr);
-
-        $query = "UPDATE Profile SET firstname = $1 , lastname = $2, mail = $3, phoneNumber = $4 WHERE id = $5;";
-        pg_query_params($this->dbconn, $query, array($firstname, $lastname, $mail, $phoneNumber, $idProfile));
+        $query = "WITH updateProfile AS (UPDATE Profile SET firstname = $1, lastname = $2, mail = $3, phoneNumber = $4 WHERE id = $5 RETURNING id),
+              getAddress AS (SELECT addressid AS id FROM vProfile WHERE profileId = $5)";
+        $query .= "UPDATE Address SET zipCity = $6 , street = $7, streetNumber = $8 WHERE id = (SELECT id FROM getAddress);";
+        pg_query_params($this->dbconn, $query, array($firstname, $lastname, $mail, $phoneNumber, $idProfile, $zipCity, $street, $streetNumber));
     }
 
     function getAllCommentsOfProfile($idAd)
