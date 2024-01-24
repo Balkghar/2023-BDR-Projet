@@ -124,9 +124,10 @@ if ($rental['paymentdate'] == null && $rental['statusrental'] != 'LOCATION_CANCE
         <input type="submit" class="btn btn-light" value="Paiement effectué" />
     </form>
 <?php
-} else {
+} else if ($rental['paymentdate'] != null) {
 ?>
-    <h5>Paiement effectué le : <?php echo (convertDateToHumanReadable($rental['paymentdate'])); ?></h5>
+    <h5>Paiement effectué le : <?php echo (convertDateToHumanReadable($rental['paymentdate']));
+                                var_dump($rental); ?></h5>
 <?php
 }
 ?>
