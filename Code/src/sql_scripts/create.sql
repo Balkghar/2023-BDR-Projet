@@ -208,7 +208,7 @@ CREATE TABLE Rating
 -- VIEWS --
 CREATE OR REPLACE VIEW vAds AS
 SELECT Ad.id                    AS id,
-       Ad.idProfile             as idProfile,
+       Ad.idProfile             AS idProfile,
        Ad.title                 AS title,
        Ad.price                 AS price,
        Ad.description           AS description,
@@ -244,7 +244,10 @@ DECLARE
     priceAd         integer;
     priceIntervalAd PriceInterval;
 BEGIN
-    SELECT Ad.price, Ad.priceInterval FROM Advertisement AS Ad WHERE Ad.id = idAdvertisement INTO priceAd, priceIntervalAd;
+    SELECT Ad.price, Ad.priceInterval
+    FROM Advertisement AS Ad
+    WHERE Ad.id = idAdvertisement
+    INTO priceAd, priceIntervalAd;
     -- if date difference isn't in days exact but in hours, add 23h59:59'
     IF DATE_PART('hour', dateDifference) != 0 THEN
         dateDifference := dateDifference + '1 day'::interval - '1 second'::interval;
