@@ -59,11 +59,11 @@ switch ($rental['statusrental']) {
                 <div class="form-group">
                     <input type="hidden" name="id" value="<?php echo ($rental['rentalid']) ?>">
                     <label>Evaluation Objet : </label>
-                    <input class="form-control" type="number" max="5" name="ratingObject" step="1">
+                    <input class="form-control" type="number" max="5" name="ratingObject" step="1" required>
                 </div>
                 <div class="form-group">
                     <label>Evaluation Location : </label>
-                    <input class="form-control" type="number" max="5" name="ratingRental" step="1">
+                    <input class="form-control" type="number" max="5" name="ratingRental" step="1" required>
                 </div>
                 <div class="form-group">
                     <label>Commentaire : </label>

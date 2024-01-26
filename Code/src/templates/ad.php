@@ -38,17 +38,17 @@ if (isset($_SESSION["connected"]) and $_SESSION['connected'] == true and isset($
         <div class="row">
             <div class="col">
                 <label for="startDate">Date de départ :</label>
-                <input class="form-control" type="datetime-local" id="startDate" name="startDate">
+                <input class="form-control" type="datetime-local" id="startDate" name="startDate" required>
             </div>
             <div class="col">
                 <label for="endDate">Date de fin :</label>
-                <input class="form-control" type="datetime-local" id="endDate" name="endDate">
+                <input class="form-control" type="datetime-local" id="endDate" name="endDate" required>
             </div>
         </div>
 
         <div class="form-group">
             <label for="paymentMethod">Méthode de paiement :</label>
-            <select class="form-control" name="paymentMethod" id="paymentMethod">
+            <select class="form-control" name="paymentMethod" id="paymentMethod" required>
                 <?php
                 foreach ($paymentMethod as $text) {
                     echo ("<option value=\"" . $text . "\">" . $text . "</option>");
@@ -59,7 +59,7 @@ if (isset($_SESSION["connected"]) and $_SESSION['connected'] == true and isset($
 
         <div class="form-group">
             <label for="comment">Commentaire :</label>
-            <textarea class="form-control" id="comment" name="comment" rows="4" cols="50"></textarea>
+            <textarea class="form-control" id="comment" name="comment" rows="4" cols="50" required></textarea>
         </div>
         <input class="btn btn-primary" type="submit" value="Demander Location">
     </form>
