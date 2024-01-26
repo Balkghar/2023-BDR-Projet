@@ -1,4 +1,5 @@
 function filterCity() {
+
     d = document.getElementById("canton").value;
     var selectElement = document.getElementById("zipCity");
     if (d === "") {
@@ -30,5 +31,7 @@ function filterCity() {
 }
 
 $(document).ready(function () {
-    filterCity();
+    if (document.getElementById("canton") && document.getElementById("zipCity")) {
+        filterCity();
+    }
 });

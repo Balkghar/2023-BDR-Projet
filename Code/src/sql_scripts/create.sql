@@ -273,7 +273,7 @@ SELECT Rental.idAdvertisement AS id,
        Rating.objectrating,
        Profile.firstname,
        Profile.lastname,
-       Rental.comment
+       Rating.comment
 FROM Rating
          INNER JOIN Rental ON Rental.id = Rating.idRental
          INNER JOIN Profile ON Profile.id = Rating.idProfile;
